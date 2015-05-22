@@ -12,15 +12,8 @@ Depends:
     R (>= 2.15),
 Collate:
     'age2int.R'
-    'HFCparse.R'
     'HFDutils.R'
     'HMDutils.R'
-    'getHFCcountries.R' 
-    'readHFC.R' 
-    'readHFCweb.R' 
     'readHFD.R' 
-    'readHFDweb.R' 
     'readHMD.R'  
-    'readHMDweb.R' 
-    'readJMDweb.R'  
     'userInput.R'

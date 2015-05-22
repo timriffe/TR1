@@ -12,11 +12,14 @@ IncrementVersion(file.path(parent.path ,"HMDHFDplus"),"01","2013-10-15")
 load_all(file.path(parent.path,"HMDHFDplus"))
 
 build(file.path(parent.path,"HMDHFDplus"))
-?build
 install.packages("/home/tim/git/TR1/TR1/HMDHFDplus_01.1.6009.tar.gz",repos=NULL,type="source")
 library(HMDHFDplus)
 
 A <- readHMDweb("USA","mltper_1x1",username=us,password=pw)
 A <- readHFDweb("USA","birthsRR",username=us,password=pw)
+
+
+
+
 
 head(A)
