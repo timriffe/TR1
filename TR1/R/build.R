@@ -21,7 +21,7 @@ A <- readCHMDweb("alb","mltper_5x5")
 A <- readHFDweb("USA","birthsRR",username=us,password=pw)
 A <- readHFCweb("USA","birthsRR")
 getHFCcountries()
-
+head(A)
 
 
 install_github()

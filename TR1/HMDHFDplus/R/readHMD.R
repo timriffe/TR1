@@ -167,15 +167,15 @@ readHMDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 		}
 	}
 	
-	
 	# build url: 
     # TR: presumably these links are composed with the same separators everywhere?
 	HMDurl <- paste("www.mortality.org", "hmd", CNTRY, "STATS", paste0(item, ".txt"), sep = "/")
 	
 	#check it exists:
+    # TR: this is like way extra, since both CNTRY and item have gone through filters by now
 	if (RCurl::url.exists(HMDurl,curl=handle)){
 		# grab the data
-		dataIN  <- RCurl::getURL(file.path("www.mortality.org","hmd",CNTRY,"STATS",paste0(item,".txt")), curl=handle)
+		dataIN  <- RCurl::getURL(HMDurl, curl=handle)
 		
 		# rest of this lifted from readHMD()
 		DF      <- read.table(text = dataIN, header = TRUE, skip = 2, na.strings = ".", as.is = TRUE)
