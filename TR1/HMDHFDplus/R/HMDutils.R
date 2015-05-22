@@ -3,6 +3,7 @@
 
 # 1) HMDparse()
 # 2) getHMDcountries()
+# 3) getJMDprefectures()
 
 ############################################################################
 # HMDparse()
@@ -81,4 +82,30 @@ getHMDcountries <- function(){
 	HMDXXX  <- read.csv("http://www.mortality.org/countries.csv",stringsAsFactors = FALSE)
 	HMDXXX  <- HMDXXX[!is.na(HMDXXX[,"ST_Per_LE_FY"]), ]
 	HMDXXX$Subpop.Code
+}
+
+############################################################################
+# getJMDprefectures()
+############################################################################
+
+
+#' @title get a named vector of JMD prefecture codes
+#' 
+#' @description This is a helper function for those familiar with prefecture names but not with prefecture codes (and vice versa). It is also useful for looped downloading of data.
+#' 
+#' @return a character vector of 2-digit prefecture codes. Names correspond to the proper names given in the English version of the HMD webpage.
+#' 
+#' @importFrom XML readHTMLTable
+#' 
+#' @export
+#' 
+#' @examples \dontrun{ (prefectures <- getJMDprefectures()) }
+#' 
+getJMDprefectures <- function(){
+	Prefs <- as.matrix(XML::readHTMLTable("http://www.ipss.go.jp/p-toukei/JMD/index-en.html",
+					which = 1, stringsAsFactors = FALSE, skip.rows = c(1:4)))
+	# get codes. rows read from left to right
+	Prefectures <- sprintf("%.2d", row(Prefs) * 4 + col(Prefs) - 5)
+	names(Prefectures) <- c(Prefs)
+	Prefectures[order(Prefectures)]
 }
