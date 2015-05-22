@@ -30,7 +30,7 @@ library(devtools)
 install_github("timriffe/TR1/TR1/HMDHFDplus")
 ```
 
-```
+
 **Note**: On *nix systems first run in the terminal:
 ```
 sudo apt-get install libcurl
