@@ -114,6 +114,16 @@ getJMDprefectures <- function(){
 # 4) getCHMDprovinces()
 ############################################################################
 
+#' @title get a named vector of CHMD province codes
+#' 
+#' @description This is a helper function to get a vector of 3-character province codes.
+#' 
+#' @return a character vector of 3 character province codes.
+#' 
+#' @export
+#' 
+#' @examples \dontrun{ (provs <- getCHMDprovinces()) }
+#' 
 getCHMDprovinces <- function(){
 	# it's a small list, so why both scraping?-- include "can" for posterity.
 	sort(c("can","nfl","pei","nsc","nbr","que","ont","man","sas","alb","bco","nwt","yuk"))

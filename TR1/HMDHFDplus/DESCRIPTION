@@ -1,7 +1,7 @@
 Package: HMDHFDplus
 Type: Package
 Title: HMDHFDplus, functions for reading HMD and HFD data from the web
-Version: 01.1.601
+Version: 01.1.6011
 Date: 2015-05-22
 Author: Tim Riffe
 Maintainer: Tim Riffe <tim.riffe@gmail.com>
