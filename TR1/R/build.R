@@ -22,4 +22,4 @@ A <- readHFDweb("USA","birthsRR",username=us,password=pw)
 
 
 
-head(A)
+install_github()
