@@ -162,7 +162,7 @@ HFCparse <- function(DF){
 }
 
 ############################################################################
-# 6) HFDparse()
+# 6) getHFCcountries()
 ############################################################################
 
 #' @title getHFCcountries a function to grab all present country codes used in the Human Fertility Collection
@@ -174,6 +174,8 @@ HFCparse <- function(DF){
 #' @return either a character vector of short codes (default) or a \code{data.frame} of country names and codes.
 #' 
 #' @importFrom XML readHTMLTable
+#' 
+#' @export
 #' 
 #' @examples 
 #' \dontrun{
