@@ -11,7 +11,7 @@ HMDHFDplus
 ============
 There is an `R` package inside the repository called `HMDHFDplus`.
 
-This package contains some code migrated over from the `DemogBerkeley` package, also hosted on github, as well as some new code. The `HMDHFDplus` package only contains functions for reading data into R, and has cut the chaff. The `R` code is also more oranized here. Currently there are functions for reading in HMD, JMD, CHMD, HFD, and HFC code, and there are plans to implement HLD code as well, once that database is done reorganizing.
+This package contains some code migrated over from the `DemogBerkeley` package, also hosted on github, as well as some new code. The `HMDHFDplus` package only contains functions for reading data into R. The `R` code is also more oranized here. Currently there are functions for reading in HMD, JMD, CHMD, HFD, and HFC code, and there are plans to implement HLD code as well, once that database is done reorganizing.
 
 Installation
 ============
