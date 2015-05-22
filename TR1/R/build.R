@@ -17,6 +17,7 @@ library(HMDHFDplus)
 
 A <- readHMDweb("USA","mltper_1x1",username=us,password=pw)
 A <- readHFDweb("USA","birthsRR",username=us,password=pw)
+A <- readJMDweb("01","mltper_5x5")
 
 
 

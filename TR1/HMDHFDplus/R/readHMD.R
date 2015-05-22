@@ -193,6 +193,8 @@ readHMDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 #' 
 #' @return \code{data.frame} of the data item is invisibly returned
 #' 
+#' @importFrom RCurl url.exists
+#' 
 #' @export 
 #' 
 #' @examples 
@@ -209,15 +211,20 @@ readHMDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 #' }))
 #' }
 #' 
-readJMDweb <- function(prefID = "01", item = "Deaths_1x1", fixup = TRUE, ...){
+readJMDweb <- function(prefID = "01", item = "Deaths_5x5", fixup = TRUE, ...){
 	JMDurl      <- paste("http://www.ipss.go.jp/p-toukei/JMD",
 			prefID, "STATS", paste0(item, ".txt"), sep = "/")
-	con         <- url(JMDurl)
-	Dat         <- readHMD(con, fixup = fixup, ...)
-	
-	invisible(Dat)
+	if (RCurl::url.exists(JMDurl)){
+		con         <- url(JMDurl)
+		Dat         <- readHMD(con, fixup = fixup, ...)
+		close(con)
+		return(invisible(Dat))
+	} else {
+		cat("Either the prefecture code or data item are not available\nCheck names.\nNULL returned\n")
+		NULL
+	}
 }
-
+# item <- "mltper_1x1";Dat <- readHMD(con, fixup = TRUE)
 ############################################################################
 # readCHMDweb()
 ############################################################################
