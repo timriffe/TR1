@@ -11,12 +11,12 @@ HMDHFDplus
 ============
 There is an `R` package inside the repository called `HMDHFDplus`.
 
- However, there is a hitch in that you need to get two external-to-R dependencies installed, and the method to do so depends on your operation system. So, here are some tips that may or may not get you there:
+This package contains some code migrated over from the `DemogBerkeley` package, also hosted on github, as well as some new code. The `HMDHFDplus` package only contains functions for reading data into R, and has cut the chaff. The `R` code is also more oranized here. Currently there are functions for reading in HMD, JMD, CHMD, HFD, and HFC code, and there are plans to implement HLD code as well, once that database is done reorganizing.
 
 Installation
 ============
 
-To download the development version of DemogBerkeley
+To download the development version of HMDHFDplus
 
 1. make sure you have the most recent version of R
 2. make sure you install the `RCurl` and `XML` packages first, which are needed for handling logins and html parsing. These packages may require extra steps to install. See further (approximate) instructions depending on OS.
