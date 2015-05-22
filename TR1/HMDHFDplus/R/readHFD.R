@@ -53,10 +53,6 @@ readHFD <- function(filepath, fixup = TRUE,...){
 #'
 #' @importFrom RCurl getURL
 #' @importFrom RCurl getCurlHandle
-#' @importFrom XML htmlTreeParse
-#' @importFrom XML xpathSApply
-#' @importFrom XML xmlChildren
-#' @importFrom XML xmlAttrs
 #'
 #' @export
 #' 

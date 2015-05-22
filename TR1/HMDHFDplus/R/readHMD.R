@@ -200,9 +200,9 @@ readHMDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 #' library(HMDHFDplus)
 #' # grab prefecture codes (including All Japan)
 #' prefectures <- getJMDprefectures()
-#' # grab all mltper_5x5 (Excep aggregate Japan, which has a formatting error at this writing) 
+#' # grab all mltper_5x5
 #' # and stick into long data.frame: 
-#' mltper <- do.call(rbind, lapply(prefectures[-1], function(prefID){
+#' mltper <- do.call(rbind, lapply(prefectures, function(prefID){
 #'                    Dat        <- readJMDweb(prefID = prefID, item = "mltper_5x5", fixup = TRUE)
 #'                    Dat$PrefID <- prefID
 #'                    Dat
@@ -218,5 +218,45 @@ readJMDweb <- function(prefID = "01", item = "Deaths_1x1", fixup = TRUE, ...){
 	invisible(Dat)
 }
 
+############################################################################
+# readCHMDweb()
+############################################################################
 
+#'
+#' @title read data from the Canadian Human Mortality Database into R
+#' 
+#' @description CHMD data are formatted exactly as HMD data. This function simply parses the necessary url together given a province code and data item (same nomenclature as HMD). Data is parsed using \code{HMDparse()}, which converts columns into useful and intuitive classes, for ready-use. See \code{?HMDparse} for more information on type conversions. No authentification is required for this database. Only a single item/prefecture is downloaded. Loop for more complex calls (See examples). The provID is not appended as a column, so be mindful of this if appending several items together into a single \code{data.frame}. Note that at the time of this writing, the finest Lexis resolution for prefectural lifetables is 5x5 (5-year, 5-year age groups). Raw data are, however, provided in 1x1 format, and deaths are also available in triangles. Note that cohort data are not produced for Canada at this time (but you could produce such data by starting with the \code{Deaths\_Lexis} file...).
+#' 
+#' @param provID a single provID 3 character string, as returned by \code{getCHMDprovinces()}.
+#' @param item the statistical product you want, e.g., \code{"fltper_5x5"}. Only 1.
+#' @param fixup logical. Should columns be made more user-friendly, e.g., forcing Age to be integer?
+#' @param ... extra arguments ultimately passed to \code{read.table()}. Not likely needed.
+#' 
+#' @return \code{data.frame} of the data item is invisibly returned
+#' 
+#' @export 
+#' 
+#' @examples 
+#' \dontrun{
+#' library(HMDHFDplus)
+#' # grab province codes (including All Canada)
+#' provs <- getCHMDprovinces()
+#' # grab all mltper_5x5  
+#' # and stick into long data.frame: 
+#' mltper <- do.call(rbind, lapply(provs, function(provID){
+#'                    Dat        <- readCHMDweb(provID = provID, item = "mltper_5x5", fixup = TRUE)
+#'                    Dat$provID <- provID
+#'                    Dat
+#' }))
+#' }
+#' 
+
+readCHMDweb <- function(provID = "can", item = "Deaths_1x1", fixup = TRUE, ...){
+	CHMDurl      <- paste("http://www.prdh.umontreal.ca/BDLC/data/",
+			provID, paste0(item, ".txt"), sep = "/")
+	con         <- url(CHMDurl)
+	Dat         <- readHMD(con, fixup = fixup, ...)
+	
+	invisible(Dat)
+}
 

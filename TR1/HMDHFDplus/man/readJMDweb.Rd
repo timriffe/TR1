@@ -29,9 +29,9 @@ JMD data are formatted exactly as HMD data. This function simply parses the nece
 library(HMDHFDplus)
 # grab prefecture codes (including All Japan)
 prefectures <- getJMDprefectures()
-# grab all mltper_5x5 (Excep aggregate Japan, which has a formatting error at this writing)
+# grab all mltper_5x5
 # and stick into long data.frame:
-mltper <- do.call(rbind, lapply(prefectures[-1], function(prefID){
+mltper <- do.call(rbind, lapply(prefectures, function(prefID){
                    Dat        <- readJMDweb(prefID = prefID, item = "mltper_5x5", fixup = TRUE)
                    Dat$PrefID <- prefID
                    Dat

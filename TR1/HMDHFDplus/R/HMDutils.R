@@ -4,9 +4,10 @@
 # 1) HMDparse()
 # 2) getHMDcountries()
 # 3) getJMDprefectures()
+# 4) getCHMDprovinces()
 
 ############################################################################
-# HMDparse()
+# 1) HMDparse()
 ############################################################################
 # note to self and others: if the HFD made metadata openly available, such as the
 # below-used csv file, then everything would be so much easier!
@@ -67,7 +68,7 @@ HMDparse <- function(DF, filepath){
 }
 
 ############################################################################
-# getHMDcountries()
+# 2) getHMDcountries()
 ############################################################################
 
 #' @title internal function for grabbing the HMD country short codes. 
@@ -85,9 +86,8 @@ getHMDcountries <- function(){
 }
 
 ############################################################################
-# getJMDprefectures()
+# 3) getJMDprefectures()
 ############################################################################
-
 
 #' @title get a named vector of JMD prefecture codes
 #' 
@@ -108,4 +108,13 @@ getJMDprefectures <- function(){
 	Prefectures <- sprintf("%.2d", row(Prefs) * 4 + col(Prefs) - 5)
 	names(Prefectures) <- c(Prefs)
 	Prefectures[order(Prefectures)]
+}
+
+############################################################################
+# 4) getCHMDprovinces()
+############################################################################
+
+getCHMDprovinces <- function(){
+	# it's a small list, so why both scraping?-- include "can" for posterity.
+	sort(c("can","nfl","pei","nsc","nbr","que","ont","man","sas","alb","bco","nwt","yuk"))
 }
