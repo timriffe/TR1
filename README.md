@@ -7,9 +7,11 @@ You are free to see what I'm up to and use (with attribution):
 
 Do get in touch if you're curious about this project.
 
-There is a package inside the repository called `HMDHFDplus`, which you can install like so:
+HMDHFDplus
+============
+There is an `R` package inside the repository called `HMDHFDplus`.
 
-You can also look in the `Builds` folder of this repository for `tar.gz` files that you can try to [install locally](http://stackoverflow.com/questions/1474081/how-do-i-install-an-r-package-from-source). However, there is a hitch in that you need to get two external-to-R dependencies installed, and the method to do so depends on your operation system. So, here are some tips that may or may not get you there:
+ However, there is a hitch in that you need to get two external-to-R dependencies installed, and the method to do so depends on your operation system. So, here are some tips that may or may not get you there:
 
 Installation
 ============
@@ -20,7 +22,7 @@ To download the development version of DemogBerkeley
 2. make sure you install the `RCurl` and `XML` packages first, which are needed for handling logins and html parsing. These packages may require extra steps to install. See further (approximate) instructions depending on OS.
 3. look at the OS-specific notes below to ensure the installation will work.
 
-Either download the [zip ball](https://github.com/timriffe/TR1/zipball/master) or [tar ball](https://github.com/timriffe/TR1/tarball/master), decompress and run `R CMD INSTALL` on it in the terminal command line, or use the **devtools** package to install the development version:
+Either download the [zip ball](https://github.com/timriffe/TR1/zipball/master) or [tar ball](https://github.com/timriffe/TR1/tarball/master), decompress and run `R CMD INSTALL` on it in the terminal command line. You can also look in the `Builds` folder of this repository for `tar.gz` files that you can try to [install locally](http://stackoverflow.com/questions/1474081/how-do-i-install-an-r-package-from-source). The easiset way to install is to use the **devtools** package to install the development version:
 ```r
 # install.packages("devtools", dependencies = TRUE)
 
