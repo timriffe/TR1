@@ -83,10 +83,10 @@ readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
     # way that RCurl will see that there is a cookiefile. In a prior version, cookiefile
     # was an argument passed straight to getURL, but now we pass the handle, where it
     # knows to look.
-    handle <- getCurlHandle(.opts=list(verbose = FALSE,  cookiefile = TMP))
+    handle <- RCurl::getCurlHandle(.opts=list(verbose = FALSE,  cookiefile = TMP))
     
     # the actual login. cookiefile (TMP) now has metadata in it, if the login is correct 
-    Nothing <- getURL(
+    Nothing <- RCurl::getURL(
                       loginURL,
                       curl = handle)
     Continue <- grepl("welcome", Nothing)
@@ -139,6 +139,6 @@ readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
     invisible(DF)
 }
 
-#DF <- readHFDweb("JPN",NULL,"tim.riffe@gmail.com","asus")
 
-#library(DemogBerkeley)
+
+

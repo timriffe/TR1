@@ -11,12 +11,11 @@ LazyLoad: yes
 Depends:
     R (>= 2.15),
 Collate:
+    'age2int.R'
     'HFCparse.R'
-    'HFDparse.R'
-    'HMDparse.R'
+    'HFDutils.R'
+    'HMDutils.R'
     'getHFCcountries.R' 
-    'getHFDcountries.R' 
-    'getHMDcountries.R' 
     'readHFC.R' 
     'readHFCweb.R' 
     'readHFD.R' 
