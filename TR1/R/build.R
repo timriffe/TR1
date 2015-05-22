@@ -17,3 +17,6 @@ install.packages("/home/tim/git/TR1/TR1/HMDHFDplus_01.1.6009.tar.gz",repos=NULL,
 library(HMDHFDplus)
 
 A <- readHMDweb("USA","mltper_1x1",username=us,password=pw)
+A <- readHFDweb("USA","birthsRR",username=us,password=pw)
+
+head(A)
