@@ -1,0 +1,28 @@
+Package: HMDHFDplus
+Type: Package
+Title: HMDHFDplus, functions for reading HMD and HFD data from the web
+Version: 01.1.6009
+Date: 2015-05-22
+Author: Tim Riffe
+Maintainer: Tim Riffe <tim.riffe@gmail.com>
+Description: Some useful functions for reading HMD and HFD data from the web
+License: GPL-2
+LazyLoad: yes
+Depends:
+    R (>= 2.15),
+Collate:
+    'HFCparse.R'
+    'HFDparse.R'
+    'HMDparse.R'
+    'getHFCcountries.R' 
+    'getHFDcountries.R' 
+    'getHMDcountries.R' 
+    'readHFC.R' 
+    'readHFCweb.R' 
+    'readHFD.R' 
+    'readHFDweb.R' 
+    'readHMD.R'  
+    'readHMDweb.R' 
+    'readJMDweb.R'  
+    'userInput.R'
+    

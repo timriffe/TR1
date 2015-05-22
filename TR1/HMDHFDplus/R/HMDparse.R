@@ -1,0 +1,54 @@
+#'
+#' @title internal function for modifying freshly read HMD data in its standard form
+#' 
+#' @description called by \code{readHMD()} and \code{readHMDweb()}. We assume there are no factors in the given data.frame and that it has been read in from the raw text files using something like: \code{ read.table(file = filepath, header = TRUE, skip = 2, na.strings = ".", as.is = TRUE)}. This function is visible to users, but is not likely needed directly. 
+#' 
+#' @param DF a data.frame of HMD data, freshly read in.
+#' @param filepath just to check if these are population counts from the name. 
+#' 
+#' @return DF same data.frame, modified so that columns are of a useful class. If there were open age categories, such as \code{"-"} or \code{"+"}, this information is stored in a new dummy column called \code{OpenInterval}.
+#' 
+#' @export
+#'
+
+HMDparse <- function(DF, filepath){
+    if (any(grepl("age", tolower(colnames(DF))))){
+      Pluses          <- grepl(pattern = "\\+", DF$Age )
+      DF$Age          <- age2int(DF$Age)
+      DF$OpenInterval <- Pluses
+    }
+    # Population.txt is a special case:
+    if (grepl("pop", tolower(filepath))){
+      # what years do we have?
+      all.years   <- sort(unique(age2int(DF$Year)))
+      # make indicators:
+      Pluses      <- grepl(pattern = "\\+", DF$Year )
+      Minuses     <- grepl(pattern = "\\-", DF$Year )
+      # split out DF into two parts sum(Minuses) 
+      Jan1i       <- DF$Year %in% as.character(all.years[-length(all.years)]) | Minuses
+      Dec31i      <- DF$Year %in% as.character(all.years[-1]) | Pluses
+      Jan1        <- DF[Jan1i, ]
+      Dec31       <- DF[Dec31i, ]
+      
+      Jan1$Year   <- age2int(Jan1$Year)
+      Dec31$Year  <- age2int(Dec31$Year)
+      
+      # now stick back together just the parts we need:
+      cols1       <- match(c("female","male","total"),tolower(colnames(Jan1)))
+      cols2       <- match(c("female","male","total"),tolower(colnames(Dec31)))
+      colnames(Jan1)[cols1]   <- paste0(colnames(Jan1)[cols1],1)
+      colnames(Dec31)[cols2]  <- paste0(colnames(Dec31)[cols2],2)
+      DF          <- cbind(Jan1, Dec31[,cols2])
+      # finally reorganize columns:
+      orgi        <- grepl("male",tolower(colnames(DF))) | grepl("total",tolower(colnames(DF)))
+      DF          <- cbind(DF[, !orgi], DF[, orgi])
+    }
+  
+    if (any(grepl("year", tolower(colnames(DF))))){
+        DF$Year          <- age2int(DF$Year)
+    }
+    if (any(grepl("cohort", tolower(colnames(DF))))){
+      DF$Cohort          <- age2int(DF$Cohort)
+    }
+    invisible(DF)
+}
