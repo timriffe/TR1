@@ -44,7 +44,7 @@ readHMDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 #    tf <- tempfile()
 #    on.exit(unlink(tf))
   this.url    <- "http://www.mortality.org/countries.csv"
-  cntries     <- getURL(this.url)
+  cntries     <- RCurl::getURL(this.url)
   ctrylist    <- read.csv(text = cntries,header=TRUE,as.is=TRUE);
   ctrylookup  <- data.frame(Country=ctrylist$Country, CNTRY=ctrylist$Subpop.Code.1, stringsAsFactors = FALSE)
   
@@ -70,23 +70,23 @@ readHMDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
   this.pw <- paste(username, password, sep = ":")
   
   ## reuse handle, reduce connection starts
-  handle <- getCurlHandle(userpwd = this.pw)
+  handle <- RCurl::getCurlHandle(userpwd = this.pw)
 
-  dirjunk <- getURL(file.path("www.mortality.org", "hmd", CNTRY,
+  dirjunk <- RCurl::getURL(file.path("www.mortality.org", "hmd", CNTRY,
 				  paste0("STATS",.Platform$file.sep)), curl = handle)
   
-  if (getCurlInfo(handle)$response.code == 401) {
+  if (RCurl::getCurlInfo(handle)$response.code == 401) {
 	  stop("Authentication rejected: please check your username and password")
   }
-  dirjunk <- getURL(file.path("www.mortality.org","hmd",CNTRY,"STATS/"), curl=handle)
+  dirjunk <- RCurl::getURL(file.path("www.mortality.org","hmd",CNTRY,"STATS/"), curl=handle)
   
   # check if authentication fails
-  if (getCurlInfo(handle)$response.code == 401){
+  if (RCurl::getCurlInfo(handle)$response.code == 401){
 	  stop("Authentication rejected: please check your username and password")
   }
   # sometime redirects will break this, so we do it manually if necessary...
-  if (getCurlInfo(handle)$response.code == 301){
-	  dirjunk <- getURL(getCurlInfo(handle)$redirect.url, curl = handle)
+  if (RCurl::getCurlInfo(handle)$response.code == 301){
+	  dirjunk <- RCurl::getURL(getCurlInfo(handle)$redirect.url, curl = handle)
   }
   
   parts <- gsub(pattern = "\\\"",
@@ -125,7 +125,7 @@ readHMDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
   }
   
   # grab the data
-  dataIN  <- getURL(file.path("www.mortality.org","hmd",CNTRY,"STATS",paste0(item,".txt")), curl=handle)
+  dataIN  <- RCurl::getURL(file.path("www.mortality.org","hmd",CNTRY,"STATS",paste0(item,".txt")), curl=handle)
   
   # rest of this lifted from readHMD()
   DF      <- read.table(text = dataIN, header = TRUE, skip = 2, na.strings = ".", as.is = TRUE)

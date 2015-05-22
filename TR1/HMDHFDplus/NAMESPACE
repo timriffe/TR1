@@ -3,6 +3,7 @@
 export(HFCparse)
 export(HFDparse)
 export(HMDparse)
+export(age2int)
 export(getHFDcountries)
 export(getHMDcountries)
 export(getJMDprefectures)
