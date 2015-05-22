@@ -4,7 +4,7 @@
 \alias{readJMDweb}
 \title{read data from the Japan Mortality Database into R}
 \usage{
-readJMDweb(prefID = "01", item = "Deaths_1x1", fixup = TRUE, ...)
+readJMDweb(prefID = "01", item = "Deaths_5x5", fixup = TRUE, ...)
 }
 \arguments{
 \item{prefID}{a single prefID 2-digit character string, ranging from \code{"00"} to \code{"47"}.}

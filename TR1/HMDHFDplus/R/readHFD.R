@@ -72,7 +72,7 @@ readHFD <- function(filepath, fixup = TRUE,...){
 #' ### # this also works, but you'll need to make two selections, plus enter data in the console twice:
 #' ### DAT <- readHFDweb()
 #' 
-readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NULL, fixup = TRUE){
+readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NULL, fixup = TRUE, update = getHFDdate(CNTRY)){
 	
 	# let user input name and password
 	if (is.null(username)){
@@ -141,36 +141,40 @@ readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 	}
 	
 	# everything is in a folder, the name of which is the 8-digit version of the update date,
-	# also really easy to find indirectly:
-	LastUpdate      <- getHFDdate(CNTRY)
+    # user could specify a different number. Don't know how to query what dates are available, 
+    # though.
 	
 	# url used to ask for data file. try to ignore 'tabs'
 	grabURL <- paste0(
 			"http://www.humanfertility.org/cgi-bin/getfile.plx?f=",
-			CNTRY,"\\",LastUpdate,"\\",CNTRY,item,".txt&c=",CNTRY)
-	# use the same handle as before, which takes care of the cookiefile
-	Text <- RCurl::getURL(grabURL,
-			verbose = FALSE,  # also in handle
-			curl = handle)
-	# parse raw data file to data.frame
-	DF <- try(read.table(text = Text, 
-					header = TRUE, 
-					skip = 2, 
-					na.strings = ".", 
-					as.is = TRUE), 
-			silent = TRUE)
-	# clean up...
-	unlink(TMP)
-	
-	if (class(DF) == "try-error"){
-		message("retrieval failed for ", CNTRY,", item = ",item,"\nLogon was successful.. possible that item was not available?")
-		stop("if this appears to be a bug, please report to\nhttps://github.com/UCBdemography/DemogBerkeley/issues")
+			CNTRY,"\\",update,"\\",CNTRY,item,".txt&c=",CNTRY)
+	# a final check...
+	if (RCurl::url.exists(grabURL)){	
+		# use the same handle as before, which takes care of the cookiefile
+		Text <- RCurl::getURL(grabURL,
+				verbose = FALSE,  # also in handle
+				curl = handle)
+		# parse raw data file to data.frame
+		DF <- try(read.table(text = Text, 
+						header = TRUE, 
+						skip = 2, 
+						na.strings = ".", 
+						as.is = TRUE), 
+				silent = TRUE)
+		
+		
+		if (class(DF) == "try-error"){
+			message("retrieval failed for ", CNTRY,", item = ",item,"\nLogon was successful.. possible that item was not available?")
+			stop("if this appears to be a bug, please report to\nhttps://github.com/UCBdemography/DemogBerkeley/issues")
+		}
+		if (fixup){
+			DF      <- HFDparse(DF)
+		}
+		# clean up...
+		unlink(Nothing)
+		return(invisible(DF))
 	}
-	if (fixup){
-		DF      <- HFDparse(DF)
-	}
-	
-	invisible(DF)
+	unlink(Nothing) # in case...
 }
 
 ############################################################################
@@ -186,6 +190,8 @@ readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 #' @param logical. Default \code{TRUE}. Should column classes be coerced to those more similar to HFD, HMD?
 #' 
 #' @export
+#' 
+#' @importFrom RCurl url.exists
 #' 
 #' @examples 
 #' \dontrun{
@@ -221,13 +227,20 @@ readHFCweb <- function(CNTRY, item, fixup = TRUE, ...){
 	fileurl <- paste0("http://www.fertilitydata.org/data/", CNTRY, "/", CNTRY, "_", item, ".txt")
 	
 	# read in with needed arguments:
-	DF <- read.csv(url(fileurl), stringsAsFactors = FALSE, na.strings = ".", strip.white = TRUE, ...)
-	
-	# optionally use standard columns:
-	if (fixup){
-		DF      <- HFCparse(DF)
+	if (RCurl::url.exists(fileurl)){
+		con         <- url(JMDurl)
+		DF <- read.csv(url(fileurl), stringsAsFactors = FALSE, na.strings = ".", strip.white = TRUE, ...)
+		#close(con)
+		# optionally use standard columns:
+		if (fixup){
+			DF      <- HFCparse(DF)
+		}
+		return(invisible(DF))
+	} else {
+		cat("Either the prefecture code or data item are not available\nCheck names.\nNULL returned\n")
+		NULL
 	}
-	invisible(DF)
+	
 }
 
 

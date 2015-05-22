@@ -56,6 +56,7 @@ readHMD <- function(filepath, fixup = TRUE, ...){
 #' @importFrom RCurl getURL
 #' @importFrom RCurl getCurlHandle
 #' @importFrom RCurl getCurlInfo
+#' @importFrom RCurl url.exists
 #' 
 #' @export
 #' 
@@ -130,6 +131,7 @@ readHMDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 		dirjunk <- RCurl::getURL(getCurlInfo(handle)$redirect.url, curl = handle)
 	}
 	
+	# TR: this is the kind of parsing I hate. Gotta be a better way out there.
 	parts <- gsub(pattern = "\\\"",
 			replacement = "",
 			unlist(lapply(strsplit(unlist(strsplit(dirjunk
@@ -165,16 +167,26 @@ readHMDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 		}
 	}
 	
-	# grab the data
-	dataIN  <- RCurl::getURL(file.path("www.mortality.org","hmd",CNTRY,"STATS",paste0(item,".txt")), curl=handle)
 	
-	# rest of this lifted from readHMD()
-	DF      <- read.table(text = dataIN, header = TRUE, skip = 2, na.strings = ".", as.is = TRUE)
-	if (fixup){
-		DF        <- HMDparse(DF, filepath = item)
+	# build url: 
+    # TR: presumably these links are composed with the same separators everywhere?
+	HMDurl <- paste("www.mortality.org", "hmd", CNTRY, "STATS", paste0(item, ".txt"), sep = "/")
+	
+	#check it exists:
+	if (RCurl::url.exists(HMDurl,curl=handle)){
+		# grab the data
+		dataIN  <- RCurl::getURL(file.path("www.mortality.org","hmd",CNTRY,"STATS",paste0(item,".txt")), curl=handle)
+		
+		# rest of this lifted from readHMD()
+		DF      <- read.table(text = dataIN, header = TRUE, skip = 2, na.strings = ".", as.is = TRUE)
+		if (fixup){
+			DF        <- HMDparse(DF, filepath = item)
+		}
+		
+		return(invisible(DF))
+	} else {
+		cat("\nSorry, something was wrong with the query\nPossibly a typo?\n")
 	}
-	
-	invisible(DF);
 } # end readHMDweb()
 
 ############################################################################
@@ -213,18 +225,18 @@ readHMDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 #' 
 readJMDweb <- function(prefID = "01", item = "Deaths_5x5", fixup = TRUE, ...){
 	JMDurl      <- paste("http://www.ipss.go.jp/p-toukei/JMD",
-			prefID, "STATS", paste0(item, ".txt"), sep = "/")
+			         prefID, "STATS", paste0(item, ".txt"), sep = "/")
 	if (RCurl::url.exists(JMDurl)){
 		con         <- url(JMDurl)
 		Dat         <- readHMD(con, fixup = fixup, ...)
-		close(con)
+		#close(con)
 		return(invisible(Dat))
 	} else {
 		cat("Either the prefecture code or data item are not available\nCheck names.\nNULL returned\n")
 		NULL
 	}
 }
-# item <- "mltper_1x1";Dat <- readHMD(con, fixup = TRUE)
+# item <- "mltper_5x5";Dat <- readHMD(con, fixup = TRUE)
 ############################################################################
 # readCHMDweb()
 ############################################################################
@@ -243,6 +255,8 @@ readJMDweb <- function(prefID = "01", item = "Deaths_5x5", fixup = TRUE, ...){
 #' 
 #' @export 
 #' 
+#' @importFrom RCurl url.exists
+#' 
 #' @examples 
 #' \dontrun{
 #' library(HMDHFDplus)
@@ -259,10 +273,19 @@ readJMDweb <- function(prefID = "01", item = "Deaths_5x5", fixup = TRUE, ...){
 #' 
 
 readCHMDweb <- function(provID = "can", item = "Deaths_1x1", fixup = TRUE, ...){
-	CHMDurl      <- paste("http://www.prdh.umontreal.ca/BDLC/data/",
-			provID, paste0(item, ".txt"), sep = "/")
-	con         <- url(CHMDurl)
-	Dat         <- readHMD(con, fixup = fixup, ...)
+	CHMDurl         <- paste("http://www.prdh.umontreal.ca/BDLC/data/",
+			             provID, paste0(item, ".txt"), sep = "/")
+
+	if (RCurl::url.exists(CHMDurl)){
+		con         <- url(CHMDurl)
+		Dat         <- readHMD(con, fixup = fixup, ...)
+		#close(con)
+		return(invisible(Dat))
+	} else {
+		cat("Either the prefecture code or data item are not available\nCheck names.\nNULL returned\n")
+		NULL
+	}
+	
 	
 	invisible(Dat)
 }
