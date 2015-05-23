@@ -224,9 +224,9 @@ readHFCweb <- function(CNTRY, item, fixup = TRUE, ...){
 	
 	# read in with needed arguments:
 	if (RCurl::url.exists(fileurl)){
-		con         <- url(JMDurl)
+		con         <- url(fileurl)
 		DF <- read.csv(url(fileurl), stringsAsFactors = FALSE, na.strings = ".", strip.white = TRUE, ...)
-		#close(con)
+		close(con)
 		# optionally use standard columns:
 		if (fixup){
 			DF      <- HFCparse(DF)
