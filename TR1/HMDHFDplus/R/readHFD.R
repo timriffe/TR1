@@ -53,7 +53,6 @@ readHFD <- function(filepath, fixup = TRUE,...){
 #'
 #' @importFrom RCurl getURL
 #' @importFrom RCurl getCurlHandle
-#' @importFrom RCurl url.exists 
 #'
 #' @export
 #' 
@@ -111,19 +110,20 @@ readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 	)
 	
 	# a temporary file to hold cookies:
-	TMP     <- file.path(getwd(),paste(sample(LETTERS,10,TRUE), collapse = ""))
+	TMP     <- file.path(getwd(), paste(sample(LETTERS, 10, TRUE), collapse = ""))
 	Nothing <- file.create(TMP)
 	
 	# this is the login handle, to pass to login call. At the moment, this is the only
 	# way that RCurl will see that there is a cookiefile. In a prior version, cookiefile
 	# was an argument passed straight to getURL, but now we pass the handle, where it
 	# knows to look.
-	handle <- RCurl::getCurlHandle(.opts=list(verbose = FALSE,  cookiefile = TMP))
+	handle  <- RCurl::getCurlHandle(.opts = list(verbose = FALSE,  cookiefile = TMP))
 	
 	# the actual login. cookiefile (TMP) now has metadata in it, if the login is correct 
 	Nothing <- RCurl::getURL(
-			loginURL,
-			curl = handle)
+			                 loginURL,
+			                 curl = handle
+					         )
 	Continue <- grepl("welcome", Nothing)
 	
 	if(!Continue){
@@ -147,37 +147,30 @@ readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 		Update <- getHFDdate(CNTRY)
 	}	
 
-	
-	# TODO: TR something isn't working, presumably around here.
-    #       is it possible to over-recycle handle? For some reason
-    #       this doesn't return the file I need, even though it works
-    #       through the web currently. Does being concurrently logged on 
-    #       to human-fertility.org make these logons break????
 	# url used to ask for data file. try to ignore 'tabs'
 	HFDurl <- paste0(
 			"http://www.humanfertility.org/cgi-bin/getfile.plx?f=",
-			CNTRY,"\\",Update,"\\",CNTRY,item,".txt&c=",CNTRY)
+			CNTRY, "\\", Update, "\\", CNTRY, item, ".txt&c=", CNTRY)
 	# a final check...
-	if (RCurl::url.exists(HFDurl, curl = handle)){	
-		# use the same handle as before, which takes care of the cookiefile
-		Text <- RCurl::getURL(HFDurl,
-				              #verbose = FALSE,  # also in handle
-				              curl = handle)
-		# parse raw data file to data.frame
-		DF <- try(read.table(text = Text, 
-						header = TRUE, 
-						skip = 2, 
-						na.strings = ".", 
-						as.is = TRUE), 
-				silent = TRUE)
-		
-		if (fixup){
-			DF      <- HFDparse(DF)
-		}
-		unlink(Nothing)
-		return(invisible(DF))
+	
+	# use the same handle as before, which takes care of the cookiefile
+	Text <- RCurl::getURL(HFDurl,
+			              verbose = FALSE,  # also in handle
+			              curl = handle)
+	# parse raw data file to data.frame
+	DF <- try(read.table(text = Text, 
+					header = TRUE, 
+					skip = 2, 
+					na.strings = ".", 
+					as.is = TRUE), 
+			silent = TRUE)
+	
+	if (fixup){
+		DF      <- HFDparse(DF)
 	}
-	unlink(Nothing)
+	unlink(TMP)
+	return(invisible(DF))
+	
 }
 
 ############################################################################

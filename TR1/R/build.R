@@ -24,4 +24,3 @@ getHFCcountries()
 head(A)
 
 
-install_github()
