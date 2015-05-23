@@ -53,6 +53,7 @@ readHFD <- function(filepath, fixup = TRUE,...){
 #'
 #' @importFrom RCurl getURL
 #' @importFrom RCurl getCurlHandle
+#' @importFrom RCurl url.exists 
 #'
 #' @export
 #' 
@@ -72,7 +73,7 @@ readHFD <- function(filepath, fixup = TRUE,...){
 #' ### # this also works, but you'll need to make two selections, plus enter data in the console twice:
 #' ### DAT <- readHFDweb()
 #' 
-readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NULL, fixup = TRUE, update = getHFDdate(CNTRY)){
+readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NULL, fixup = TRUE, Update = NULL){
 	
 	# let user input name and password
 	if (is.null(username)){
@@ -124,15 +125,14 @@ readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 			loginURL,
 			curl = handle)
 	Continue <- grepl("welcome", Nothing)
+	
 	if(!Continue){
 		stop("login didn't work. \nMaybe your username or password are off? \nYour request is contracepted!")
 	}
 	
 	# let user chose, or filter items as necessary: 
 	if(is.null(item)){    
-		cat("\nscraping data availability, rather slow, sorry\n")
 		items <- getHFDitemavail(CNTRY)
-		cat("\nCNTRY missing\n")
 		if (interactive()){
 			item <- select.list(choices = items, multiple = FALSE, title = "Select item")
 		} else {
@@ -142,18 +142,27 @@ readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 	
 	# everything is in a folder, the name of which is the 8-digit version of the update date,
     # user could specify a different number. Don't know how to query what dates are available, 
-    # though.
+    # though. by default we just get the most recent date.
+    if (is.null(Update)){
+		Update <- getHFDdate(CNTRY)
+	}	
+
 	
+	# TODO: TR something isn't working, presumably around here.
+    #       is it possible to over-recycle handle? For some reason
+    #       this doesn't return the file I need, even though it works
+    #       through the web currently. Does being concurrently logged on 
+    #       to human-fertility.org make these logons break????
 	# url used to ask for data file. try to ignore 'tabs'
-	grabURL <- paste0(
+	HFDurl <- paste0(
 			"http://www.humanfertility.org/cgi-bin/getfile.plx?f=",
-			CNTRY,"\\",update,"\\",CNTRY,item,".txt&c=",CNTRY)
+			CNTRY,"\\",Update,"\\",CNTRY,item,".txt&c=",CNTRY)
 	# a final check...
-	if (RCurl::url.exists(grabURL)){	
+	if (RCurl::url.exists(HFDurl, curl = handle)){	
 		# use the same handle as before, which takes care of the cookiefile
-		Text <- RCurl::getURL(grabURL,
-				verbose = FALSE,  # also in handle
-				curl = handle)
+		Text <- RCurl::getURL(HFDurl,
+				              #verbose = FALSE,  # also in handle
+				              curl = handle)
 		# parse raw data file to data.frame
 		DF <- try(read.table(text = Text, 
 						header = TRUE, 
@@ -162,19 +171,13 @@ readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 						as.is = TRUE), 
 				silent = TRUE)
 		
-		
-		if (class(DF) == "try-error"){
-			message("retrieval failed for ", CNTRY,", item = ",item,"\nLogon was successful.. possible that item was not available?")
-			stop("if this appears to be a bug, please report to\nhttps://github.com/UCBdemography/DemogBerkeley/issues")
-		}
 		if (fixup){
 			DF      <- HFDparse(DF)
 		}
-		# clean up...
 		unlink(Nothing)
 		return(invisible(DF))
 	}
-	unlink(Nothing) # in case...
+	unlink(Nothing)
 }
 
 ############################################################################

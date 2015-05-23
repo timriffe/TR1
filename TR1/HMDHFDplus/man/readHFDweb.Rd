@@ -5,7 +5,7 @@
 \title{read an HFD data file directly from the web as an R data.frame}
 \usage{
 readHFDweb(CNTRY = NULL, item = NULL, username = NULL, password = NULL,
-  fixup = TRUE)
+  fixup = TRUE, Update = NULL)
 }
 \arguments{
 \item{CNTRY}{character string of the HFD short code. Only one!}
