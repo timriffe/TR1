@@ -68,14 +68,16 @@ library(HMDHFDplus)
 The two main functions of interest are \texttt{readHMDweb()} and
 \texttt{readHFDweb()}, and both functions have the same essential
 arguments. These two functions only require the user to supply country codes,
-date item names, and database authentication parameters. The HFD also allows
+data item names, and database authentication parameters. The HFD also allows
 users to extract data from former updates, which may be useful for
 strict replication purposes. In order to make use of this feature, users must
-be aware of the 8-digit date code associated with the specific country series
-update. By default, texttt{readHMDweb()} extracts the most recent update,
-and we do not demonstrate the archive feature. It helps to be a bit familiar
-with HMD and HFD file naming conventions.
-To get the population codes used in either database, run 
+note the 8-digit date code associated with the specific country series
+update. By default, \texttt{readHFDweb()} extracts the most recent update. It
+helps to be familiar with HMD and HFD file naming conventions. Analagous functions are also made
+available for databases using similar formatting standards. At this time, these
+databases include the \citet{JMD}, the \citet{CHMD}, and the
+\citet{HFC}.\footnote{The \citet{HLD} may also be
+incorporated in the future.} To get the population codes used in either database, run
 \begin{verbatim}
 getHFDcountries()
 getHMDcountries()
