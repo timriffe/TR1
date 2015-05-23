@@ -16,11 +16,14 @@ install.packages("/home/tim/git/TR1/TR1/HMDHFDplus_01.1.6009.tar.gz",repos=NULL,
 library(HMDHFDplus)
 
 A <- readHMDweb("USA","mltper_1x1",username=us,password=pw)
-A <- readJMDweb("02","mltper_5x5")
-A <- readCHMDweb("alb","mltper_5x5")
-A <- readHFDweb("USA","birthsRR",username=us,password=pw)
-A <- readHFCweb("USA","birthsRR")
-getHFCcountries()
 head(A)
+A <- readJMDweb("02","mltper_5x5")
+head(A)
+A <- readCHMDweb("alb","mltper_5x5")
+head(A)
+A <- readHFDweb("USA","birthsRR",username=us,password=pw)
+head(A)
+A <- readHFCweb("USA","TFRMAB_TOT")
+
 
 

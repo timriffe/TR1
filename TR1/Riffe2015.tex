@@ -25,59 +25,63 @@ databases offer the option to download data in bulk in a few different formats. 
 download, users can then set up local databases in a variety of
 convenient ways, such as that described by \citet{minton2015} for \texttt{R}
 \citep{Rcitation} users. Another option for \texttt{R} users is to read data
-directly into an interactive session from the respective database websites. This
-option is a bit tricky for the typical \texttt{R} user to program from scratch,
-but it is a convenient way to quickly start working with data and
-generating results on the fly. Some other common pitfalls for working with
-these data sources in \texttt{R} stem from age-class and year coding, which
-often require coersion to use as an integer in analyses. We present a package,
-\texttt{HMDHFDplus}, which handles these issues automatically for \texttt{R}
-users. The goal is to reduce the coding time and effort between acquiring
-HMD or HFD source data and conducting analysis.
+directly into an interactive session from the respective database websites. The \texttt{HMDHFDplus} package
+provides easy direct access to the databases using a simple standard set of
+arguments. Issues such as authentication and fixing column classes are handled
+automatically. This report outlines the basic features and provides usage
+examples.
 
 \section{Installation}
-The main package is hosted on \texttt{github}. Two external dependencies help
-\texttt{R} handle web authentification to the databases, and these must be installed first in order for \texttt{DemogBerkeley}
-to properly install. These two dependencies are \texttt{cURL} and \texttt{XML},
-and their installation unfortunately depends on the operation system. 
+The \texttt{HMDHFDplus} package is hosted by and can be installed
+directly from \texttt{github}.\footnote{The package is under the following url:
+\url{http://github.com/timriffe/TR1/tree/master/TR1/HMDHFDplus}. This report,
+as well as a useful \texttt{README} document, can be found under
+\url{http://github.com/timriffe/TR1}.} Two external dependencies help \texttt{R}
+handle \texttt{html} parsing and database authentication, and these must be installed first in order for \texttt{HMDHFDplus} to properly install.
+These two dependencies are \texttt{cURL} and \texttt{XML}, and their
+installation unfortunately depends on one's operating system at this time.
 
 In \texttt{Linux} and similar systems, open the Terminal and run:
 \begin{verbatim}
 sudo apt-get install libcurl
 sudo apt-get install libxml2-dev
 \end{verbatim}
-Then install \texttt{DemogBerkeley} using:
+Then install \texttt{HMDHFDplus} using:
 \begin{verbatim}
 library(devtools)
-install_github("UCBdemography/DemogBerkeley", subdir = "DemogBerkeley")
+install_github("timriffe/TR1/TR1/HMDHFDplus")
 \end{verbatim}
 This is the simplest case. For Windows, Mac, or other special cases, some
 further steps are required. Please consult the
 \texttt{README}\footnote{The
 \texttt{README} is at the
 foot of the main repository
-page: \url{https://github.com/UCBdemography/DemogBerkeley}} file on the
+page: \url{https://github.com/timriffe/TR1}} file on the
 \texttt{github} repository for more details, and contact the maintainer if
 necessary.
 
 \section{Usage and examples}
 Load the package using:
 \begin{verbatim}
-library(DemogBerkeley)
+library(HMDHFDplus)
 \end{verbatim}
 The two main functions of interest are \texttt{readHMDweb()} and
-\texttt{readHFDweb()}, and both functions have identical arguments. It helps to
-be a bit familiar with HMD and HFD file naming conventions. To get the
-population codes used in either database, run 
+\texttt{readHFDweb()}, and both functions have the same essential
+arguments. These two functions only require the user to supply country codes,
+date item names, and database authentication parameters. The HFD also allows
+users to extract data from former updates, which may be useful for
+strict replication purposes. In order to make use of this feature, users must
+be aware of the 8-digit date code associated with the specific country series
+update. By default, texttt{readHMDweb()} extracts the most recent update,
+and we do not demonstrate the archive feature. It helps to be a bit familiar
+with HMD and HFD file naming conventions.
+To get the population codes used in either database, run 
 \begin{verbatim}
 getHFDcountries()
 getHMDcountries()
 \end{verbatim}
 To see the data products available for a given country, run
-\begin{verbatim}
-getHFDitemavail("USA")
-getHMDitemavail("USA")
-\end{verbatim}
+
 The HMD and HFD both require user registration, and users will have usernames
 and passwords for these databases.
 
