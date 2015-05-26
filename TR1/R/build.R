@@ -23,7 +23,8 @@ A <- readCHMDweb("alb","mltper_5x5")
 head(A)
 A <- readHFDweb("USA","birthsRR",username=us,password=pw)
 head(A)
-A <- readHFCweb("USA","TFRMAB_TOT")
-
-
+A <- readHFCweb("USA","ASFRstand_BO")
+head(A)
+USpop <- readHMDweb("USA","Population",username = us, password = pw)
+head(USpop)
 

@@ -5,6 +5,7 @@
 \usepackage{amsmath}
 \usepackage{natbib}
 \bibpunct{(}{)}{,}{a}{}{;} 
+\usepackage{nth}
 \newcommand{\dd}{\; \mathrm{d}}
 \usepackage{url}
 \usepackage{authblk}
@@ -15,20 +16,28 @@
 \affil{Department of Demography, University of California, Berkeley}
 \maketitle
 \begin{abstract}
-This is about
+The features and usage of the \texttt{HMDHFDplus} package are demonstrated for
+reading data from the Human Mortality Database, the Human Fertility Database,
+and other similarly formatted sources directly from the database Websites into
+\texttt{R}.
 \end{abstract}
 
 \section{Motivation}
 The \citet{HFD} and \citet{HMD} are two widely used data sources
-for the comparative and historical study of fertiltiy and mortality. Both
+for the comparative and historical study of fertility and mortality. Both
 databases offer the option to download data in bulk in a few different formats. After a bulk
 download, users can then set up local databases in a variety of
 convenient ways, such as that described by \citet{minton2015} for \texttt{R}
 \citep{Rcitation} users. Another option for \texttt{R} users is to read data
-directly into an interactive session from the respective database websites. The \texttt{HMDHFDplus} package
-provides easy direct access to the databases using a simple standard set of
-arguments. Issues such as authentication and fixing column classes are handled
-automatically. This report outlines the basic features and provides usage
+directly into an interactive session from the respective database websites. This
+is handy for small examples, lightweight reproducibility, and rapid
+prototyping.
+The \texttt{HMDHFDplus} package provides easy direct access to the databases using a simple standard set of arguments. Issues such as authentication and fixing column classes are handled
+automatically. Analogous functions are also made
+available for databases using similar formatting standards. At this time, these
+databases include the \citet{JMD}, the \citet{CHMD}, and the
+\citet{HFC}.\footnote{The \citet{HLD} may also be
+incorporated in the future.} This report outlines the basic features and provides usage
 examples.
 
 \section{Installation}
@@ -51,10 +60,9 @@ Then install \texttt{HMDHFDplus} using:
 library(devtools)
 install_github("timriffe/TR1/TR1/HMDHFDplus")
 \end{verbatim}
-This is the simplest case. For Windows, Mac, or other special cases, some
-further steps are required. Please consult the
-\texttt{README}\footnote{The
-\texttt{README} is at the
+This is the simplest case. For Windows, Mac, or other special cases, the process
+is different steps are required. Please consult the
+\texttt{README}\footnote{The \texttt{README} is at the
 foot of the main repository
 page: \url{https://github.com/timriffe/TR1}} file on the
 \texttt{github} repository for more details, and contact the maintainer if
@@ -68,24 +76,121 @@ library(HMDHFDplus)
 The two main functions of interest are \texttt{readHMDweb()} and
 \texttt{readHFDweb()}, and both functions have the same essential
 arguments. These two functions only require the user to supply country codes,
-data item names, and database authentication parameters. The HFD also allows
-users to extract data from former updates, which may be useful for
+data item names, and database authentication parameters.\footnote{The HFD also
+allows users to extract data from former updates, which may be useful for
 strict replication purposes. In order to make use of this feature, users must
 note the 8-digit date code associated with the specific country series
-update. By default, \texttt{readHFDweb()} extracts the most recent update. It
-helps to be familiar with HMD and HFD file naming conventions. Analagous functions are also made
-available for databases using similar formatting standards. At this time, these
-databases include the \citet{JMD}, the \citet{CHMD}, and the
-\citet{HFC}.\footnote{The \citet{HLD} may also be
-incorporated in the future.} To get the population codes used in either database, run
+update. By default, \texttt{readHFDweb()} extracts the most recent update.} It
+helps to be familiar with HMD and HFD file naming conventions. To retrieve the population codes used in any of
+these databases, run:
 \begin{verbatim}
 getHFDcountries()
+getHFCcountries()
 getHMDcountries()
+getJMDprefectures()
+getCHMDprovinces()
 \end{verbatim}
-To see the data products available for a given country, run
+This returns vectors of the standard numerical or letter codes used to identify
+population units. 
 
-The HMD and HFD both require user registration, and users will have usernames
-and passwords for these databases.
+The functions used for reading data into \texttt{R} from the Web use a
+common set of required arguments. In interactive \texttt{R} sessions, the
+following will prompt the user the enter a username and password into the
+console (no quotes) each time the function is run:
+\begin{small}
+\begin{verbatim}
+# for HMD:
+USmales <- readHMDweb(CNTRY = "USA", item = "mltper_1x1")
+# for HFD (will need to re-enter username and password)
+USfert <- readHFDweb(CNTRY = "USA", item = "asfrRR")
+\end{verbatim}
+\end{small}
+Manually entering a username and password can become tedious for larger
+data-grabs, so these can also be given explicitly in the arguments, like so:
+\begin{small}
+\begin{verbatim}
+USmales <- readHMDweb(CNTRY = "USA", item = "mltper_1x1", username =
+"myusername", password = "mypassword")
+USfert <- readHFDweb(CNTRY = "USA", item = "asfrRR", username =
+"myusername", password = "mypassword")
+\end{verbatim}
+\end{small}
+There is a security trade-off in this case, because the username and password
+may inadvertently be saved within your \texttt{R} script. I suggest two
+alternatives in this case. First, in an interactive \texttt{R} session, define your username once at
+the beginning of the script, but without saving them as text within the script,
+like so:
+\begin{small}
+\begin{verbatim}
+pw <- userInput()
+us <- userinput()
+USmales <- readHMDweb(CNTRY = "USA", item = "mltper_1x1", username = us,
+password = pw)
+\end{verbatim}
+\end{small}
+The two objects \texttt{pw} and \texttt{us} can in this case be recycled
+throughout the following \texttt{R} session. Second, For more frequent users, I
+recommend defining your HMD and HFD passwords in the \texttt{.Rprofile} file,
+such that they are defined and ready to use at the start of \texttt{R}
+sessions. The above HMD code will return data such as the following:
+\texttt{data.frame}:
+\begin{small}
+\begin{verbatim}
+head(USmales)
+  Year Age      mx      qx   ax     lx   dx    Lx      Tx    ex OpenInterval
+1 1933   0 0.06859 0.06515 0.23 100000 6515 94978 5916978 59.17        FALSE
+2 1933   1 0.01004 0.00999 0.50  93485  934 93018 5822000 62.28        FALSE
+3 1933   2 0.00467 0.00466 0.50  92551  431 92336 5728982 61.90        FALSE
+4 1933   3 0.00333 0.00333 0.50  92120  307 91967 5636646 61.19        FALSE
+5 1933   4 0.00254 0.00253 0.50  91814  233 91697 5544679 60.39        FALSE
+6 1933   5 0.00209 0.00209 0.50  91581  191 91485 5452982 59.54        FALSE
+\end{verbatim}
+\end{small}
+This \texttt{data.frame} differs from the original HMD \texttt{mltper\_1x1} file
+in that the \texttt{Age} column is integer, and a new \texttt{OpenInterval}
+column has been added, which contains the value \texttt{TRUE} for age 110. HFD
+\texttt{Age} and \texttt{Cohort} columns are modified in a similar way for more
+intuitive and immediate use of these columns as integers. Likewise, abridged
+ages, such as \texttt{"5-9"} are coerced as integers of the
+lower interval bound, as \texttt{5}. Finally, HMD \texttt{Population} files, obtained via
+\begin{small}
+\begin{verbatim}
+USpop <- readHMDweb("USA","Population",username = us, password = pw)
+head(USpop)
+  Year Age OpenInterval   Female1   Male1  Total1   Female2     Male2  Total2
+1 1933   0        FALSE  984472.3 1015362 1999834  937185.8  968955.4 1906141
+2 1933   1        FALSE 1040496.0 1064088 2104584  970696.5  993352.8 1964049
+3 1933   2        FALSE 1093043.8 1117527 2210571 1062002.5 1083452.4 2145455
+4 1933   3        FALSE 1107994.3 1135047 2243041 1095555.1 1121220.2 2216775
+5 1933   4        FALSE 1130624.4 1179514 2310138 1105999.3 1132665.9 2238665
+6 1933   5        FALSE 1168930.6 1228225 2397156 1141944.4 1197735.4 2339680
+\end{verbatim}
+\end{small}
+, where columns ending in 1 indicate January \nth{1} estimates and columns
+ending in 2 indicate December \nth{31} estimates, and the \texttt{Year} and
+\texttt{Age} columns are coerced to an integer class. The JMD, CHMD, and HFC
+are all called in similar ways, but without authentication:
+\begin{small}
+\begin{verbatim}
+# 31 columns!
+USasfrBO <- readHFC("USA","ASFRstand_BO")
+# 5x5 male lifetables for Aomori prefecture:
+Aomori <- readJMDweb("02","mltper_5x5")
+# 5x5 lifetables for Alberta:
+ALB <- readCHMDweb("alb","mltper_5x5")
+\end{verbatim}
+\end{small}
+The JMD and CHMD follow the same formatting standards and naming conventions as
+the HMD, although the data products available are a subset of those produced by
+the HMD. The HFC follows different standards and conventions than the HFD.
+
+\section{Conclusions}
+Reading data directly from HMD, HFD and similar databases directly from the web
+into \texttt{R} is made easy with the \texttt{HMDHFDplus} package. Common
+\texttt{R} pitfalls are removed by coercing columns to useful classes by
+default. At this time, utilities are provided for reading data from the HMD,
+JMD, CHMD, HFD, and HFC websites, and this list may expand in the future as new
+databases arise in the same spirit.
 
 \section{Acknowledgements}
 Thanks to Joshua Goldstein and Carl Boe for supporting development of this R
