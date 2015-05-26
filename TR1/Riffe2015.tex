@@ -41,7 +41,7 @@ incorporated in the future.} This report outlines the basic features and provide
 examples.
 
 \section{Installation}
-The \texttt{HMDHFDplus} package is hosted by and can be installed
+The \texttt{HMDHFDplus} package is hosted on and can be installed
 directly from \texttt{github}.\footnote{The package is under the following url:
 \url{http://github.com/timriffe/TR1/tree/master/TR1/HMDHFDplus}. This report,
 as well as a useful \texttt{README} document, can be found under
@@ -55,18 +55,19 @@ In \texttt{Linux} and similar systems, open the Terminal and run:
 sudo apt-get install libcurl
 sudo apt-get install libxml2-dev
 \end{verbatim}
-Then install \texttt{HMDHFDplus} using:
+When these external dependencies are properly installed, you should install
+\texttt{R}'s \texttt{XML} and \texttt{RCurl} packages in the usual way. Then install \texttt{HMDHFDplus} using:
 \begin{verbatim}
 library(devtools)
 install_github("timriffe/TR1/TR1/HMDHFDplus")
 \end{verbatim}
 This is the simplest case. For Windows, Mac, or other special cases, the process
-is different steps are required. Please consult the
+is different. Please consult the
 \texttt{README}\footnote{The \texttt{README} is at the
 foot of the main repository
 page: \url{https://github.com/timriffe/TR1}} file on the
 \texttt{github} repository for more details, and contact the maintainer if
-necessary.
+necessary. 
 
 \section{Usage and examples}
 Load the package using:
