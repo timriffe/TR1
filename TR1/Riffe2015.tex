@@ -48,31 +48,25 @@ this article, but I encourage users to use the current build on
 the following url:
 \url{http://github.com/timriffe/TR1/tree/master/TR1/HMDHFDplus}. This report,
 as well as a useful \texttt{README} document, can be found under
-\url{http://github.com/timriffe/TR1}.} Two external dependencies help \texttt{R}
-handle \texttt{html} parsing and database authentication, and these must be installed first in order for \texttt{HMDHFDplus} to properly install.
-These two dependencies are \texttt{cURL} and \texttt{XML}, and their
-installation unfortunately depends on one's operating system at this time.
-
-In \texttt{Linux} and similar systems, open the Terminal and run:
+\url{http://github.com/timriffe/TR1}.} In \texttt{Linux} and similar systems,
+first open the Terminal and run:
 \begin{verbatim}
 sudo apt-get install libcurl
 sudo apt-get install libxml2-dev
 \end{verbatim}
-When these external dependencies are properly installed, you should install
-\texttt{R}'s \texttt{XML} and \texttt{RCurl} packages in the usual way. Then install \texttt{HMDHFDplus} using:
+Then install \texttt{R}'s \texttt{XML} and \texttt{RCurl} packages in the usual
+way. \texttt{Windows} users get the above installations automatically with a
+proper installation of the \texttt{devtools} package.\footnote{Not all versions
+of Windows have been tested, and Mac remains untested at this writing.} Users
+from all operating systems then install the \texttt{HMDHFDplus} package for \texttt{R} using:
 \begin{verbatim}
 library(devtools)
 install_github("timriffe/TR1/TR1/HMDHFDplus")
 \end{verbatim}
-For \texttt{Windows} and \texttt{Mac}, installation may be simpler
-yet.\footnote{Not all versions of Windows and Mac have been tested.} Simply be sure to install the
-most recent version of \texttt{R}, then install the \texttt{devtools} package,
-then run the above two lines of \texttt{R} code.
-
-Please consult the \texttt{README}\footnote{The \texttt{README} is at the
+Consult the \texttt{README}\footnote{The \texttt{README} is at the
 foot of the main repository
 page: \url{https://github.com/timriffe/TR1}} file on the
-\texttt{github} repository for more details. 
+\texttt{github} repository for more details and other installation methods. 
 
 \section{Usage and examples}
 Load the package using:
