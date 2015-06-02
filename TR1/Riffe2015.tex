@@ -42,7 +42,10 @@ examples.
 
 \section{Installation}
 The \texttt{HMDHFDplus} package is hosted on and can be installed
-directly from \texttt{github}.\footnote{The package is under the following url:
+directly from \texttt{github}.\footnote{A package snapshot is included with
+this article, but I encourage users to use the current build on
+\texttt{github}, as it may contain updates and bug fixes. The package is under
+the following url:
 \url{http://github.com/timriffe/TR1/tree/master/TR1/HMDHFDplus}. This report,
 as well as a useful \texttt{README} document, can be found under
 \url{http://github.com/timriffe/TR1}.} Two external dependencies help \texttt{R}
@@ -61,9 +64,12 @@ When these external dependencies are properly installed, you should install
 library(devtools)
 install_github("timriffe/TR1/TR1/HMDHFDplus")
 \end{verbatim}
-This is the simplest case. For Windows, Mac, or other special cases, the process
-is different. Please consult the
-\texttt{README}\footnote{The \texttt{README} is at the
+For \texttt{Windows} and \texttt{Mac}, installation may be simpler
+yet.\footnote{Not all versions of Windows and Mac have been tested.} Simply be sure to install the
+most recent version of \texttt{R}, then install the \texttt{devtools} package,
+then run the above two lines of \texttt{R} code.
+
+Please consult the \texttt{README}\footnote{The \texttt{README} is at the
 foot of the main repository
 page: \url{https://github.com/timriffe/TR1}} file on the
 \texttt{github} repository for more details. 
@@ -190,8 +196,7 @@ Reading data directly from HMD, HFD and similar databases directly from the web
 into \texttt{R} is made easy with the \texttt{HMDHFDplus} package. Common
 \texttt{R} pitfalls are removed by coercing columns to useful classes by
 default. At this time, utilities are provided for reading data from the HMD,
-JMD, CHMD, HFD, and HFC websites, and this list may expand in the future as new
-databases arise in the same spirit.
+JMD, CHMD, HFD, and HFC websites. 
 
 \section{Acknowledgements}
 Thanks to Joshua Goldstein and Carl Boe for supporting development of this R
