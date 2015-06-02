@@ -174,6 +174,7 @@ readHMDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 	#check it exists:
     # TR: this is like way extra, since both CNTRY and item have gone through filters by now
 	if (RCurl::url.exists(HMDurl,curl=handle)){
+		handle <- RCurl::getCurlHandle(userpwd = this.pw)
 		# grab the data
 		dataIN  <- RCurl::getURL(HMDurl, curl=handle)
 		
