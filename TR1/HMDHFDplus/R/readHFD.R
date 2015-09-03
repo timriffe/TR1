@@ -22,6 +22,8 @@
 #' 
 #' @details No details of note.
 #' 
+#' @importFrom utils read.table
+#' 
 #' @export
 #' 
 #' @note original function submitted by Josh Goldstein, modified by Tim Riffe.
@@ -58,7 +60,9 @@ readHFD <- function(filepath, fixup = TRUE,...){
 #' 
 #' @importFrom RCurl getURL
 #' @importFrom RCurl getCurlHandle
-#'
+#' @importFrom utils select.list
+#' @importFrom utils read.table
+#' 
 #' @export
 #' 
 #' @examples
@@ -198,6 +202,7 @@ readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 #' @export
 #' 
 #' @importFrom RCurl url.exists
+#' @importFrom utils read.csv
 #' 
 #' @examples 
 #' \dontrun{

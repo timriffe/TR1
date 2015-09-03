@@ -79,6 +79,8 @@ HMDparse <- function(DF, filepath){
 #' 
 #' @return a vector of HMD country short codes.
 #' 
+#' @importFrom utils read.csv
+#' 
 #' @export
 
 getHMDcountries <- function(){

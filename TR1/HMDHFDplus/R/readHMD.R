@@ -22,7 +22,7 @@
 #' 
 #' @details Population counts in the HMD typically refer to Jan 1st. One exception are years in which a territorial adjustment has been accounted for in estimates. For such years, `YYYY-` refers to Dec 31 of the year before the adjustment, and `YYYY+` refers to Jan 1 directly after the adjustment (adjustments are always made Jan 1st). In the data, it will just look like two different estimates for the same year, but in fact it is a definitional change or similar. In order to remove headaches from potential territorial adjustments in the data, we simply create two columns, one for January 1st (e.g.,\code{"Female1"}) and another for Dec 31st (e.g.,\code{"Female2"}) . One can recover the adjustment coefficient for each year by taking the ratio $$Vx = P1(t+1) / P2(t)$$. In most years this will be 1, but in adjustment years there is a difference. This must always be accounted for when calculating rates and exposures. Argument \code{fixup} is outsourced to \code{HMDparse()}.
 #' 
-#' @note Function submitted by Tim Riffe, with RCurl stricks lifted from Carl Boe's script.
+#' @importFrom utils read.table
 #' 
 #' @export
 #' 
@@ -59,6 +59,8 @@ readHMD <- function(filepath, fixup = TRUE, ...){
 #' @importFrom RCurl getCurlHandle
 #' @importFrom RCurl getCurlInfo
 #' @importFrom RCurl url.exists
+#' @importFrom utils read.csv
+#' @importFrom utils read.table
 #' 
 #' @export
 #' 
