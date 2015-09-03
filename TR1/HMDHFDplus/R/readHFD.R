@@ -62,15 +62,19 @@ readHFD <- function(filepath, fixup = TRUE,...){
 #' ### DAT <- readHFDweb("JPN","tfrRR") 
 #' ###
 #' ### # ----------------------------------------
-#' ### # this is a good way to reuse your login credentials without having to reveal them in your R script.
-#' ### # if you want to do this in batch then I'm afraid you'll have to find a clever way to pass in your credentials
-#' ### # without an interactive sessio, such as reading them in from a system file of your own.
+#' ### # this is a good way to reuse your login credentials without 
+#' ### # having to reveal them in your R script.
+#' ### # if you want to do this in batch then I'm 
+#' ### # afraid you'll have to find a clever way to 
+#' ### # pass in your credentials without an interactive 
+#' ### # session, such as reading them in from a system file of your own.
 #' ### myusername <- userInput()
 #' ### mypassword <- userInput()
 #' ### DAT <- readHMDweb("USA","mltper_1x1",mypassword,myusername)
 #' ###
 #' ### #-----------------------------------------
-#' ### # this also works, but you'll need to make two selections, plus enter data in the console twice:
+#' ### # this also works, but you'll need to make two selections, 
+#' ### # plus enter data in the console twice:
 #' ### DAT <- readHFDweb()
 #' 
 readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NULL, fixup = TRUE, Update = NULL){
@@ -184,7 +188,8 @@ readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 #' 
 #' @param CNTRY character string of the HCD short code. Only one! Run \code{getHFCcountries(FALSE)} to see what the options are.
 #' @param item character string of the data product code, which is the base file name, but excluding the country code and file extension \code{.txt}. For instance, \code{"ASFRstand_TOT"}, \code{"ASFRstand_BO"}, \code{"TFRMAB_TOT"}, \code{"TFRMAB_BO"}. Only one item!
-#' @param logical. Default \code{TRUE}. Should column classes be coerced to those more similar to HFD, HMD?
+#' @param fixup logical. Default \code{TRUE}. Should column classes be coerced to those more similar to HFD, HMD?
+#' @param ... optional arguments passed to \code{read.csv()}. Not required.
 #' 
 #' @export
 #' 
@@ -202,7 +207,8 @@ readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 #' # takes a minute to run
 #' # require(RCurl)
 #' HaveBO <- sapply(Countries, function(CNTRY, item){
-#'             RCurl::url.exists(paste0("http://www.fertilitydata.org/data/", CNTRY,"/", CNTRY, "_", item, ".txt"))
+#'             RCurl::url.exists(paste0("http://www.fertilitydata.org/data/", 
+#' CNTRY,"/", CNTRY, "_", item, ".txt"))
 #'         }, item = "ASFRstand_BO")
 #' # we grab data for these countries:
 #' (Countries <- Countries[HaveBO])
@@ -226,7 +232,7 @@ readHFCweb <- function(CNTRY, item, fixup = TRUE, ...){
 	# read in with needed arguments:
 	if (RCurl::url.exists(fileurl)){
 		con         <- url(fileurl)
-		DF <- read.csv(url(fileurl), stringsAsFactors = FALSE, na.strings = ".", strip.white = TRUE, ...)
+		DF          <- read.csv(url(fileurl), stringsAsFactors = FALSE, na.strings = ".", strip.white = TRUE, ...)
 		close(con)
 		# optionally use standard columns:
 		if (fixup){
