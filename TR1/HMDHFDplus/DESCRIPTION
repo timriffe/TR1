@@ -1,15 +1,15 @@
 Package: HMDHFDplus
 Type: Package
 Title: HMDHFDplus, functions for reading HMD and HFD data from the web
-Version: 01.1.6292
-Date: 2015-06-01
+Version: 01.1.8846
+Date: 2015-09-03
 Author: Tim Riffe
 Maintainer: Tim Riffe <tim.riffe@gmail.com>
 Description: Some useful functions for reading HMD and HFD data from the web
 License: GPL-2
 LazyLoad: yes
 Depends:
-    R (>= 2.15),
+    R (>= 3.1.2),
 Collate:
     'age2int.R'
     'HFDutils.R'
@@ -17,3 +17,6 @@ Collate:
     'readHFD.R' 
     'readHMD.R'  
     'userInput.R'
+Imports: 
+	RCurl,
+	XML
