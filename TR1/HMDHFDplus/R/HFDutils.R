@@ -20,6 +20,8 @@
 #' 
 #' @return DF same data.frame, modified so that columns are of a useful class. If there were open age categories, such as \code{"-"} or \code{"+"}, this information is stored in a new dummy column called \code{OpenInterval}.
 #' 
+#' @details This parse routine is based on the subjective opinions of the author...
+#' 
 #' @export
 #' 
 HFDparse <- function(DF){
@@ -138,6 +140,8 @@ getHFDitemavail <- function(CNTRY){
 #' @param DF a data.frame of HFC data, freshly read in.
 #' 
 #' @return DF same data.frame, modified so that columns are of a useful class. If there were open age categories, such as \code{"-"} or \code{"+"}, this information is stored in a new dummy column called \code{OpenInterval}. Values of 99 or -99 in the \code{AgeInterval} column are replaced with \code{"+"} and \code{"-"}, respectively. \code{Year} taken from \code{Year1}, and \code{YearInterval} is given, rather than \code{Year2}. Users wishing for a central time point should bear this is mind. The column \code{Country} is renamed \code{CNTRY}. Otherwise, columns in this database are kept in the \code{data.frame}, in case they may be useful. 
+#' 
+#' @details This parse routine is based on the subjective opinions of the author...
 #' 
 #' @export
 #' 

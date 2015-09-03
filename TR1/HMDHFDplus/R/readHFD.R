@@ -20,6 +20,8 @@
 #' 
 #' @return data.frame of standard HFD output, except the Age column has been cleaned, and a new open age indicator column has been added. 
 #' 
+#' @details No details of note.
+#' 
 #' @export
 #' 
 #' @note original function submitted by Josh Goldstein, modified by Tim Riffe.
@@ -52,6 +54,8 @@ readHFD <- function(filepath, fixup = TRUE,...){
 #' 
 #' @return data.frame of the given HFD data file, modified in some friendly ways.
 #'
+#' @details You need to register for HFD to use this function: \url{www.humanfertility.org}. It is advised to pass in your credentials as named vectors rather than directly as character strings, so that they are not saved directly in your code. See examples. One option is to just save them in your Rprofile file.
+#' 
 #' @importFrom RCurl getURL
 #' @importFrom RCurl getCurlHandle
 #'

@@ -53,6 +53,8 @@ readHMD <- function(filepath, fixup = TRUE, ...){
 #' 
 #' @return data.frame of the HMD product, read as as \code{readHMD()} would read it.
 #'
+#' @details You need to register for HMD: \url{www.mortality.org}. It is advised to pass in your credentials as named vectors rather than directly as character strings, so that they are not saved directly in your code. See examples. One option is to just save them in your Rprofile file.
+#' 
 #' @importFrom RCurl getURL
 #' @importFrom RCurl getCurlHandle
 #' @importFrom RCurl getCurlInfo
@@ -205,6 +207,8 @@ readHMDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 #' @param ... extra arguments ultimately passed to \code{read.table()}. Not likely needed.
 #' 
 #' @return \code{data.frame} of the data item is invisibly returned
+#' 
+#' @details No details of note. This database in independently maintained, so file types/locations are subject to change. If this happens, please notify the package maintainer.
 #' 
 #' @importFrom RCurl url.exists
 #' 

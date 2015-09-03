@@ -22,6 +22,8 @@
 #' 
 #' @return DF same data.frame, modified so that columns are of a useful class. If there were open age categories, such as \code{"-"} or \code{"+"}, this information is stored in a new dummy column called \code{OpenInterval}.
 #' 
+#' @details This parse routine is based on the subjective opinions of the author...
+#' 
 #' @export
 #'
 
