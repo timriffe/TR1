@@ -5,7 +5,7 @@ Version: 01.1.8846
 Date: 2015-09-03
 Author: Tim Riffe
 Maintainer: Tim Riffe <tim.riffe@gmail.com>
-Description: Some useful functions for reading HMD and HFD data from the web
+Description: This packages contains some useful functions for reading HMD, HFD, and similar data from the web or locally into an R session as data.frame objects.
 License: GPL-2
 LazyLoad: yes
 Depends:
