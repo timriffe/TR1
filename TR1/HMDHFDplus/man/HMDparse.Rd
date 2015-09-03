@@ -19,5 +19,7 @@ called by \code{readHMD()} and \code{readHMDweb()}. We assume there are no facto
 }
 \details{
 
+
+This parse routine is based on the subjective opinions of the author...
 }
 

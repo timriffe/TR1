@@ -23,6 +23,8 @@ CHMD data are formatted exactly as HMD data. This function simply parses the nec
 }
 \details{
 
+
+This database is curated independently from the HMD/HFD family, and so file types and locations may be subject to change. If this happens, please notify the package maintainer.
 }
 \examples{
 \dontrun{

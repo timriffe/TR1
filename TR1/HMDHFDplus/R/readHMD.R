@@ -258,6 +258,8 @@ readJMDweb <- function(prefID = "01", item = "Deaths_5x5", fixup = TRUE, ...){
 #' 
 #' @return \code{data.frame} of the data item is invisibly returned
 #' 
+#' @details This database is curated independently from the HMD/HFD family, and so file types and locations may be subject to change. If this happens, please notify the package maintainer.
+#' 
 #' @export 
 #' 
 #' @importFrom RCurl url.exists

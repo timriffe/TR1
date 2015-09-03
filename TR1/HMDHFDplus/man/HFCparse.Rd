@@ -17,5 +17,7 @@ called by \code{readHFC()} and \code{readHFCweb()}. We assume there are no facto
 }
 \details{
 
+
+This parse routine is based on the subjective opinions of the author...
 }
 

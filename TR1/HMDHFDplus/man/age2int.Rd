@@ -13,10 +13,12 @@ age2int(Age)
 the same age vector as a clean integer.
 }
 \description{
-Long the bane of many an HMD/HFD user is that the age column must be read into R as a factor or character vector, yet we'd like to use it as integer or numeric. This function strips symbols that are used to indicate the open age groups ("12-","55+","110+"), and coerces to integer format. This function is called by \code{readHFD()} and \code{readHMD()}
+Long the bane of many an HMD/HFD user is that the age column must be read into R as a factor or character vector, yet we'd like to use it as integer or numeric. This function strips symbols that are used to indicate the open age groups ("12-","55+","110+"), and coerces to integer format. This function is called by \code{HFDparse()} and \code{HMDparse()}, and so forth.
 }
 \details{
 
+
+This function is written for the sake of various parse functions.
 }
 \note{
 original function submitted by Josh Goldstein, modified by Tim Riffe.

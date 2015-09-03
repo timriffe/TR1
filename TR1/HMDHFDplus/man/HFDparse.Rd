@@ -17,5 +17,7 @@ called by \code{readHFD()} and \code{readHFDweb()}. We assume there are no facto
 }
 \details{
 
+
+This parse routine is based on the subjective opinions of the author...
 }
 

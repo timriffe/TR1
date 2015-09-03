@@ -23,6 +23,8 @@ JMD data are formatted exactly as HMD data. This function simply parses the nece
 }
 \details{
 
+
+No details of note. This database in independently maintained, so file types/locations are subject to change. If this happens, please notify the package maintainer.
 }
 \examples{
 \dontrun{

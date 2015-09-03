@@ -21,6 +21,8 @@ This calls \code{read.table()} with all the necessary defaults to avoid annoying
 }
 \details{
 
+
+No details of note.
 }
 \note{
 original function submitted by Josh Goldstein, modified by Tim Riffe.

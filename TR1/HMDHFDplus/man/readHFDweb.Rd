@@ -30,6 +30,8 @@ Read HFD data directly from the web. This function is useful for short reproduci
 }
 \details{
 
+
+You need to register for HFD to use this function: \url{www.humanfertility.org}. It is advised to pass in your credentials as named vectors rather than directly as character strings, so that they are not saved directly in your code. See examples. One option is to just save them in your Rprofile file.
 }
 \examples{
 ### # this will ask you to enter your login details in the R console
