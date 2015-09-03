@@ -6,6 +6,7 @@ Date: 2015-09-03
 Author: Tim Riffe
 Maintainer: Tim Riffe <tim.riffe@gmail.com>
 Description: This packages contains some useful functions for reading HMD, HFD, and similar data from the web or locally into an R session as data.frame objects.
+URL: https://github.com/timriffe/TR1
 License: GPL-2
 LazyLoad: yes
 Depends:
