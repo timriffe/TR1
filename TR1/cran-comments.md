@@ -9,5 +9,3 @@ This is the first submission of this package to CRAN
 
 I ran devtools::check() and received no ERRORs, WARNINGs, or NOTEs 
 I checked the log file from win-builder and there were also no ERRORs, WARNINGs, or NOTEs  
-
-## Dependencies

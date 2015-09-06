@@ -37,4 +37,5 @@ sessionInfo()
 
 # just to make sure it builds for Windows.
 build_win("/home/tim/git/TR1/TR1/HMDHFDplus")
-importFrom("utils", "read.csv", "read.table", "select.list")
+
+devtools::revdep_check("/home/tim/git/TR1/TR1/HMDHFDplus")
