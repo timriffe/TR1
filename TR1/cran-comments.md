@@ -1,5 +1,5 @@
-## First submission
-This is the first submission of this package to CRAN
+## General
+First submitted Saturday. This version is modified to account for the comments from Uwe Ligges (changed title, version, and description fields.
 
 ## Test environments
 * local Linux Mint install
