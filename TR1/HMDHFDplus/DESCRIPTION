@@ -3,9 +3,9 @@ Type: Package
 Title: Read HMD and HFD Data From the Web
 Version: 1.1.8954
 Date: 2015-09-07
-Author: Tim Riffe
+Author: Tim Riffe, Carl Boe, Josh Goldstein
 Maintainer: Tim Riffe <tim.riffe@gmail.com>
-Description: Utilities for reading data from the Human Mortality Database (www.mortality.org), Human Fertility Database (www.humanfertility.org), and similar data from the web or locally into an R session as data.frame objects. Other supported databases at this time include the Human Fertility Collection (http://www.fertilitydata.org/), The Japanese Mortality Database (http://www.ipss.go.jp/p-toukei/JMD), and the Canadian Human Mortality Database (http://www.bdlc.umontreal.ca/chmd/).
+Description: Utilities for reading data from the Human Mortality Database (<www.mortality.org>), Human Fertility Database (<www.humanfertility.org>), and similar databases from the web or locally into an R session as data.frame objects. These are the two most widely used sources of demographic data to study basic demographic change, trends, and develop new demographic methods. Other supported databases at this time include the Human Fertility Collection (<http://www.fertilitydata.org/>), The Japanese Mortality Database (<http://www.ipss.go.jp/p-toukei/JMD>), and the Canadian Human Mortality Database (<http://www.bdlc.umontreal.ca/chmd/>). Arguments and data are standardized.
 URL: https://github.com/timriffe/TR1
 BugReports: https://github.com/timriffe/TR1/issues
 License: GPL-2
@@ -22,4 +22,3 @@ Collate:
 Imports: 
 	RCurl,
 	XML
-	
