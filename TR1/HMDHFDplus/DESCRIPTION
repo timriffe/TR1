@@ -1,12 +1,13 @@
 Package: HMDHFDplus
 Type: Package
-Title: HMDHFDplus, functions for reading HMD and HFD data from the web
-Version: 01.1.8932
-Date: 2015-09-06
+Title: Read HMD and HFD Data From the Web
+Version: 1.1.8954
+Date: 2015-09-07
 Author: Tim Riffe
 Maintainer: Tim Riffe <tim.riffe@gmail.com>
-Description: This packages contains some useful functions for reading HMD, HFD, and similar data from the web or locally into an R session as data.frame objects.
+Description: Utilities for reading data from the Human Mortality Database (www.mortality.org), Human Fertility Database (www.humanfertility.org), and similar data from the web or locally into an R session as data.frame objects. Other supported databases at this time include the Human Fertility Collection (http://www.fertilitydata.org/), The Japanese Mortality Database (http://www.ipss.go.jp/p-toukei/JMD), and the Canadian Human Mortality Database (http://www.bdlc.umontreal.ca/chmd/).
 URL: https://github.com/timriffe/TR1
+BugReports: https://github.com/timriffe/TR1/issues
 License: GPL-2
 LazyLoad: yes
 Depends:
