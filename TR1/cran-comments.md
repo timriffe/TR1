@@ -1,5 +1,5 @@
 ## General
-First submitted Saturday. This version is modified to account for the comments from Uwe Ligges (changed title, version, and description fields.
+First submitted Saturday. This version is modified to account for the comments from Uwe Ligges (added authors, changed title, version, and description fields.
 
 ## Test environments
 * local Linux Mint install
