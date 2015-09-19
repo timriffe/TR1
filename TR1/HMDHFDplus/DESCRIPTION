@@ -1,7 +1,7 @@
 Package: HMDHFDplus
 Type: Package
-Title: Read HMD and HFD Data From the Web
-Version: 1.1.8954
+Title: Read HMD and HFD Data from the Web
+Version: 1.1.8
 Date: 2015-09-07
 Author: Tim Riffe, Carl Boe, Josh Goldstein
 Maintainer: Tim Riffe <tim.riffe@gmail.com>
