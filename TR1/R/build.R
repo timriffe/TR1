@@ -9,7 +9,7 @@ document(file.path(parent.path,"HMDHFDplus"))
 # install_github("timriffe/TimUtils", subdir = "TimUtils")
 library(TimUtils)
 
-IncrementVersion(file.path(parent.path ,"HMDHFDplus"),"1","2013-10-15")
+#IncrementVersion(file.path(parent.path ,"HMDHFDplus"),"1","2013-10-15")
 
 load_all(file.path(parent.path,"HMDHFDplus"))
 args(build)
