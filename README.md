@@ -28,7 +28,7 @@ To download the development version of HMDHFDplus
 2. make sure you install the `RCurl` and `XML` packages first, which are needed for handling logins and html parsing. These packages may require extra steps to install. See further (approximate) instructions depending on OS.
 3. look at the OS-specific notes below to ensure the installation will work.
 
-Either download the [zip ball](https://github.com/timriffe/TR1/zipball/master) or [tar ball](https://github.com/timriffe/TR1/tarball/master), decompress and run `R CMD INSTALL` on it in the terminal command line. You can also look in the `Builds` folder of this repository for `tar.gz` files that you can try to [install locally](http://stackoverflow.com/questions/1474081/how-do-i-install-an-r-package-from-source). The easiset way to install is to use the **devtools** package to install the development version:
+Either download the [zip ball](https://github.com/timriffe/TR1/zipball/master) or [tar ball](https://github.com/timriffe/TR1/tarball/master), decompress and run `R CMD INSTALL` on it in the terminal command line. You can also look in the `Builds` folder of this repository for `tar.gz` files that you can try to [install locally](http://stackoverflow.com/questions/1474081/how-do-i-install-an-r-package-from-source). The easiest way to install is to use the **devtools** package to install the development version:
 ```r
 # install.packages("devtools", dependencies = TRUE)
 
