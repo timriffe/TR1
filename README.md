@@ -15,6 +15,13 @@ This package contains some code migrated over from the `DemogBerkeley` package, 
 Installation
 ============
 
+The package is now on CRAN!: https://cran.r-project.org/web/packages/HMDHFDplus/
+This means you can install it using:
+```r
+install.packages("HMDHFDplus")
+```
+As long as you R version is relatively up to date. If not then either update your R or install the development version, hosted here, instructions below:
+
 To download the development version of HMDHFDplus
 
 1. make sure you have the most recent version of R
