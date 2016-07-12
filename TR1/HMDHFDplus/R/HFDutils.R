@@ -89,12 +89,12 @@ getHFDcountries <- function(){
 #' @export
 #' 
 getHFDdate <- function(CNTRY){
-	CountryURL      <- paste0("http://www.humanfertility.org/cgi-bin/country.php?country=",CNTRY)
-# date of last update will be the most common component, it turns out, since it forms part of the links:
-	partssummary    <- table(unlist(strsplit(RCurl::getURL(CountryURL), "\\\\")))
-	LastUpdate      <- names(partssummary)[which.max(partssummary)]
-	# this isn't a date string, just 8 digits squashed together yyyymmdd
-	LastUpdate
+  CountryURL      <- paste0("http://www.humanfertility.org/cgi-bin/country.php?country=",CNTRY)
+  #get date string by finding the permalink listed at the bottom of page.
+  htmlstr    <- RCurl::getURL(CountryURL)
+  LastUpdate      <- substr(strsplit(htmlstr,"update=")[[1]][2],1,8)
+  # this isn't a date string, just 8 digits squashed together yyyymmdd
+  LastUpdate
 }
 
 
