@@ -118,13 +118,13 @@ readHMDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 	## reuse handle, reduce connection starts
 	handle <- RCurl::getCurlHandle(userpwd = this.pw)
 	
-	dirjunk <- RCurl::getURL(file.path("www.mortality.org", "hmd", CNTRY,
+	dirjunk <- RCurl::getURL(file.path(baseurl, CNTRY,
 					paste0("STATS",.Platform$file.sep)), curl = handle)
 	
 	if (RCurl::getCurlInfo(handle)$response.code == 401) {
 		stop("Authentication rejected: please check your username and password")
 	}
-	dirjunk <- RCurl::getURL(file.path("www.mortality.org","hmd",CNTRY,"STATS/"), curl=handle)
+	dirjunk <- RCurl::getURL(file.path(baseurl,CNTRY,"STATS/"), curl=handle)
 	
 	# check if authentication fails
 	if (RCurl::getCurlInfo(handle)$response.code == 401){
@@ -132,7 +132,7 @@ readHMDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 	}
 	# sometime redirects will break this, so we do it manually if necessary...
 	if (RCurl::getCurlInfo(handle)$response.code == 301){
-		dirjunk <- RCurl::getURL(getCurlInfo(handle)$redirect.url, curl = handle)
+		dirjunk <- RCurl::getURL(RCurl::getCurlInfo(handle)$redirect.url, curl = handle)
 	}
 	
 	# TR: this is the kind of parsing I hate. Gotta be a better way out there.
@@ -173,7 +173,7 @@ readHMDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 	
 	# build url: 
     # TR: presumably these links are composed with the same separators everywhere?
-	HMDurl <- paste("www.mortality.org", "hmd", CNTRY, "STATS", paste0(item, ".txt"), sep = "/")
+	HMDurl <- paste(baseurl, CNTRY, "STATS", paste0(item, ".txt"), sep = "/")
 	
 	#check it exists:
     # TR: this is like way extra, since both CNTRY and item have gone through filters by now
