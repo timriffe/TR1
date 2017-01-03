@@ -86,7 +86,7 @@ readHMDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 		}
 	}
 	
-	urlbase         <- "www.mortality.org/hmd"
+	urlbase         <- "mortality.org/hmd"
 #    tf <- tempfile()
 #    on.exit(unlink(tf))
 	this.url    <- "mortality.org/countries.csv"
