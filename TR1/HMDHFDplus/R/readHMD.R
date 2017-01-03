@@ -118,13 +118,13 @@ readHMDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 	## reuse handle, reduce connection starts
 	handle <- RCurl::getCurlHandle(userpwd = this.pw)
 	
-	dirjunk <- RCurl::getURL(file.path(baseurl, CNTRY,
+	dirjunk <- RCurl::getURL(file.path(urlbase, CNTRY,
 					paste0("STATS",.Platform$file.sep)), curl = handle)
 	
 	if (RCurl::getCurlInfo(handle)$response.code == 401) {
 		stop("Authentication rejected: please check your username and password")
 	}
-	dirjunk <- RCurl::getURL(file.path(baseurl,CNTRY,"STATS/"), curl=handle)
+	dirjunk <- RCurl::getURL(file.path(urlbase,CNTRY,"STATS/"), curl=handle)
 	
 	# check if authentication fails
 	if (RCurl::getCurlInfo(handle)$response.code == 401){
@@ -173,7 +173,7 @@ readHMDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 	
 	# build url: 
     # TR: presumably these links are composed with the same separators everywhere?
-	HMDurl <- paste(baseurl, CNTRY, "STATS", paste0(item, ".txt"), sep = "/")
+	HMDurl <- paste(urlbase, CNTRY, "STATS", paste0(item, ".txt"), sep = "/")
 	
 	#check it exists:
     # TR: this is like way extra, since both CNTRY and item have gone through filters by now
