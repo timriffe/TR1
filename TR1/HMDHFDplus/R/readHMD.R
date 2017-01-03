@@ -89,7 +89,7 @@ readHMDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 	urlbase         <- "http://www.mortality.org/hmd"
 #    tf <- tempfile()
 #    on.exit(unlink(tf))
-	this.url    <- "http://www.mortality.org/countries.csv"
+	this.url    <- "mortality.org/countries.csv"
 	cntries     <- RCurl::getURL(this.url)
 	ctrylist    <- read.csv(text = cntries,header=TRUE,as.is=TRUE);
 	ctrylookup  <- data.frame(Country=ctrylist$Country, CNTRY=ctrylist$Subpop.Code.1, stringsAsFactors = FALSE)
