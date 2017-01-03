@@ -16,6 +16,11 @@ Installation
 ============
 
 The package is now on CRAN!: https://cran.r-project.org/web/packages/HMDHFDplus/
+
+**EDIT Jan 3, 2017**
+The CRAN version has two major bugs due to changes in the websites of both HMD and HFD. These have been attended to here, but those changes have not yet made it to CRAN, so please just install from github as explained below
+**EDIT Jan 3, 2017**
+
 This means you can install it using:
 ```r
 install.packages("HMDHFDplus")
