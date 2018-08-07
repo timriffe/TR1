@@ -21,4 +21,5 @@ Collate:
     'userInput.R'
 Imports: 
 	RCurl,
-	XML
+	XML,
+	httr
