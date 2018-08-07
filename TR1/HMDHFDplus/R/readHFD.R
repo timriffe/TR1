@@ -58,8 +58,7 @@ readHFD <- function(filepath, fixup = TRUE,...){
 #'
 #' @details You need to register for HFD to use this function: \url{www.humanfertility.org}. It is advised to pass in your credentials as named vectors rather than directly as character strings, so that they are not saved directly in your code. See examples. One option is to just save them in your Rprofile file.
 #' 
-#' @importFrom RCurl getURL
-#' @importFrom RCurl getCurlHandle
+#' @importFrom httr GET content
 #' @importFrom utils select.list
 #' @importFrom utils read.table
 #' 
@@ -118,34 +117,21 @@ readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 	}
 	
 	# concatenate the login string
-	loginURL <- paste0("http://www.humanfertility.org/cgi-bin/logon.plx?page=main.php&f=na&tab=na&LogonEMail=",
+	loginURL <- paste0("https://www.humanfertility.org/cgi-bin/logon.plx",
+	                   "?page=main.php&f=na&tab=na&LogonEMail=",
 			username, "&LogonPassword=", password, "&Logon=%20%20Login%20%20%20"
 	)
-	
-	# a temporary file to hold cookies:
-	TMP     <- file.path(getwd(), paste(sample(LETTERS, 10, TRUE), collapse = ""))
-	Nothing <- file.create(TMP)
-	
-	# this is the login handle, to pass to login call. At the moment, this is the only
-	# way that RCurl will see that there is a cookiefile. In a prior version, cookiefile
-	# was an argument passed straight to getURL, but now we pass the handle, where it
-	# knows to look.
-	handle  <- RCurl::getCurlHandle(.opts = list(verbose = FALSE,  cookiefile = TMP))
-	
-	# the actual login. cookiefile (TMP) now has metadata in it, if the login is correct 
-	Nothing <- RCurl::getURL(
-			                 loginURL,
-			                 curl = handle
-					         )
-	Continue <- grepl("welcome", Nothing)
-	
-	if(!Continue){
-		stop("login didn't work. \nMaybe your username or password are off? \nYour request is contracepted!")
-	}
-	
+	# replaces previous Rcurl method -  httr manages the handle
+	logged_in_page <- httr::GET(loginURL)
+	Continue <- grepl("welcome", logged_in_page)
+	if (!Continue) {
+	  stop(paste0("login didn't work. \nMaybe your username or password are off?",
+	              " \nYour request is contracepted!"))
+  }
 	# let user chose, or filter items as necessary: 
-	if(is.null(item)){    
-		items <- getHFDitemavail(CNTRY)
+	
+	items <- getHFDitemavail(CNTRY)
+	if(is.null(item) || !(item %in% items)){
 		if (interactive()){
 			item <- select.list(choices = items, multiple = FALSE, title = "Select item")
 		} else {
@@ -154,34 +140,26 @@ readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 	}
 	
 	# everything is in a folder, the name of which is the 8-digit version of the update date,
-    # user could specify a different number. Don't know how to query what dates are available, 
-    # though. by default we just get the most recent date.
-    if (is.null(Update)){
+  # user could specify a different number. Don't know how to query what dates are available, 
+  # though. by default we just get the most recent date.
+  if (is.null(Update)){
 		Update <- getHFDdate(CNTRY)
 	}	
 
 	# url used to ask for data file. try to ignore 'tabs'
 	HFDurl <- paste0(
-			"http://www.humanfertility.org/cgi-bin/getfile.plx?f=",
+			"https://www.humanfertility.org/cgi-bin/getfile.plx?f=",
 			CNTRY, "\\", Update, "\\", CNTRY, item, ".txt&c=", CNTRY)
-	# a final check...
 	
-	# use the same handle as before, which takes care of the cookiefile
-	Text <- RCurl::getURL(HFDurl,
-			              verbose = FALSE,  # also in handle
-			              curl = handle)
+	
+	Text <- httr::GET(HFDurl)
 	# parse raw data file to data.frame
-	DF <- try(read.table(text = Text, 
-					header = TRUE, 
-					skip = 2, 
-					na.strings = ".", 
-					as.is = TRUE), 
-			silent = TRUE)
+	DF <- try(read.table(text = httr::content(Text,encoding = "UTF-8"), header = TRUE, skip = 2, 
+	                     na.strings = ".", as.is = TRUE), silent = TRUE)
 	
 	if (fixup){
 		DF      <- HFDparse(DF)
 	}
-	unlink(TMP)
 	return(invisible(DF))
 	
 }
