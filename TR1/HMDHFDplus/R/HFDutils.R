@@ -84,15 +84,22 @@ getHFDcountries <- function(){
 #' 
 #' @return character string of eight integers representing the date as \code{"yyyymmdd"}.
 #' 
-#' @importFrom RCurl getURL
+#' @importFrom httr GET content
 #' 
 #' @export
 #' 
 getHFDdate <- function(CNTRY){
-  CountryURL      <- paste0("http://www.humanfertility.org/cgi-bin/country.php?country=",CNTRY)
+  CountryURL      <- paste0("http://www.humanfertility.org/cgi-bin/country.php?",
+                            "country=", CNTRY)
   #get date string by finding the permalink listed at the bottom of page.
-  htmlstr    <- RCurl::getURL(CountryURL)
-  LastUpdate      <- substr(strsplit(htmlstr,"update=")[[1]][2],1,8)
+  html_country    <- httr::GET(CountryURL)
+  htmlstr <- httr::content(html_country, as="text")
+  LastUpdate <- regmatches(htmlstr, regexpr("(?<=update=)20[0-9]{6}", htmlstr,
+                                            perl=T))
+  if(length(LastUpdate)==0){
+    stop("I can't find the date of the latest update to the data for this
+          country. The Human Fertility Database website may have changed")
+  }
   # this isn't a date string, just 8 digits squashed together yyyymmdd
   LastUpdate
 }
