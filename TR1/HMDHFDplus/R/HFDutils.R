@@ -7,6 +7,7 @@
 # 4) getHFDitemavail()
 # 5) HFCparse()
 # 6) getHFCcountries()
+# 7) extract_HFD_items()
 
 ############################################################################
 # 1) HFDparse()
@@ -123,23 +124,29 @@ getHFDdate <- function(CNTRY){
 #' 
 #' @return a vector of item names. These are the file base names, and only need the extension \code{.txt} added in order to get te file name.
 #' 
-#' @importFrom RCurl getURL
+#' @importFrom httr GET content
 #' 
 #' @export
 #' 
 getHFDitemavail <- function(CNTRY){
-	# again, very ugly parsing, there must be a better way
-	CountryURL      <- paste0("http://www.humanfertility.org/cgi-bin/country.php?country=",CNTRY)
-# date of last update will be the most common component, it turns out, since it forms part of the links:
-	partssummary    <- table(unlist(strsplit(RCurl::getURL(CountryURL), "\\\\")))
-	partsasfr       <- table(unlist(strsplit(RCurl::getURL(paste0(CountryURL,"&tab=asfr&t1=3&t2=4")), "\\\\")))
-	partsft         <- table(unlist(strsplit(RCurl::getURL(paste0(CountryURL,"&tab=ft&t1=5&t2=6")), "\\\\")))
-	parts           <- c(names(partssummary), names(partsasfr),names(partsft))
+  # It seems this function will only worked if you are logged in
+	CountryURL      <- paste0("https://www.humanfertility.org/cgi-bin/",
+	                          "country.php?country=",CNTRY)
+
+	# vector of names of tabs on each HFD page
+	tabs <- c("si", "asfr", "ft")
+
+	item_list <- lapply(tabs, function(tab){
+	  # iterate through each tab and construct URL
+	  url <- paste0(CountryURL, "&tab=", tab)
+	  tab_html  <- httr::content(httr::GET(url))
+	  return(extract_HFD_items(tab_html, CNTRY))
+	})
 	
-	items           <- unlist(lapply(strsplit(parts, split = "&"),"[[",1))
-	items           <- gsub(CNTRY,"",gsub("\\.txt","",items[grepl(items, pattern = ".txt")]))
-	items
+	return(unlist(item_list))
 }
+
+
 
 ############################################################################
 # 5) HFCparse()
@@ -157,8 +164,7 @@ getHFDitemavail <- function(CNTRY){
 #' @details This parse routine is based on the subjective opinions of the author...
 #' 
 #' @export
-#' 
-
+#'
 HFCparse <- function(DF){
 	# get just one year, and treat it like age groups, where we
 	# mark the lower bound and provide a year interval column
@@ -211,8 +217,35 @@ getHFCcountries <- function(names = FALSE){
 
 
 
-
-
+############################################################################
+# 7) extract_HFD_items()
+############################################################################
+#' @title Extract names of HFD items from HTML
+#'
+#' @description Extract names of Human fertility database datasets from an
+#' HTML page. Links are extracted from html, and for each link, any text falling
+#' between the provided country code and a .txt extension is returned
+#'
+#' @param html_content An object of class \code{xml_document} taken from a
+#' country page of the HFD website, typically the result of
+#' \code{httr::content(httr::GET(url))}
+#'
+#' @param CNTRY A string given one of the country codes used by HFD. See
+#' \code{getHFDcountries} for a function which lists available countries.
+#'
+#' @return A vector of characters, each of which is an item available for
+#' download
+#'
+#' @importFrom XML getHTMLLinks htmlParse
+#'
+extract_HFD_items <- function(html_content,CNTRY) {
+  parsed_html <- XML::htmlParse(html_content)
+  all_links <- XML::getHTMLLinks(parsed_html)
+  item_regex <- regexpr(paste0("(?<=",CNTRY,")[A-Za-z0-9]+(?=\\.txt)"), 
+          all_links, perl=T)
+  item_names <- regmatches(all_links, item_regex)
+  return(item_names)
+}
 
 
 
