@@ -2,7 +2,7 @@
 
 language: r
 before_install:
-  - cd TR1/TR1/HMDHFDplus
+  - cd TR1/HMDHFDplus
 sudo: false
 cache: packages
 
