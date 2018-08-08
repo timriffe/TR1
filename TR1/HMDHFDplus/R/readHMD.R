@@ -61,15 +61,15 @@ readHMD <- function(filepath, fixup = TRUE, ...){
 #' @importFrom RCurl url.exists
 #' @importFrom utils read.csv
 #' @importFrom utils read.table
-#' 
+#' @importFrom httr GET content authenticate config
 #' @export
 #' 
-readHMDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NULL, fixup = TRUE){
+readHMDweb <- function(CNTRY, item, username, password, fixup = TRUE){
 	## based on Carl Boe's RCurl tips
 	# modified by Tim Riffe 
 	
 	# let user input name and password
-	if (is.null(username)){
+	if (missing(username)){
 		if (interactive()){
 			cat("\ntype in HMD username (usually your email, quotes not necessary):\n")
 			username <- userInput(FALSE)
@@ -77,7 +77,7 @@ readHMDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 			stop("if username and password not given as arguments, the R session must be interactive.")
 		}
 	}
-	if (is.null(password)){
+	if (missing(password)){
 		if (interactive()){
 			cat("\ntype in HMD password:\n")
 			password <-  userInput(FALSE)
@@ -86,21 +86,17 @@ readHMDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 		}
 	}
 	
-	urlbase         <- "https://www.mortality.org/hmd"
-#    tf <- tempfile()
-#    on.exit(unlink(tf))
-	this.url    <- "http://www.mortality.org/countries.csv"
-	cntries     <- RCurl::getURL(this.url, .opts=RCurl::curlOptions(followlocation = TRUE))
-	ctrylist    <- read.csv(text = cntries,
-			                header = TRUE,
-							as.is = TRUE)
-					
+	ctrylist    <- read.csv(
+			         "https://www.mortality.org/countries.csv",
+			         header = TRUE,
+			         as.is = TRUE)
+			
 	ctrylookup  <- data.frame(Country = ctrylist$Country, 
 			                  CNTRY = ctrylist$Subpop.Code.1, 
 							  stringsAsFactors = FALSE)
 	
 	# get CNTRY
-	if(is.null(CNTRY)){    
+	if (missing(CNTRY)){    
 		cat("\nCNTRY missing\n")
 		if (interactive()){
 			CNTRY <- select.list(choices = ctrylookup$CNTRY, multiple = FALSE, title = "Select Country Code")
@@ -118,91 +114,50 @@ readHMDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 	}
 	stopifnot(length(CNTRY) == 1)
 	
-	this.pw <- paste(username, password, sep = ":")
-	
-	## reuse handle, reduce connection starts
-	handle <- RCurl::getCurlHandle(userpwd = this.pw)
-	
-	dirjunk <- RCurl::getURL(
-			file.path(urlbase, CNTRY,
-					paste0("STATS", .Platform$file.sep)), 
-			curl = handle)
-	
-	if (RCurl::getCurlInfo(handle)$response.code == 401) {
-		stop("Authentication rejected: please check your username and password")
-	}
-	dirjunk <- RCurl::getURL(file.path(urlbase,CNTRY,"STATS/"), 
-			curl = handle, 
-			.opts = RCurl::curlOptions(followlocation = TRUE))
-	
-	# check if authentication fails
-	if (RCurl::getCurlInfo(handle)$response.code == 401){
-		stop("Authentication rejected: please check your username and password")
-	}
-	# sometime redirects will break this, so we do it manually if necessary...
-	if (RCurl::getCurlInfo(handle)$response.code == 301){
-		dirjunk <- RCurl::getURL(RCurl::getCurlInfo(handle)$redirect.url, curl = handle)
-	}
-	
-	# TR: this is the kind of parsing I hate. Gotta be a better way out there.
-	parts <- gsub(pattern = "\\\"",
-			replacement = "",
-			unlist(lapply(strsplit(unlist(strsplit(dirjunk
-													,split="href=")),
-									split = ">"),"[[",1)))
-	allitems <- gsub(pattern = ".txt",replacement = "",parts[grepl(parts,pattern=".txt")])
-	
-	if (is.null(item)){
+	# repeat for item
+	itemlookup <- getHMDitemavail(CNTRY, username = username, password = password)
+	if (missing(item)){    
+		cat("\nCNTRY missing\n")
 		if (interactive()){
-			cat("\nThe following items are available for", CNTRY,"\n")
-			item <- select.list(choices = allitems, 
-					multiple = FALSE,
-					title = "Select one")
+			item <- select.list(choices = itemlookup, multiple = FALSE, title = "Select item Code")
 		} else {
-			stop("item must be one of the following for",CNTRY,paste(allitems,collapse=",\n"))
+			stop("item should be one of these:\n",paste(itemlookup, collapse = ",\n"))
 		}
 	}
-	if (!item %in% allitems){
+	if (!(item %in% itemlookup)){
+		cat("\nCNTRY not found\n")
 		if (interactive()){
-			if (any(grepl(allitems, pattern = item))){
-				cat("\nMust specify item fully\n")    
-				item <- select.list(choices = allitems[grepl(allitems, pattern = item)], 
-						multiple = FALSE,
-						title = "Select one")
-			} else {
-				cat("\nThe following items are available for", CNTRY,"\n")
-				item <- select.list(choices = allitems, 
-						multiple = FALSE,
-						title = "Select one")
-			}
+			item <- select.list(choices = itemlookup, multiple = FALSE, title = "Select item Code")
 		} else {
-			stop("item must be one of the following for",CNTRY,paste(allitems,collapse=",\n"))
+			stop("item should be one of these:\n",paste(itemlookup, collapse = ",\n"))
 		}
 	}
+	stopifnot(length(item) == 1)
+
 	
-	# build url: 
-    # TR: presumably these links are composed with the same separators everywhere?
-	HMDurl <- paste(urlbase, CNTRY, "STATS", paste0(item, ".txt"), sep = "/")
-	
-	#check it exists:
-    # TR: this is like way extra, since both CNTRY and item have gone through filters by now
-	if (RCurl::url.exists(HMDurl,curl=handle)){
-		handle <- RCurl::getCurlHandle(userpwd = this.pw)
-		# grab the data
-		dataIN  <- RCurl::getURL(HMDurl, 
-				                 curl = handle, 
-								 .opts = RCurl::curlOptions(followlocation=TRUE) )
-		
-		# rest of this lifted from readHMD()
-		DF      <- read.table(text = dataIN, header = TRUE, skip = 2, na.strings = ".", as.is = TRUE)
-		if (fixup){
-			DF        <- HMDparse(DF, filepath = item)
-		}
-		
-		return(invisible(DF))
-	} else {
-		cat("\nSorry, something was wrong with the query\nPossibly a typo?\n")
+	path <- paste0("https://www.mortality.org/hmd/", CNTRY, "/STATS/", item)
+#	txt  <- RCurl::getURL(path, userpwd = paste0(username, ":", password))
+    TEXT    <- httr::GET(path, 
+					httr::authenticate(username, password), 
+					httr::config(ssl_verifypeer = 0L))
+	status  <- httr::http_status(TEXT)
+	if (grepl(status$category,pattern="error")){
+		cat("Sorry something went wrong, maybe a typo?")
+		return(NULL)
 	}
+
+	DF      <- read.table(
+			      text = httr::content(TEXT,encoding = "UTF-8"), 
+			      header = TRUE, 
+			      skip = 2, 
+			      na.strings = ".", 
+			      as.is = TRUE)
+	
+	if (fixup){
+		DF        <- HMDparse(DF, filepath = item)
+	}
+	
+  invisible(DF)
 } # end readHMDweb()
 
 ############################################################################

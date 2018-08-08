@@ -4,8 +4,7 @@
 \alias{readHMDweb}
 \title{readHMDweb a basic HMD data grabber.}
 \usage{
-readHMDweb(CNTRY = NULL, item = NULL, username = NULL, password = NULL,
-  fixup = TRUE)
+readHMDweb(CNTRY, item, username, password, fixup = TRUE)
 }
 \arguments{
 \item{CNTRY}{HMD population letter code. If not spelled right, or not specified, the function provides a selection list. Only 1.}

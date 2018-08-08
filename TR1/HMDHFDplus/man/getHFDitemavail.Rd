@@ -10,7 +10,7 @@ getHFDitemavail(CNTRY)
 \item{CNTRY}{HFD country short code.}
 }
 \value{
-a vector of item names. These are the file base names, and only need the extension \code{.txt} added in order to get te file name.
+a vector of item names. These are the file base names, and only need the extension \code{.txt} added in order to get the file name.
 }
 \description{
 called by \code{readHFDweb()}. This assumes that \code{CNTRY} is actually available in the HFD.

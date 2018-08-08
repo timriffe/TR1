@@ -122,7 +122,7 @@ getHFDdate <- function(CNTRY){
 #' 
 #' @param CNTRY HFD country short code.
 #' 
-#' @return a vector of item names. These are the file base names, and only need the extension \code{.txt} added in order to get te file name.
+#' @return a vector of item names. These are the file base names, and only need the extension \code{.txt} added in order to get the file name.
 #' 
 #' @importFrom httr GET content
 #' 

@@ -84,7 +84,7 @@ HMDparse <- function(DF, filepath){
 #' @export
 
 getHMDcountries <- function(){
-	HMDXXX  <- read.csv("http://www.mortality.org/countries.csv",stringsAsFactors = FALSE)
+	HMDXXX  <- read.csv("https://www.mortality.org/countries.csv",stringsAsFactors = FALSE)
 	HMDXXX  <- HMDXXX[!is.na(HMDXXX[,"ST_Per_LE_FY"]), ]
 	HMDXXX$Subpop.Code
 }
@@ -131,4 +131,34 @@ getJMDprefectures <- function(){
 getCHMDprovinces <- function(){
 	# it's a small list, so why both scraping?-- include "can" for posterity.
 	sort(c("can","nfl","pei","nsc","nbr","que","ont","man","sas","alb","bco","nwt","yuk"))
+}
+
+#' @title internal function for grabbing the available data item names for a given country.
+#' 
+#' @description called by \code{readHMDweb()}. This assumes that \code{CNTRY} is actually available in the HFD. 
+#' 
+#' @param CNTRY HMD country short code.
+#' 
+#' @return character vector of item names. These are the file base names, and only need the extension \code{.txt} added in order to get the file name.
+#' 
+#' @importFrom httr GET content authenticate config
+#' @importFrom XML getHTMLLinks htmlParse
+#' @export
+#' 
+getHMDitemavail <- function(CNTRY, username, password){
+	# It seems this function will only worked if you are logged in
+	CountryURL      <- paste0("https://www.humanfertility.org/cgi-bin/",
+			"country.php?country=",CNTRY)
+	CountryURL      <- paste0("https://www.mortality.org/hmd/", CNTRY, "/STATS/")
+	# vector of names of tabs on each HFD page
+	tab_html    <- httr::content(
+			        httr::GET(CountryURL,
+					httr::authenticate(username, password),
+					httr::config(ssl_verifypeer = 0L)))
+
+	parsed_html <- XML::htmlParse(tab_html)
+	all_links   <- XML::getHTMLLinks(parsed_html)
+	item_txt    <- all_links[grepl(all_links,pattern=".txt")]
+    item_lookup <- gsub(item_txt, pattern = ".txt", replacement = "")
+	return(item_lookup)
 }
