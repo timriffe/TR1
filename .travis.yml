@@ -1,6 +1,8 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
 language: r
+before_install:
+  - cd TR1/HMDHFDplus
 sudo: false
 cache: packages
 
