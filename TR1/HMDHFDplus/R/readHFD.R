@@ -227,7 +227,7 @@ readHFCweb <- function(CNTRY, item, fixup = TRUE, ...){
 		}
 		return(invisible(DF))
 	} else {
-		cat("Either the prefecture code or data item are not available\nCheck names.\nNULL returned\n")
+		cat("Either the CNTRY code or data item are not available\nCheck names.\nNULL returned\n")
 		NULL
 	}
 	

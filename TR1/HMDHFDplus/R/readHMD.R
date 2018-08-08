@@ -86,10 +86,10 @@ readHMDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 		}
 	}
 	
-	urlbase         <- "www.mortality.org/hmd"
+	urlbase         <- "https://www.mortality.org/hmd"
 #    tf <- tempfile()
 #    on.exit(unlink(tf))
-	this.url    <- "www.mortality.org/countries.csv"
+	this.url    <- "http://www.mortality.org/countries.csv"
 	cntries     <- RCurl::getURL(this.url, .opts=RCurl::curlOptions(followlocation = TRUE))
 	ctrylist    <- read.csv(text = cntries,
 			                header = TRUE,
