@@ -46,7 +46,8 @@ validate_email()
 check_on_linux()
 check_on_windows()
 
-install.packages("spelling")
+#install.packages("spelling")
+library(spelling)
 spell_check()
 devtools::release()
 
