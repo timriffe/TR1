@@ -38,4 +38,14 @@ sessionInfo()
 # just to make sure it builds for Windows.
 build_win("/home/tim/git/TR1/TR1/HMDHFDplus")
 
-devtools::revdep_check("/home/tim/git/TR1/TR1/HMDHFDplus")
+# reverse dependency check
+
+check_win_devel("/home/tim/git/TR1/TR1/HMDHFDplus") # done
+check_win_release("/home/tim/git/TR1/TR1/HMDHFDplus")
+check_win_oldrelease("/home/tim/git/TR1/TR1/HMDHFDplus")
+check_rhub("/home/tim/git/TR1/TR1/HMDHFDplus", email = "tim.riffe@gmail.com", interactive = FALSE)
+
+
+
+
+

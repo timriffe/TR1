@@ -10,7 +10,7 @@ Authors@R: c(
    person("Jason", "Hilton", role = "aut"),
    person("Josh", "Goldstein", role = "ctb"),
    person("Stephen", "Holzman", role = "ctb"))
-Description: Utilities for reading data from the Human Mortality Database (<www.mortality.org>), Human Fertility Database (<www.humanfertility.org>), and similar databases from the web or locally into an R session as data.frame objects. These are the two most widely used sources of demographic data to study basic demographic change, trends, and develop new demographic methods. Other supported databases at this time include the Human Fertility Collection (<http://www.fertilitydata.org/>), The Japanese Mortality Database (<http://www.ipss.go.jp/p-toukei/JMD>), and the Canadian Human Mortality Database (<http://www.bdlc.umontreal.ca/chmd/>). Arguments and data are standardized.
+Description: Utilities for reading data from the Human Mortality Database (<https://www.mortality.org>), Human Fertility Database (<https://www.humanfertility.org>), and similar databases from the web or locally into an R session as data.frame objects. These are the two most widely used sources of demographic data to study basic demographic change, trends, and develop new demographic methods. Other supported databases at this time include the Human Fertility Collection (<http://www.fertilitydata.org/>), The Japanese Mortality Database (<http://www.ipss.go.jp/p-toukei/JMD>), and the Canadian Human Mortality Database (<http://www.bdlc.umontreal.ca/chmd/>). Arguments and data are standardized.
 URL: https://github.com/timriffe/TR1
 BugReports: https://github.com/timriffe/TR1/issues
 License: GPL-2
