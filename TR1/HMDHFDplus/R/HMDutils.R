@@ -137,7 +137,10 @@ getCHMDprovinces <- function(){
 #' 
 #' @description called by \code{readHMDweb()}. This assumes that \code{CNTRY} is actually available in the HFD. 
 #' 
-#' @param CNTRY HMD country short code.
+#' @param CNTRY character. HMD country short code.
+#' @param username charcter. Your HMD user id usually the email address you registered with the HMD under.
+#' @param password charcter. Your HMD password.
+
 #' 
 #' @return character vector of item names. These are the file base names, and only need the extension \code{.txt} added in order to get the file name.
 #' 

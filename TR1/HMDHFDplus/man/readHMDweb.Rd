@@ -7,13 +7,13 @@
 readHMDweb(CNTRY, item, username, password, fixup = TRUE)
 }
 \arguments{
-\item{CNTRY}{HMD population letter code. If not spelled right, or not specified, the function provides a selection list. Only 1.}
+\item{CNTRY}{character. HMD population letter code. If not spelled right, or not specified, the function provides a selection list. Only 1.}
 
-\item{item}{the statistical product you want, e.g., \code{"fltper_1x1"}. Only 1.}
+\item{item}{character. The statistical product you want, e.g., \code{"fltper_1x1"}. Only 1.}
 
-\item{username}{usually the email address you registered with the HMD under. If left blank, you'll be prompted. Do that if you don't mind the typing and prefer not to save your username in your code.}
+\item{username}{character. Your HMD user id, usually the email address you registered with the HMD under. If left blank, you'll be prompted. Do that if you don't mind the typing and prefer not to save your username in your code.}
 
-\item{password}{Your HMD password. If left blank, you'll be prompted. Do that if you don't mind the typing and prefer not to save your password in your code.}
+\item{password}{character. Your HMD password. If left blank, you'll be prompted. Do that if you don't mind the typing and prefer not to save your password in your code.}
 
 \item{fixup}{logical. Should columns be made more user-friendly, e.g., forcing Age to be integer?}
 }
