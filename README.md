@@ -17,6 +17,10 @@ Installation
 
 The package is now on CRAN!: https://cran.r-project.org/web/packages/HMDHFDplus/
 
+
+**EDIT Aug 9, 2018**
+Now fixed for both HMD and HFD, HT @jasonhilton. CRAN update forthcoming
+
 **EDIT Jan 3, 2017**
 The CRAN version has two major bugs due to changes in the websites of both HMD and HFD. These have been attended to here, but those changes have not yet made it to CRAN, so please just install from github as explained below
 **EDIT Jan 3, 2017**
@@ -30,7 +34,7 @@ As long as you R version is relatively up to date. If not then either update you
 To download the development version of HMDHFDplus
 
 1. make sure you have the most recent version of R
-2. make sure you install the `RCurl` and `XML` packages first, which are needed for handling logins and html parsing. These packages may require extra steps to install. See further (approximate) instructions depending on OS.
+2. make sure you install the `httr`, `RCurl`, and `XML` packages first, which are needed for handling logins and html parsing. These packages may require extra steps to install. See further (approximate) instructions depending on OS.
 3. look at the OS-specific notes below to ensure the installation will work.
 
 Either download the [zip ball](https://github.com/timriffe/TR1/zipball/master) or [tar ball](https://github.com/timriffe/TR1/tarball/master), decompress and run `R CMD INSTALL` on it in the terminal command line. You can also look in the `Builds` folder of this repository for `tar.gz` files that you can try to [install locally](http://stackoverflow.com/questions/1474081/how-do-i-install-an-r-package-from-source). The easiest way to install is to use the **devtools** package to install the development version:
