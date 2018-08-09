@@ -33,19 +33,32 @@ build(file.path(parent.path,"HMDHFDplus"),path=file.path(parent.path,"Builds"))
 library(devtools)
 
 check("/home/tim/git/TR1/TR1/HMDHFDplus")
+# 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 sessionInfo()
 
-# just to make sure it builds for Windows.
-build_win("/home/tim/git/TR1/TR1/HMDHFDplus")
 
-# reverse dependency check
-
-check_win_devel("/home/tim/git/TR1/TR1/HMDHFDplus") # done
-check_win_release("/home/tim/git/TR1/TR1/HMDHFDplus")
-check_win_oldrelease("/home/tim/git/TR1/TR1/HMDHFDplus")
-check_rhub("/home/tim/git/TR1/TR1/HMDHFDplus", email = "tim.riffe@gmail.com", interactive = FALSE)
+# windows checks on different versions:
+# August 9, 2018
+check_win_release()    # sent OK
+check_win_devel()      # sent OK
+check_win_oldrelease() # sent OK
 
 
+#devtools::install_github("r-hub/rhub")
+library(rhub)
+validate_email()
+check_on_linux()
+check_on_windows()
 
+use_cran_badge()
+use_revdep()
+revdepcheck::revdep_check()
 
+devtools::install_github("GuangchuangYu/badger")
+library(badger)
+badge_github_version("timriffe/TR1/TR1/HMDHFDplus")
+?badge_github_version
+badger:::check_github("timriffe/TR1/TR1/HMDHFDplus")
+rvcheck:::check_github_gitlab("timriffe/TR1/TR1/HMDHFDplus")
+badger:::badge_github_version("timriffe/DemoTools","yellow")
 
