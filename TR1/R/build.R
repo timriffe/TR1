@@ -1,19 +1,16 @@
-parent.path <- "/home/tim/git/TR1/TR1"
+
 setwd("/home/tim/git/TR1/TR1/HMDHFDplus")
 dir()
 library(devtools)
 
-document(file.path(parent.path,"HMDHFDplus"))
+document()
 
 # increment version number
 # install_github("timriffe/TimUtils", subdir = "TimUtils")
-library(TimUtils)
 
-#IncrementVersion(file.path(parent.path ,"HMDHFDplus"),"1","2013-10-15")
+load_all()
 
-load_all(file.path(parent.path,"HMDHFDplus"))
-
-build(file.path(parent.path,"HMDHFDplus"),path=file.path(parent.path,"Builds"))
+build(path=file.path("/home/tim/git/TR1/TR1/","Builds"))
 #install.packages("/home/tim/git/TR1/TR1/HMDHFDplus_01.1.6009.tar.gz",repos=NULL,type="source")
 #library(HMDHFDplus)
 #
@@ -30,9 +27,8 @@ build(file.path(parent.path,"HMDHFDplus"),path=file.path(parent.path,"Builds"))
 #USpop <- readHMDweb("USA","Population",username = us, password = pw)
 #head(USpop)
 
-library(devtools)
-
-check("/home/tim/git/TR1/TR1/HMDHFDplus")
+# use_cran_badge()
+check()
 # 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 sessionInfo()
 
@@ -50,15 +46,18 @@ validate_email()
 check_on_linux()
 check_on_windows()
 
-use_cran_badge()
-use_revdep()
-revdepcheck::revdep_check()
+install.packages("spelling")
+spell_check()
+devtools::release()
 
-devtools::install_github("GuangchuangYu/badger")
-library(badger)
-badge_github_version("timriffe/TR1/TR1/HMDHFDplus")
-?badge_github_version
-badger:::check_github("timriffe/TR1/TR1/HMDHFDplus")
-rvcheck:::check_github_gitlab("timriffe/TR1/TR1/HMDHFDplus")
-badger:::badge_github_version("timriffe/DemoTools","yellow")
+#use_revdep()
+#revdepcheck::revdep_check()
+
+#devtools::install_github("GuangchuangYu/badger")
+#library(badger)
+#badge_github_version("timriffe/TR1/TR1/HMDHFDplus")
+#?badge_github_version
+#badger:::check_github("timriffe/TR1/TR1/HMDHFDplus")
+#rvcheck:::check_github_gitlab("timriffe/TR1/TR1/HMDHFDplus")
+#badger:::badge_github_version("timriffe/DemoTools","yellow")
 

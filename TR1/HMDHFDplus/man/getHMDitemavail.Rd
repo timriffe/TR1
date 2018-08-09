@@ -9,9 +9,9 @@ getHMDitemavail(CNTRY, username, password)
 \arguments{
 \item{CNTRY}{character. HMD country short code.}
 
-\item{username}{charcter. Your HMD user id usually the email address you registered with the HMD under.}
+\item{username}{character. Your HMD user id usually the email address you registered with the HMD under.}
 
-\item{password}{charcter. Your HMD password.}
+\item{password}{character. Your HMD password.}
 }
 \value{
 character vector of item names. These are the file base names, and only need the extension \code{.txt} added in order to get the file name.
