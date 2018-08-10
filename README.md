@@ -8,6 +8,10 @@ Here's a link to the paper: [link](http://www.demogr.mpg.de/En/projects_publicat
 
 HMDHFDplus
 ============
+
+[![Build Status](https://travis-ci.org/timriffe/TR1.svg?branch=master)](https://travis-ci.org/timriffe/TR1)
+[![CRAN status](https://www.r-pkg.org/badges/version/HMDHFDplus)](https://cran.r-project.org/package=HMDHFDplus)
+
 There is an `R` package inside the repository called `HMDHFDplus`.
 
 This package contains some code migrated over from the `DemogBerkeley` package, also hosted on github, as well as some new code. The `HMDHFDplus` package only contains functions for reading data into R. The `R` code is also more oranized here. Currently there are functions for reading in HMD, JMD, CHMD, HFD, and HFC code, and there are plans to implement HLD code as well, once that database is done reorganizing.
@@ -19,7 +23,7 @@ The package is now on CRAN!: https://cran.r-project.org/web/packages/HMDHFDplus/
 
 
 **EDIT Aug 9, 2018**
-Now fixed for both HMD and HFD, HT @jasonhilton. CRAN update forthcoming
+Now fixed for both HMD and HFD, HT @jasonhilton. CRAN updating.
 
 **EDIT Jan 3, 2017**
 The CRAN version has two major bugs due to changes in the websites of both HMD and HFD. These have been attended to here, but those changes have not yet made it to CRAN, so please just install from github as explained below
