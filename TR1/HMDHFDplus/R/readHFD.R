@@ -52,7 +52,6 @@ readHFD <- function(filepath, fixup = TRUE,...){
 #' @param password your HFD password. Don't make this a sensitive password, as things aren't encrypted.
 #' @param fixup logical. Should columns be made more user-friendly, e.g., forcing Age to be integer?
 #' @param Update character string of 8-digit date code of the format \code{"YYYYMMDD"}. Defaults to most recent update.
-#' @param ... optional arguments passed to \code{read.table}. Probably not needed.
 #' 
 #' @return data.frame of the given HFD data file, modified in some friendly ways.
 #'

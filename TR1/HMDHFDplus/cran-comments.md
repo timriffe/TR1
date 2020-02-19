@@ -1,7 +1,8 @@
-This is a package update. The previous version stopped working because websites switched to https
+This is a minor package update. The previous version started flagging
+warnings due to an unused but-documented argument, now fixed.
 
 ## Test environments
-* Ubuntu 14.04.3 LTS, R version 3.4.0
+* Ubuntu 18.04.4 LTS, R version 3.6.2 
 * win-builder: x86_64-w64-mingw32 (64-bit)
   * R version 3.5.1 (2018-07-02)
   * R version 3.4.4 (2018-03-15)

@@ -4,8 +4,14 @@
 \alias{readHFDweb}
 \title{read an HFD data file directly from the web as an R data.frame}
 \usage{
-readHFDweb(CNTRY = NULL, item = NULL, username = NULL,
-  password = NULL, fixup = TRUE, Update = NULL)
+readHFDweb(
+  CNTRY = NULL,
+  item = NULL,
+  username = NULL,
+  password = NULL,
+  fixup = TRUE,
+  Update = NULL
+)
 }
 \arguments{
 \item{CNTRY}{character string of the HFD short code. Only one!}
@@ -19,8 +25,6 @@ readHFDweb(CNTRY = NULL, item = NULL, username = NULL,
 \item{fixup}{logical. Should columns be made more user-friendly, e.g., forcing Age to be integer?}
 
 \item{Update}{character string of 8-digit date code of the format \code{"YYYYMMDD"}. Defaults to most recent update.}
-
-\item{...}{optional arguments passed to \code{read.table}. Probably not needed.}
 }
 \value{
 data.frame of the given HFD data file, modified in some friendly ways.

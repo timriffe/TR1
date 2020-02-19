@@ -1,8 +1,8 @@
 Package: HMDHFDplus
 Type: Package
 Title: Read Human Mortality Database and Human Fertility Database Data from the Web
-Version: 1.9.11.9000
-Date: 2018-08-09
+Version: 1.9.12
+Date: 2020-02-19
 Authors@R: c(
    person("Tim", "Riffe", role = c("aut", "cre"), 
           email = "tim.riffe@gmail.com"),
@@ -13,7 +13,7 @@ Authors@R: c(
 Description: Utilities for reading data from the Human Mortality Database (<https://www.mortality.org>), Human Fertility Database (<https://www.humanfertility.org>), and similar databases from the web or locally into an R session as data.frame objects. These are the two most widely used sources of demographic data to study basic demographic change, trends, and develop new demographic methods. Other supported databases at this time include the Human Fertility Collection (<http://www.fertilitydata.org/>), The Japanese Mortality Database (<http://www.ipss.go.jp/p-toukei/JMD>), and the Canadian Human Mortality Database (<http://www.bdlc.umontreal.ca/chmd/>). Arguments and data are standardized.
 URL: https://github.com/timriffe/TR1
 BugReports: https://github.com/timriffe/TR1/issues
-License: file LICENSE
+License: GPL-2
 LazyLoad: yes
 Encoding: UTF-8
 Depends:
@@ -29,4 +29,4 @@ Imports:
 	RCurl,
 	XML,
 	httr
-RoxygenNote: 6.1.0
+RoxygenNote: 7.0.2

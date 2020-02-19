@@ -1,5 +1,5 @@
 
-setwd("/home/tim/git/TR1/TR1/HMDHFDplus")
+setwd("TR1/HMDHFDplus")
 dir()
 library(devtools)
 
@@ -10,21 +10,21 @@ document()
 
 load_all()
 
-build(path=file.path("/home/tim/git/TR1/TR1/","Builds"))
-#install.packages("/home/tim/git/TR1/TR1/HMDHFDplus_01.1.6009.tar.gz",repos=NULL,type="source")
-#library(HMDHFDplus)
-#
-#A <- readHMDweb("USA","mltper_1x1",username=us,password=pw)
-#head(A)
-#A <- readJMDweb("02","mltper_5x5")
-#head(A)
-#A <- readCHMDweb("alb","mltper_5x5")
-#head(A)
-#A <- readHFDweb("USA","birthsRR",username=us,password=pw)
-#head(A)
-#A <- readHFCweb("USA","ASFRstand_BO")
-#head(A)
-#USpop <- readHMDweb("USA","Population",username = us, password = pw)
+build(pkg=here::here("TR1","HMDHFDplus"),path=here::here("TR1","Builds"))
+# install.packages(here::here("TR1","Builds","HMDHFDplus_1.9.11.9000.tar.gz"), type = "source", repos = NULL)
+# library(HMDHFDplus)
+# 
+# A <- readHMDweb("USA","mltper_1x1",username=us,password=pw)
+# head(A)
+# A <- readJMDweb("02","mltper_5x5")
+# head(A)
+# A <- readCHMDweb("alb","mltper_5x5")
+# head(A)
+# A <- readHFDweb("USA","birthsRR",username=us,password=pw)
+# head(A)
+# A <- readHFCweb("USA","ASFRstand_BO")
+# head(A)
+# USpop <- readHMDweb("USA","Population",username = us, password = pw)
 #head(USpop)
 
 # use_cran_badge()
