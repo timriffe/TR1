@@ -1,5 +1,5 @@
 
-setwd("TR1/HMDHFDplus")
+
 dir()
 library(devtools)
 
