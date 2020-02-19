@@ -4,7 +4,7 @@ warnings due to an unused but-documented argument, now fixed.
 ## Test environments
 * Ubuntu 18.04.4 LTS, R version 3.6.2 
 * win-builder: x86_64-w64-mingw32 (64-bit)
-  * R version 3.5.1 (2018-07-02)
+  * R version 3.6.2 (2019-12-12)
   * R version 3.4.4 (2018-03-15)
   * R development (unstable) (2018-08-07 r75080)
 * rhub:
