@@ -1,5 +1,5 @@
-
-
+here::here()
+setwd("TR1/HMDHFDplus")
 dir()
 library(devtools)
 
@@ -27,8 +27,8 @@ build(path="/home/tim/workspace/TR1/TR1/Builds")
 # USpop <- readHMDweb("USA","Population",username = us, password = pw)
 #head(USpop)
 
-# use_cran_badge()
-check()
+
+devtools::check()
 # 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 sessionInfo()
 
@@ -40,10 +40,12 @@ check_win_devel()      # not sent
 check_win_oldrelease() # sent OK
 
 
-#devtools::install_github("r-hub/rhub")
+1#devtools::install_github("r-hub/rhub")
 library(rhub)
 validate_email()
 check_on_linux()
+# need to re-validate email?
+validate_email()
 check_on_windows()
 
 #install.packages("spelling")

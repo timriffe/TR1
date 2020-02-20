@@ -190,7 +190,7 @@ HFCparse <- function(DF){
 
 #' @title getHFCcountries a function to grab all present country codes used in the Human Fertility Collection
 #' 
-#' @description The function returns a list of population codes used in the Human Fertiltiy Collection (HFC). Optionally, it also can return a data.frame with both the full population name and short code.
+#' @description The function returns a list of population codes used in the Human Fertility Collection (HFC). Optionally, it also can return a data.frame with both the full population name and short code.
 #' 
 #' @param names logical. Default \code{FALSE} Should a \code{data.frame} matching full country names to short codes be given?
 #' 

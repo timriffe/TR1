@@ -7,7 +7,7 @@ This is a minor package update. The previous version started flagging warnings d
   * R version 3.5.3 (2019-03-11)
   * R development (unstable) (2018-08-07 r75080) waiting
 * rhub:
-  * Debian Linux 16.04 LTS, GCC, R version 3.6.2 (2019-12-12)
+  * Debian Linux, R-release, GCC
   * Debian Linux, R-devel, GCC
   * Fedora Linux, R-devel, clang, gfortran
   * macOS 10.11 El Capitan, R version 3.6.2 (2019-12-12)

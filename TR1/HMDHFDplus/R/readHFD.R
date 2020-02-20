@@ -55,7 +55,7 @@ readHFD <- function(filepath, fixup = TRUE,...){
 #' 
 #' @return data.frame of the given HFD data file, modified in some friendly ways.
 #'
-#' @details You need to register for HFD to use this function: \url{www.humanfertility.org}. It is advised to pass in your credentials as named vectors rather than directly as character strings, so that they are not saved directly in your code. See examples. One option is to just save them in your Rprofile file.
+#' @details You need to register for HFD to use this function: \url{https://www.humanfertility.org}. It is advised to pass in your credentials as named vectors rather than directly as character strings, so that they are not saved directly in your code. See examples. One option is to just save them in your Rprofile file.
 #' 
 #' @importFrom httr GET content
 #' @importFrom utils select.list

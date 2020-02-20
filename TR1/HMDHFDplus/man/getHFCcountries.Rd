@@ -13,7 +13,7 @@ getHFCcountries(names = FALSE)
 either a character vector of short codes (default) or a \code{data.frame} of country names and codes.
 }
 \description{
-The function returns a list of population codes used in the Human Fertiltiy Collection (HFC). Optionally, it also can return a data.frame with both the full population name and short code.
+The function returns a list of population codes used in the Human Fertility Collection (HFC). Optionally, it also can return a data.frame with both the full population name and short code.
 }
 \examples{
 \dontrun{
