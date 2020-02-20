@@ -10,7 +10,7 @@ document()
 
 load_all()
 
-build(pkg=here::here("TR1","HMDHFDplus"),path=here::here("TR1","Builds"))
+build(path="/home/tim/workspace/TR1/TR1/Builds")
 # install.packages(here::here("TR1","Builds","HMDHFDplus_1.9.11.9000.tar.gz"), type = "source", repos = NULL)
 # library(HMDHFDplus)
 # 
@@ -49,6 +49,10 @@ check_on_windows()
 #install.packages("spelling")
 library(spelling)
 spell_check()
+
+library(revdepcheck)
+revdep_check()
+
 devtools::release()
 
 #use_revdep()
