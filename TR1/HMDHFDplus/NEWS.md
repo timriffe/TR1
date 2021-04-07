@@ -1,4 +1,8 @@
 # Changes in this update
+7 April 2021
+
+* `HMDparse()` handles territorial adjustments properly now. HT Jim Oeppen
+
 20 Feb 2020.
 
 *  `readHFDweb()` documentation Warning fixed.

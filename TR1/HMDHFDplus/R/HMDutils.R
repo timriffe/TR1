@@ -41,8 +41,8 @@ HMDparse <- function(DF, filepath){
 		Pluses      <- grepl(pattern = "\\+", DF$Year )
 		Minuses     <- grepl(pattern = "\\-", DF$Year )
 		# split out DF into two parts sum(Minuses) 
-		Jan1i       <- DF$Year %in% as.character(all.years[-length(all.years)]) | Minuses
-		Dec31i      <- DF$Year %in% as.character(all.years[-1]) | Pluses
+		Jan1i       <- DF$Year %in% as.character(all.years[-length(all.years)]) | Pluses
+		Dec31i      <- DF$Year %in% as.character(all.years[-1]) | Minuses
 		Jan1        <- DF[Jan1i, ]
 		Dec31       <- DF[Dec31i, ]
 		
