@@ -55,10 +55,6 @@ readHMD <- function(filepath, fixup = TRUE, ...){
 #'
 #' @details You need to register for HMD: \url{https://www.mortality.org}. It is advised to pass in your credentials as named vectors rather than directly as character strings, so that they are not saved directly in your code. See examples. One option is to just save them in your Rprofile file.
 #' 
-#' @importFrom RCurl getURL
-#' @importFrom RCurl getCurlHandle
-#' @importFrom RCurl getCurlInfo
-#' @importFrom RCurl url.exists
 #' @importFrom utils read.csv
 #' @importFrom utils read.table
 #' @importFrom httr GET content authenticate config
@@ -136,7 +132,6 @@ readHMDweb <- function(CNTRY, item, username, password, fixup = TRUE){
 
 	
 	path <- paste0("https://www.mortality.org/hmd/", CNTRY, "/STATS/", item)
-#	txt  <- RCurl::getURL(path, userpwd = paste0(username, ":", password))
     TEXT    <- httr::GET(path, 
 					httr::authenticate(username, password), 
 					httr::config(ssl_verifypeer = 0L))
@@ -178,7 +173,7 @@ readHMDweb <- function(CNTRY, item, username, password, fixup = TRUE){
 #' 
 #' @details No details of note. This database in independently maintained, so file types/locations are subject to change. If this happens, please notify the package maintainer.
 #' 
-#' @importFrom RCurl url.exists
+#' @importFrom httr HEAD
 #' 
 #' @export 
 #' 
@@ -197,9 +192,10 @@ readHMDweb <- function(CNTRY, item, username, password, fixup = TRUE){
 #' }
 #' 
 readJMDweb <- function(prefID = "01", item = "Deaths_5x5", fixup = TRUE, ...){
-	JMDurl      <- paste("http://www.ipss.go.jp/p-toukei/JMD",
+	JMDurl      <- paste("https://www.ipss.go.jp/p-toukei/JMD",
 			         prefID, "STATS", paste0(item, ".txt"), sep = "/")
-	if (RCurl::url.exists(JMDurl)){
+
+	if (httr::HEAD(JMDurl)$all_headers[[1]]$status == 200){
 		con         <- url(JMDurl)
 		Dat         <- readHMD(con, fixup = fixup, ...)
 		#close(con)
@@ -230,7 +226,7 @@ readJMDweb <- function(prefID = "01", item = "Deaths_5x5", fixup = TRUE, ...){
 #' 
 #' @export 
 #' 
-#' @importFrom RCurl url.exists
+#' @importFrom httr HEAD
 #' 
 #' @examples 
 #' \dontrun{
@@ -248,10 +244,10 @@ readJMDweb <- function(prefID = "01", item = "Deaths_5x5", fixup = TRUE, ...){
 #' 
 
 readCHMDweb <- function(provID = "can", item = "Deaths_1x1", fixup = TRUE, ...){
-	CHMDurl         <- paste("http://www.prdh.umontreal.ca/BDLC/data/",
+	CHMDurl         <- paste("https://www.prdh.umontreal.ca/BDLC/data/",
 			             provID, paste0(item, ".txt"), sep = "/")
 
-	if (RCurl::url.exists(CHMDurl)){
+	if (httr::HEAD(CHMDurl)$all_headers[[1]]$status == 200){
 		con         <- url(CHMDurl)
 		Dat         <- readHMD(con, fixup = fixup, ...)
 		#close(con)

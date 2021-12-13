@@ -28,13 +28,13 @@ head(DF)
 # get ASFRstand_BO for all countries where available:
 Countries <- getHFCcountries()
 # takes a minute to run
-# require(RCurl)
-HaveBO <- sapply(Countries, function(CNTRY, item){
-            RCurl::url.exists(paste0("http://www.fertilitydata.org/data/", 
-CNTRY,"/", CNTRY, "_", item, ".txt"))
-        }, item = "ASFRstand_BO")
-# we grab data for these countries:
-(Countries <- Countries[HaveBO])
+
+urls <- paste0("http://www.fertilitydata.org/data/", 
+               Countries,"/", Countries, "_",  "ASFRstand_BO", ".txt")
+
+HaveBO <- RCurl::url.exists(urls)
+ # we grab data for these countries:
+ (Countries <- Countries[HaveBO])
 
 # Also takes 1-15 min depending on internet connection and machine
 # read in one at a time and stick together into long data.frame

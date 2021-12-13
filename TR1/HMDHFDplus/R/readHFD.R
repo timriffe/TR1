@@ -120,7 +120,7 @@ readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 	                   "?page=main.php&f=na&tab=na&LogonEMail=",
 			username, "&LogonPassword=", password, "&Logon=%20%20Login%20%20%20"
 	)
-	# replaces previous Rcurl method -  httr manages the handle
+
 	logged_in_page <- httr::GET(loginURL)
 	Continue <- grepl("welcome", logged_in_page)
 	if (!Continue) {
@@ -178,7 +178,7 @@ readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 #' 
 #' @export
 #' 
-#' @importFrom RCurl url.exists
+#' @importFrom httr HEAD
 #' @importFrom utils read.csv
 #' 
 #' @examples 
@@ -191,13 +191,13 @@ readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 #' # get ASFRstand_BO for all countries where available:
 #' Countries <- getHFCcountries()
 #' # takes a minute to run
-#' # require(RCurl)
-#' HaveBO <- sapply(Countries, function(CNTRY, item){
-#'             RCurl::url.exists(paste0("http://www.fertilitydata.org/data/", 
-#' CNTRY,"/", CNTRY, "_", item, ".txt"))
-#'         }, item = "ASFRstand_BO")
-#' # we grab data for these countries:
-#' (Countries <- Countries[HaveBO])
+#' 
+#' urls <- paste0("http://www.fertilitydata.org/data/", 
+#'                Countries,"/", Countries, "_",  "ASFRstand_BO", ".txt")
+#' 
+#' HaveBO <- RCurl::url.exists(urls)
+#'  # we grab data for these countries:
+#'  (Countries <- Countries[HaveBO])
 #' 
 #' # Also takes 1-15 min depending on internet connection and machine
 #' # read in one at a time and stick together into long data.frame
@@ -213,10 +213,10 @@ readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 #' 
 readHFCweb <- function(CNTRY, item, fixup = TRUE, ...){
 	# concatenate url:
-	fileurl <- paste0("http://www.fertilitydata.org/data/", CNTRY, "/", CNTRY, "_", item, ".txt")
+	fileurl <- paste0("https://www.fertilitydata.org/data/", CNTRY, "/", CNTRY, "_", item, ".txt")
 	
 	# read in with needed arguments:
-	if (RCurl::url.exists(fileurl)){
+	if (httr::HEAD(fileurl)$all_headers[[1]]$status == 200){
 		con         <- url(fileurl)
 		DF          <- read.csv(url(fileurl), stringsAsFactors = FALSE, na.strings = ".", strip.white = TRUE, ...)
 		close(con)
