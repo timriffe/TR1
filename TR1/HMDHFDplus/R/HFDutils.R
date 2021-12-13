@@ -196,8 +196,9 @@ HFCparse <- function(DF){
 #' 
 #' @return either a character vector of short codes (default) or a \code{data.frame} of country names and codes.
 #' 
-#' @importFrom XML readHTMLTable
-#' 
+#' @importFrom rvest read_html
+#' @importFrom rvest html_element
+#' @importFrom rvest html_table
 #' @export
 #' 
 #' @examples 
@@ -206,8 +207,14 @@ HFCparse <- function(DF){
 #' getHFCcountries(names = TRUE)
 #' }
 getHFCcountries <- function(names = FALSE){
-	Codes <- XML::readHTMLTable("http://www.fertilitydata.org/cgi-bin/country_codes.php", 
-			stringsAsFactors = FALSE)[[1]]
+	Codes <-
+	html_table(
+	  html_element(
+	    read_html("http://www.fertilitydata.org/cgi-bin/country_codes.php"), 
+	    "table"),
+	  header = TRUE)
+
+	
 	if (names){
 		return(Codes)
 	} else {

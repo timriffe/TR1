@@ -1,5 +1,5 @@
 here::here()
-setwd("TR1/HMDHFDplus")
+setwd("HMDHFDplus")
 dir()
 library(devtools)
 
@@ -16,7 +16,7 @@ build(path="/home/tim/workspace/TR1/TR1/Builds")
 # 
 # A <- readHMDweb("USA","mltper_1x1",username=us,password=pw)
 # head(A)
-# A <- readJMDweb("02","mltper_5x5")
+# A <- readJMDweb("02","mltper_5x5") # broken
 # head(A)
 # A <- readCHMDweb("alb","mltper_5x5")
 # head(A)
