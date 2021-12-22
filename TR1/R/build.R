@@ -45,10 +45,12 @@ check_win_oldrelease() # sent OK
 library(rhub)
 validate_email()
 check_on_linux()
+rhub::check()
 # need to re-validate email?
 validate_email()
 check_on_windows()
-
+check_on_macos()
+check_with_rdevel()
 #install.packages("spelling")
 library(spelling)
 spell_check()
