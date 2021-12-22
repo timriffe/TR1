@@ -5,6 +5,7 @@
 * `readJMDweb()` adapted to changing website specifications
 * `readHFCcountries()` fixed
 * `readHFDweb()` adapted to changing website specifications
+* `getJMDprefectures()` fixed
 
 7 April 2021
 
