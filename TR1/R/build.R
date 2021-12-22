@@ -35,7 +35,7 @@ sessionInfo()
 
 
 # windows checks on different versions:
-#  19, Feb 2020
+#  22, Dec 2021
 check_win_release()    # sent OK
 check_win_devel()      # not sent
 check_win_oldrelease() # sent OK

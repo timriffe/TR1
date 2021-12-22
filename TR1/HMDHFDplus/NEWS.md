@@ -1,4 +1,11 @@
 # Changes in this update
+
+22 December 2021
+
+* `readJMDweb()` adapted to changing website specifications
+* `readHFCcountries()` fixed
+* `readHFDweb()` adapted to changing website specifications
+
 7 April 2021
 
 * `HMDparse()` handles territorial adjustments properly now. HT Jim Oeppen
