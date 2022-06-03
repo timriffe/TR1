@@ -16,14 +16,13 @@ build(path="/home/tim/workspace/TR1/TR1/Builds")
 # 
 #  A <- readHMDweb("USA","mltper_1x1",username=us,password=pw)
 #  head(A)
-#  A <- readJMDweb("02","mltper_5x5") # broken
+#  A <- readJMDweb("02","mltper_5x5") 
 #  head(A)
 #  A <- readCHMDweb("alb","mltper_5x5")
 #  head(A)
 #  A <- readHFDweb("USA","birthsRR",username=us,password=pw)
 #  head(A)
 #  A <- readHFCweb("USA","ASFRstand_BO")
-# 
 #  head(A)
 #  USpop <- readHMDweb("USA","Population",username = us, password = pw)
 # head(USpop)
@@ -35,9 +34,9 @@ sessionInfo()
 
 
 # windows checks on different versions:
-#  22, Dec 2021
+#  2, June 2022
 check_win_release()    # sent OK
-check_win_devel()      # not sent
+check_win_devel()      # sent
 check_win_oldrelease() # sent OK
 
 
