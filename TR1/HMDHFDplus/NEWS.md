@@ -1,5 +1,11 @@
 # Changes in this update
 
+16 June 2022
+
+* `readHMDweb()` and related functions now temporarily point 
+   to a new url to grab data: `https://former.mortality.org`. This
+   is a patch until a new API will be released.
+
 22 December 2021
 
 * `readJMDweb()` adapted to changing website specifications

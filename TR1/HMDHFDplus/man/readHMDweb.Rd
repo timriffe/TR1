@@ -24,5 +24,11 @@ data.frame of the HMD product, read as as \code{readHMD()} would read it.
 This is a basic HMD data grabber, based on Carl Boe's original \code{HMD2R()}. It will only grab a single HMD statistical product from a single country. Some typical R pitfalls are removed: The Age column is coerced to integer, while an AgeInterval column is created. Also Population counts are placed into two columns, for Jan. 1st and Dec. 31 of the same year, so as to remove headaches from population universe adjustments, such as territorial changes. Fewer options means less to break. To do more sophisticated data extraction, iterate over country codes or statistical items. Reformatting can be done outside this function using, e.g., \code{long2mat()}. Argument \code{fixup} is outsourced to \code{HMDparse()}.
 }
 \details{
-You need to register for HMD: \url{https://www.mortality.org}. It is advised to pass in your credentials as named vectors rather than directly as character strings, so that they are not saved directly in your code. See examples. One option is to just save them in your Rprofile file.
+This function currently points to a mirror of the former site. 
+This is a temporary patch until an API is released. To read data live from 
+the web, you need to register at the `former` HMD website: 
+\url{https://former.mortality.org}. It is advised to pass in your credentials 
+as named vectors rather than directly as character strings, so that they are 
+not saved directly in your code. See examples. One option is to just save 
+them in your Rprofile file.
 }

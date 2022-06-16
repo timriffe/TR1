@@ -53,7 +53,13 @@ readHMD <- function(filepath, fixup = TRUE, ...){
 #' 
 #' @return data.frame of the HMD product, read as as \code{readHMD()} would read it.
 #'
-#' @details You need to register for HMD: \url{https://www.mortality.org}. It is advised to pass in your credentials as named vectors rather than directly as character strings, so that they are not saved directly in your code. See examples. One option is to just save them in your Rprofile file.
+#' @details This function currently points to a mirror of the former site. 
+#' This is a temporary patch until an API is released. To read data live from 
+#' the web, you need to register at the `former` HMD website: 
+#' \url{https://former.mortality.org}. It is advised to pass in your credentials 
+#' as named vectors rather than directly as character strings, so that they are 
+#' not saved directly in your code. See examples. One option is to just save 
+#' them in your Rprofile file.
 #' 
 #' @importFrom utils read.csv
 #' @importFrom utils read.table
@@ -83,7 +89,7 @@ readHMDweb <- function(CNTRY, item, username, password, fixup = TRUE){
 	}
 	
 	ctrylist    <- read.csv(
-			         "https://www.mortality.org/countries.csv",
+			         "https://former.mortality.org/countries.csv",
 			         header = TRUE,
 			         as.is = TRUE)
 			
@@ -131,7 +137,7 @@ readHMDweb <- function(CNTRY, item, username, password, fixup = TRUE){
 	stopifnot(length(item) == 1)
 
 	
-	path <- paste0("https://www.mortality.org/hmd/", CNTRY, "/STATS/", item)
+	path <- paste0("https://former.mortality.org/hmd/", CNTRY, "/STATS/", item)
     TEXT    <- httr::GET(path, 
 					httr::authenticate(username, password), 
 					httr::config(ssl_verifypeer = 0L))

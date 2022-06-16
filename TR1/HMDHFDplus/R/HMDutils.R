@@ -84,7 +84,7 @@ HMDparse <- function(DF, filepath){
 #' @export
 
 getHMDcountries <- function(){
-	HMDXXX  <- read.csv("https://www.mortality.org/countries.csv",stringsAsFactors = FALSE)
+	HMDXXX  <- read.csv("https://former.mortality.org/countries.csv",stringsAsFactors = FALSE)
 	HMDXXX  <- HMDXXX[!is.na(HMDXXX[,"ST_Per_LE_FY"]), ]
 	HMDXXX$Subpop.Code
 }
@@ -159,9 +159,9 @@ getCHMDprovinces <- function(){
 #' 
 getHMDitemavail <- function(CNTRY, username, password){
 	# It seems this function will only worked if you are logged in
-	CountryURL      <- paste0("https://www.humanfertility.org/cgi-bin/",
-			"country.php?country=",CNTRY)
-	CountryURL      <- paste0("https://www.mortality.org/hmd/", CNTRY, "/STATS/")
+	# CountryURL      <- paste0("https://www.humanfertility.org/cgi-bin/",
+	# 		"country.php?country=",CNTRY)
+	CountryURL      <- paste0("https://former.mortality.org/hmd/", CNTRY, "/STATS/")
 	# vector of names of tabs on each HFD page
 	tab_html    <- httr::content(
 			        httr::GET(CountryURL,
