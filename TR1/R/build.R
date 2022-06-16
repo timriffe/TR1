@@ -40,7 +40,7 @@ check_win_devel()      # sent
 check_win_oldrelease() # sent OK
 
 
-1#devtools::install_github("r-hub/rhub")
+#devtools::install_github("r-hub/rhub")
 library(rhub)
 validate_email()
 check_on_linux()

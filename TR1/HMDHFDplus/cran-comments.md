@@ -1,4 +1,5 @@
-This is a minor package update. Functions reading data from particular websites needed to be adapted to the changing website designs, for example switching from `http` to `https`. 
+This is a minor package update to change the url pointer for the Human Mortality Database used in the package. This is a temporary change to ensure functions work,
+but will be superceded when a new database API will be unveiled sometime soon. Back to work everyone!
 
 ## Test environments
 Ubuntu 20.04.3 LTS
