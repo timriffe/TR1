@@ -100,7 +100,7 @@ getHFDcountries <- function(){
 getHFDdate <- function(CNTRY){
   CountryURL <- paste0("https://www.humanfertility.org/Country/Country?cntr=", CNTRY)
   html <- read_html(CountryURL)
-  
+  xpath <- "/html/body/div[1]/div/div[3]/div[1]/div[1]/div[2]/span"
   # TR: is there a better way to do this? idk.
   LastUpdate <- 
     html %>%  
