@@ -91,25 +91,47 @@ getHFDcountries <- function(){
 #' 
 #' @return character string of eight integers representing the date as \code{"yyyymmdd"}.
 #' 
-#' @importFrom httr GET content
+#' @importFrom rvest read_html html_elements html_text2
+#' @importFrom lubridate dmy year month day
+#' @importFrom stringr str_pad
 #' 
 #' @export
 #' 
 getHFDdate <- function(CNTRY){
-  CountryURL      <- paste0("http://www.humanfertility.org/cgi-bin/country.php?",
-                            "country=", CNTRY)
-  #get date string by finding the permalink listed at the bottom of page.
-  html_country    <- httr::GET(CountryURL)
-  htmlstr <- httr::content(html_country, as="text")
-  LastUpdate <- regmatches(htmlstr, regexpr("(?<=update=)20[0-9]{6}", htmlstr,
-                                            perl=T))
+  CountryURL <- paste0("https://www.humanfertility.org/Country/Country?cntr=", CNTRY)
+  html <- read_html(CountryURL)
+  
+  # TR: is there a better way to do this? idk.
+  LastUpdate <- 
+    html %>%  
+    html_elements(xpath = xpath) %>% 
+    html_text2() %>% 
+    str_split(pattern = " ", 
+              simplify = TRUE) %>% 
+    c() %>% 
+    rev() %>% 
+    '['(1) %>% 
+    dmy()
+  
   if(length(LastUpdate)==0){
     stop("I can't find the date of the latest update to the data for this
           country. The Human Fertility Database website may have changed")
   }
+  date_out <- paste0(year(LastUpdate),
+                     str_pad(month(LastUpdate),
+                             width = 2,
+                             side="left",
+                             pad="0"),
+                     str_pad(day(LastUpdate),
+                             width = 2,
+                             side="left",
+                             pad="0"))
+  
+  
   # this isn't a date string, just 8 digits squashed together yyyymmdd
-  LastUpdate
+  date_out
 }
+
 
 
 ############################################################################
