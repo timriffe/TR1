@@ -126,18 +126,14 @@ getHFDcountries <- function(){
 #' 
 getHFDdate <- function(CNTRY){
   CountryURL <- paste0("https://www.humanfertility.org/Country/Country?cntr=", CNTRY)
-  html <- read_html(CountryURL)
-  xpath <- "/html/body/div[1]/div/div[3]/div[1]/div[1]/div[2]/span"
-  # TR: is there a better way to do this? idk.
+  html       <- read_html(CountryURL)
+  xpath      <- "/html/body/div[1]/div/div[3]/div[1]/div[1]/div[2]/span"
+
   LastUpdate <- 
-    html %>%  
-    html_elements(xpath = xpath) %>% 
-    html_text2() %>% 
-    str_split(pattern = " ", 
-              simplify = TRUE) %>% 
-    c() %>% 
-    rev() %>% 
-    '['(1) %>% 
+    html |>  
+    html_elements(xpath = xpath) |> 
+    html_text2() |>
+    sub(pattern = ".*: ", replacement = "", ) |>
     dmy()
   
   if(length(LastUpdate)==0){
