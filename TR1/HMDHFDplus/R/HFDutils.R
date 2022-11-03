@@ -57,25 +57,52 @@ HFDparse <- function(DF){
 
 #' @title internal function for grabbing the HFD country short codes. 
 #'
-#' @description This function is called by \code{readHFDweb()} and is separated here for modularity. There is likely a simpler way of coding this functionality. The vector of short codes returned only includes the fully incorporated HFD countries, not provisional countries.
+#' @description This function is called by \code{readHFDweb()} and is separated here for modularity. We include both main and provisional countries in the grab.
 #' 
-#' @return a vector of HFD country short codes.
+#' @return a `tibble` with three columns `Country`, `link` and `CNTRY` (the country short code)
 #' 
-#' @importFrom XML readHTMLTable
-#' @importFrom httr GET
+#' @importFrom rvest read_html html_element html_elements html_attr html_text2
+#' @importFrom dplyr tibble mutate
+#' @
 #' 
 #' @export
 #' 
 getHFDcountries <- function(){
-	# the ugliest code I've ever written. There must be a better way..
-  hfd_url <- "https://www.humanfertility.org/cgi-bin/zipfiles.php"
-  some_html <- httr::GET(hfd_url)
-  X <- XML::readHTMLTable(XML::htmlParse(some_html),
-                          header = TRUE, 
-                          colClasses = c("character", "character"), 
-                          which = 2, 
-                          stringsAsFactors = FALSE)
-	gsub("\\s*\\([^\\)]+\\)", "", X[,2])
+
+  # xpath to the main country list
+  xpath <- "/html/body/div[1]/div/div[3]/div[3]"
+  
+  html <- read_html("https://www.humanfertility.org")
+  links <-
+    html |>
+    html_element(xpath=xpath) |>
+    html_elements("a") |>
+    html_attr("href")
+  
+  cntry_names <-
+    html |> 
+    html_element(xpath=xpath) |> 
+    html_elements("a") |> 
+    html_text2()
+  
+  # preliminary releases are in a separate list
+  xpath_prelim <- "/html/body/div[1]/div/div[4]/div[3]"
+  links2 <-
+    html |> 
+    html_element(xpath=xpath_prelim) |> 
+    html_elements("a") |> 
+    html_attr("href")
+  
+  cntry_names2 <-
+    html |> 
+    html_element(xpath=xpath_prelim) |> 
+    html_elements("a") |>
+    html_text2()
+  
+  # compose table and extract country code from links:
+  tibble(Country= c(cntry_names,cntry_names2), link = c(links, links2)) |> 
+    mutate(CNTRY =  sub(".*=", "", link))
+  
 }
 
 

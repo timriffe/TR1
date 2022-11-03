@@ -1,5 +1,10 @@
 # Changes in this update
 
+2 November 2022
+
+* `getHFDdate()` adapted to the new HFD website
+* `getHFDcountries()` adapted. Now rather than a vector of codes we return a tibble with more information per source.
+
 16 June 2022
 
 * `readHMDweb()` and related functions now temporarily point 
