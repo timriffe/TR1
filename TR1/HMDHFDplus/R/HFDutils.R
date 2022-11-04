@@ -7,7 +7,6 @@
 # 4) getHFDitemavail()
 # 5) HFCparse()
 # 6) getHFCcountries()
-# 7) extract_HFD_items()
 
 ############################################################################
 # 1) HFDparse()
@@ -161,34 +160,92 @@ getHFDdate <- function(CNTRY){
 # 4) getHFDitemavail()
 ############################################################################
 
-#' @title internal function for grabbing the available data item names for a given country.
+#' @title List the available data item names for a given HFD country.
 #' 
 #' @description called by \code{readHFDweb()}. This assumes that \code{CNTRY} is actually available in the HFD. 
 #' 
 #' @param CNTRY HFD country short code.
 #' 
-#' @return a vector of item names. These are the file base names, and only need the extension \code{.txt} added in order to get the file name.
+#' @return a tibble of all available data files for the selected country. There are several useful indentifiers that can help determine the appropriate file, including the `measure` and `subtype` as detected from the html table properties, and `lexis` and `parity` as detected either from the file names or the table properties.
 #' 
-#' @importFrom httr GET content
+#' @importFrom janitor clean_names
+#' @importFrom tidyr pivot_longer
+#' @importFrom dplyr rename filter bind_rows bind_cols mutate case_when if_else select
+#' @impotFrom rvest read_html html_table html_elements html_text2 html_attr
 #' 
 #' @export
 #' 
 getHFDitemavail <- function(CNTRY){
-  # It seems this function will only worked if you are logged in
-	CountryURL      <- paste0("https://www.humanfertility.org/cgi-bin/",
-	                          "country.php?country=",CNTRY)
+ 
+  CountryURL <- paste0("https://www.humanfertility.org/Country/Country?cntr=", CNTRY)
+  
+  tidy_chunk <- function(X){
+    X |>
+      clean_names() |>
+      rename("measure" = x) |> 
+      pivot_longer(-measure,names_to = "subtype",values_to = "years") |> 
+      filter(measure != "")
+  }
+  
+  html <- read_html(CountryURL)
+  
+  cntry_tables<-
+    html |>
+    html_table() |>
+    lapply(FUN = tidy_chunk) |>
+    bind_rows() |>
+    filter(years != "-")
+  
+  years <-
+    html |>
+    html_elements("table") |>
+    html_elements("tr")|>
+    html_elements("a") |>
+    html_text2()
+  
+  links <-
+    html |>
+    html_elements("table") |>
+    html_elements("tr")|>
+    html_elements("a") |>
+    html_attr("href")
+  
+  # years2 was a check to ensure join was row-matched properly
+  linksyears <- tibble(link = links, years2 = years)
+  
+  # just need to infer some identifier columns based mostly on file names,
+  # and similar inferences
+  item_table <- 
+  cntry_tables |>
+    bind_cols(linksyears) |>
+    filter(grepl(link,pattern="*.txt")) |>
+    mutate(lexis = case_when(grepl(link,pattern = "TR") ~ "triangle",
+                             grepl(link,pattern = "RR") ~ "age-period",
+                             grepl(link,pattern = "VH") ~ "age-cohort",
+                             grepl(link,pattern = "VV") ~ "period-cohort",
+                             grepl(link,pattern = "pa") ~ "period",
+                             grepl(link,pattern = "pft") ~ "period",
+                             grepl(link,pattern = "patfr") ~ "period",
+                             grepl(link,pattern = "pmab") ~ "period",
+                             grepl(link,pattern = "pmabc") ~ "period",
+                             grepl(link,pattern = "cft") ~ "cohort",
+                             grepl(link,pattern = paste0(CNTRY,"mi")) ~ "period",
+                             grepl(link,pattern =  paste0(CNTRY,"mic")) ~ "period",
+                             grepl(link,pattern =  paste0(CNTRY,"births")) ~ "mixed",
+                             grepl(link,pattern =  paste0(CNTRY,"monthly")) ~ "period",
+                             grepl(link,pattern =  paste0(CNTRY,"parity")) ~ "mixed"), 
+    subtype = gsub('[0-9]+', '', subtype),
+           subtype = sub("_$","",subtype),
+           subtype = if_else(subtype == "years", "Input data", subtype)) |> 
+  select(-years2) |>
+  mutate(item = link %>% 
+           str_split(pattern = "\\\\") %>% 
+           lapply(rev) %>% 
+           lapply('[',1) %>% 
+           unlist() %>% 
+           gsub(pattern = ".txt", replacement = ""))
 
-	# vector of names of tabs on each HFD page
-	tabs <- c("si", "asfr", "ft")
-
-	item_list <- lapply(tabs, function(tab){
-	  # iterate through each tab and construct URL
-	  url <- paste0(CountryURL, "&tab=", tab)
-	  tab_html  <- httr::content(httr::GET(url))
-	  return(extract_HFD_items(tab_html, CNTRY))
-	})
-	
-	return(unlist(item_list))
+  item_table 
 }
 
 
@@ -268,36 +325,6 @@ getHFCcountries <- function(names = FALSE){
 }
 
 
-
-############################################################################
-# 7) extract_HFD_items()
-############################################################################
-#' @title Extract names of HFD items from HTML
-#'
-#' @description Extract names of Human fertility database datasets from an
-#' HTML page. Links are extracted from html, and for each link, any text falling
-#' between the provided country code and a .txt extension is returned
-#'
-#' @param html_content An object of class \code{xml_document} taken from a
-#' country page of the HFD website, typically the result of
-#' \code{httr::content(httr::GET(url))}
-#'
-#' @param CNTRY A string given one of the country codes used by HFD. See
-#' \code{getHFDcountries} for a function which lists available countries.
-#'
-#' @return A vector of characters, each of which is an item available for
-#' download
-#'
-#' @importFrom XML getHTMLLinks htmlParse
-#'
-extract_HFD_items <- function(html_content,CNTRY) {
-  parsed_html <- XML::htmlParse(html_content)
-  all_links <- XML::getHTMLLinks(parsed_html)
-  item_regex <- regexpr(paste0("(?<=",CNTRY,")[A-Za-z0-9]+(?=\\.txt)"), 
-          all_links, perl=T)
-  item_names <- regmatches(all_links, item_regex)
-  return(item_names)
-}
 
 
 

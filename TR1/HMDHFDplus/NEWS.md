@@ -4,6 +4,8 @@
 
 * `getHFDdate()` adapted to the new HFD website
 * `getHFDcountries()` adapted. Now rather than a vector of codes we return a tibble with more information per source.
+* `getHFDitemavail()` adapted. Now rather than a vector of items, we return an informative table of all available files for the given country with lots of metadata that might help a user figure out what file is needed.
+* `extract_HFD_items()` removed.
 
 16 June 2022
 
