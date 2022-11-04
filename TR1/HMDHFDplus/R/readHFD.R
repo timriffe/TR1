@@ -114,21 +114,48 @@ readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 			stop("CNTRY should be one of these:\n",paste(CNTRIES, collapse = ",\n"))
 		}
 	}
-	
-	# concatenate the login string
-	loginURL <- paste0("https://www.humanfertility.org/cgi-bin/logon.plx",
-	                   "?page=main.php&f=na&tab=na&LogonEMail=",
-			username, "&LogonPassword=", password, "&Logon=%20%20Login%20%20%20"
-	)
 
-	logged_in_page <- httr::GET(loginURL)
-	Continue <- grepl("welcome", logged_in_page)
+  
+  # testing starts here
+  loginURL <- paste0("https://www.humanfertility.org/Account/Login")
+	# concatenate the login string
+	# loginURL <- paste0("https://www.humanfertility.org/cgi-bin/logon.plx",
+	#                    "?page=main.php&f=na&tab=na&LogonEMail=",
+	# 		username, "&LogonPassword=", password, "&Logon=%20%20Login%20%20%20"
+	# )
+
+	# logged_in_page <- httr::GET(loginURL,
+	#                             authenticate(username, password))
+	# 
+	pgsession <- session(loginURL)
+	
+	# olny one form on login page:
+	pgform    <- html_form(pgsession)[[1]]  
+	
+	# hack because how else are we supposed to set a value for button??
+	pgform$fields[[4]]$name <- "button"
+	names(pgform$fields)[4] <- "button"
+	
+	# hack because rvest doesn't record where we were??
+	pgform$action <- loginURL
+
+	filled_form <- html_form_set(pgform, 
+	                           Email = username, 
+	                           Password = password, 
+	                           # TR: this is a guess
+	                           button = "submit")
+
+	# TR: this doesn't seem to work
+	logged_in_page <- session_submit(pgsession, filled_form)
+
+	#TR it gives a valid status code though...
+	Continue <- status_code(logged_in_page) == 200
 	if (!Continue) {
 	  stop(paste0("login didn't work. \nMaybe your username or password are off?",
 	              " \nYour request is contracepted!"))
   }
-	# let user chose, or filter items as necessary: 
-	
+	# let user choose, or filter items as necessary: 
+	# download.file("https://www.humanfertility.org/File/GetDocument/Files/USA\\20220628\\USApft.txt", destfile = "test.txt")
 	items <- getHFDitemavail(CNTRY)
 	if(is.null(item) || !(item %in% items)){
 		if (interactive()){
@@ -150,7 +177,7 @@ readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 			"https://www.humanfertility.org/cgi-bin/getfile.plx?f=",
 			CNTRY, "\\", Update, "\\", CNTRY, item, ".txt&c=", CNTRY)
 	
-	
+	Text <- httr::GET("https://www.humanfertility.org/File/GetDocument/Files/USA\\20220628\\USApft.txt")
 	Text <- httr::GET(HFDurl)
 	# parse raw data file to data.frame
 	DF <- try(read.table(text = httr::content(Text,encoding = "UTF-8"), header = TRUE, skip = 2, 
