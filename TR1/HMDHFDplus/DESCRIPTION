@@ -1,8 +1,8 @@
 Package: HMDHFDplus
 Type: Package
 Title: Read Human Mortality Database and Human Fertility Database Data from the Web
-Version: 1.9.18
-Date: 2022-06-16
+Version: 1.9.19
+Date: 2022-11-5
 Authors@R: c(
    person("Tim", "Riffe", role = c("aut", "cre"), 
           email = "tim.riffe@gmail.com"),
@@ -17,7 +17,7 @@ License: GPL-2
 LazyLoad: yes
 Encoding: UTF-8
 Depends:
-    R (>= 3.1.2),
+    R (>= 4.1),
 Collate:
     'age2int.R'
     'HFDutils.R'
@@ -28,7 +28,14 @@ Collate:
 Imports: 
 	XML,
 	httr,
-	rvest
+	rvest,
+	dplyr,
+	janitor,
+	lubridate,
+	readr,
+	stringr,
+	tidyr,
+	rlang
 Suggests:
     RCurl
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1

@@ -7,8 +7,8 @@
 getHFDcountries()
 }
 \value{
-a vector of HFD country short codes.
+a `tibble` with three columns `Country`, `link` and `CNTRY` (the country short code)
 }
 \description{
-This function is called by \code{readHFDweb()} and is separated here for modularity. There is likely a simpler way of coding this functionality. The vector of short codes returned only includes the fully incorporated HFD countries, not provisional countries.
+This function is called by \code{readHFDweb()} and is separated here for modularity. We include both main and provisional countries in the grab.
 }

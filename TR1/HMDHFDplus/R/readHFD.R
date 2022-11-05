@@ -29,8 +29,8 @@
 #' @note original function submitted by Josh Goldstein, modified by Tim Riffe.
 #' 
 
-readHFD <- function(filepath, fixup = TRUE,...){
-    DF      <- read.table(file = filepath, header = TRUE, skip = 2, na.strings = ".", as.is = TRUE, ...)
+readHFD <- function(filepath, fixup = TRUE, ...){
+    DF      <- suppressWarnings(read.table(file = filepath, header = TRUE, skip = 2, na.strings = ".", as.is = TRUE, ...))
     if (fixup){
       DF      <- HFDparse(DF)
     }
@@ -58,9 +58,10 @@ readHFD <- function(filepath, fixup = TRUE,...){
 #' @details You need to register for HFD to use this function: \url{https://www.humanfertility.org}. It is advised to pass in your credentials as named vectors rather than directly as character strings, so that they are not saved directly in your code. See examples. One option is to just save them in your Rprofile file.
 #' 
 #' @importFrom httr content status_code
-#' @importFrom rvest html_session html_form html_form_set session_submit session_jump_to  
+#' @importFrom rvest session html_form html_form_set session_submit session_jump_to  
 #' @importFrom utils select.list
 #' @importFrom dplyr filter pull
+#' @importFrom lubridate ymd is.Date
 
 #' 
 #' @export
@@ -85,7 +86,13 @@ readHFD <- function(filepath, fixup = TRUE,...){
 #' ### # plus enter data in the console twice:
 #' ### DAT <- readHFDweb()
 #' 
-readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NULL, fixup = TRUE, Update = NULL){
+readHFDweb <- function(
+    CNTRY = NULL, 
+    item = NULL, 
+    username = NULL, 
+    password = NULL, 
+    fixup = TRUE, 
+    Update = NULL){
 	
 	# let user input name and password
 	if (is.null(username)){
@@ -122,7 +129,7 @@ readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
   loginURL <- paste0("https://www.humanfertility.org/Account/Login")
 	# concatenate the login string
 
-	html <- html_session(loginURL)
+	html <- session(loginURL)
 	
 	# olny one form on login page:
 	pgform    <- html_form(html)[[1]]  
@@ -151,6 +158,7 @@ https://www.humanfertility.org/Account/UserAgreement"))
 	items     <- itemavail$item
 	if(is.null(item) || !(item %in% items) | length(item) > 1){
 		if (interactive()){
+		  
 		  cat(paste0("select an item nr\nIf you're not sure which one you want, select 0 and try running\ngetHFDitemavail('",eval(CNTRY),"') |> View()"))
 			.item <- select.list(choices = items, multiple = FALSE, title = "Select item")
 		} else {
@@ -160,15 +168,30 @@ https://www.humanfertility.org/Account/UserAgreement"))
 	  .item = item
 	}
 	
-	data_url <- itemavail |> filter(item == .item) |> pull(link)
+	# data_url <- itemavail |> filter(item == .item) |> pull(link)
 	
-	data_grab <- session_jump_to(html2, url="https://www.humanfertility.org/File/GetDocument/Files/USA/20220628/USAasfrRR.txt")
+	if (is.null(Update)){
+	  yyyymmdd <- getHFDdate(CNTRY)
+	} else {
+	  if (is.Date(ymd(yyyymmdd))){
+	    cat("Attempting to retrieve data from your requested Update date")
+	    yyyymmdd <- Update
+	  } else {
+	    stop("Update date appears misspecified. It needs to be a string in 'yyyymmdd' format\n The most recent valid update for ",CNTRY, " was '",eval(yyyymmdd),"'")
+	  }
+	}
+	# this could be pulled from getHFDitemavail() output as well,
+	# but we self-construct in order to allow custom dates
+	grab_url  <- paste0("https://www.humanfertility.org/File/GetDocument/Files/",CNTRY,
+	                    "/",yyyymmdd,"/",CNTRY,.item,".txt")
+	data_grab <- session_jump_to(html2, url = grab_url)
 	tmp <- tempfile()
 	
 	data_grab$response |> 
 	  content(encoding = "UTF-8") |> 
 	  cat(file=tmp, encoding = "UTF-8")
-	dat <- readHFD(tmp)
+	
+	DF <- readHFD(tmp, fixup = fixup)
 	
 	unlink(tmp)
 	closeAllConnections()

@@ -2,7 +2,7 @@
 % Please edit documentation in R/HFDutils.R
 \name{getHFDitemavail}
 \alias{getHFDitemavail}
-\title{internal function for grabbing the available data item names for a given country.}
+\title{List the available data item names for a given HFD country.}
 \usage{
 getHFDitemavail(CNTRY)
 }
@@ -10,7 +10,7 @@ getHFDitemavail(CNTRY)
 \item{CNTRY}{HFD country short code.}
 }
 \value{
-a vector of item names. These are the file base names, and only need the extension \code{.txt} added in order to get the file name.
+a tibble of all available data files for the selected country. There are several useful indentifiers that can help determine the appropriate file, including the `measure` and `subtype` as detected from the html table properties, and `lexis` and `parity` as detected either from the file names or the table properties.
 }
 \description{
 called by \code{readHFDweb()}. This assumes that \code{CNTRY} is actually available in the HFD.

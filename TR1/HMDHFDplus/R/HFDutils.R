@@ -21,30 +21,30 @@
 #' @return DF same data.frame, modified so that columns are of a useful class. If there were open age categories, such as \code{"-"} or \code{"+"}, this information is stored in a new dummy column called \code{OpenInterval}.
 #' 
 #' @details This parse routine is based on the subjective opinions of the author...
-#' 
+#' @importFrom dplyr mutate relocate case_when last_col
+#' @importFrom readr parse_number
+#' @importFrom rlang .data
 #' @export
 #' 
 HFDparse <- function(DF){
 	if (any(c("Age","Cohort","ARDY") %in% colnames(DF))){
 		# assuming that if there are two such columns that the open age, etc, rows will always agree.    
-		DF$OpenInterval <- FALSE
+
 		if ("Age" %in% colnames(DF)){
-			Pluses     <- grepl(pattern = "\\+", DF$Age )
-			Minuses    <- grepl(pattern = "\\-", DF$Age )
-			DF$Age     <- age2int(DF$Age)    
-			DF$OpenInterval <- DF$OpenInterval | Pluses | Minuses
+			DF <- DF |> 
+			  mutate(Age = parse_number(.data$Age),
+			         OpenInterval = .data$Age %in% range(.data$Age))
 		}
 		if ("ARDY" %in% colnames(DF)){
-			Pluses     <- grepl(pattern = "\\+", DF$ARDY )
-			Minuses    <- grepl(pattern = "\\-", DF$ARDY )
-			DF$ARDY     <- age2int(DF$ARDY)    
-			DF$OpenInterval <- DF$OpenInterval | Pluses | Minuses
+		  DF <- DF |> 
+		    mutate(ARDY = parse_number(.data$ARDY),
+		           OpenInterval = .data$ARDY %in% range(.data$ARDY))
 		}
 		if ("Cohort" %in% colnames(DF)){
-			Pluses     <- grepl(pattern = "\\+", DF$Cohort )
-			Minuses    <- grepl(pattern = "\\-", DF$Cohort )
-			DF$Cohort  <- age2int(DF$Cohort)   
-			DF$OpenInterval <- DF$OpenInterval | Pluses | Minuses
+			DF <- DF |>
+			  mutate(OpenInterval = grepl(pattern = "\\+", .data$Cohort) |  grepl(pattern = "\\-", .data$Cohort) ,
+			         Cohort = parse_number(.data$Cohort)) |>
+			  relocate(.data$OpenInterval, .after = last_col())
 		}
 	}
 	DF
@@ -62,7 +62,7 @@ HFDparse <- function(DF){
 #' 
 #' @importFrom rvest read_html html_element html_elements html_attr html_text2
 #' @importFrom dplyr tibble mutate
-#' @
+#' @importFrom rlang .data
 #' 
 #' @export
 #' 
@@ -100,7 +100,7 @@ getHFDcountries <- function(){
   
   # compose table and extract country code from links:
   tibble(Country= c(cntry_names,cntry_names2), link = c(links, links2)) |> 
-    mutate(CNTRY =  sub(".*=", "", link))
+    mutate(CNTRY =  sub(".*=", "", .data$link))
   
 }
 
@@ -171,7 +171,9 @@ getHFDdate <- function(CNTRY){
 #' @importFrom janitor clean_names
 #' @importFrom tidyr pivot_longer
 #' @importFrom dplyr rename filter bind_rows bind_cols mutate case_when if_else select
-#' @impotFrom rvest read_html html_table html_elements html_text2 html_attr
+#' @importFrom rvest read_html html_table html_elements html_text2 html_attr
+#' @importFrom stringr str_split
+#' @importFrom rlang .data
 #' 
 #' @export
 #' 
@@ -182,9 +184,9 @@ getHFDitemavail <- function(CNTRY){
   tidy_chunk <- function(X){
     X |>
       clean_names() |>
-      rename("measure" = x) |> 
-      pivot_longer(-measure,names_to = "subtype",values_to = "years") |> 
-      filter(measure != "")
+      rename("measure" = .data$x) |> 
+      pivot_longer(-.data$measure,names_to = "subtype",values_to = "years") |> 
+      filter(.data$measure != "")
   }
   
   html <- read_html(CountryURL)
@@ -218,35 +220,35 @@ getHFDitemavail <- function(CNTRY){
   item_table <- 
   cntry_tables |>
     bind_cols(linksyears) |>
-    filter(grepl(link,pattern="*.txt")) |>
-    mutate(lexis = case_when(grepl(link,pattern = "TR") ~ "triangle",
-                             grepl(link,pattern = "RR") ~ "age-period",
-                             grepl(link,pattern = "VH") ~ "age-cohort",
-                             grepl(link,pattern = "VV") ~ "period-cohort",
-                             grepl(link,pattern = "pa") ~ "period",
-                             grepl(link,pattern = "pft") ~ "period",
-                             grepl(link,pattern = "patfr") ~ "period",
-                             grepl(link,pattern = "pmab") ~ "period",
-                             grepl(link,pattern = "pmabc") ~ "period",
-                             grepl(link,pattern = "cft") ~ "cohort",
-                             grepl(link,pattern = paste0(CNTRY,"mi")) ~ "period",
-                             grepl(link,pattern =  paste0(CNTRY,"mic")) ~ "period",
-                             grepl(link,pattern =  paste0(CNTRY,"births")) ~ "mixed",
-                             grepl(link,pattern =  paste0(CNTRY,"monthly")) ~ "period",
-                             grepl(link,pattern =  paste0(CNTRY,"parity")) ~ "mixed"), 
-    subtype = gsub('[0-9]+', '', subtype),
-           subtype = sub("_$","",subtype),
-           subtype = if_else(subtype == "years", "Input data", subtype)) |> 
-  select(-years2) |>
-  mutate(item = link |>
+    filter(grepl(.data$link,pattern="*.txt")) |>
+    mutate(lexis = case_when(grepl(.data$link,pattern = "TR") ~ "triangle",
+                             grepl(.data$link,pattern = "RR") ~ "age-period",
+                             grepl(.data$link,pattern = "VH") ~ "age-cohort",
+                             grepl(.data$link,pattern = "VV") ~ "period-cohort",
+                             grepl(.data$link,pattern = "pa") ~ "period",
+                             grepl(.data$link,pattern = "pft") ~ "period",
+                             grepl(.data$link,pattern = "patfr") ~ "period",
+                             grepl(.data$link,pattern = "pmab") ~ "period",
+                             grepl(.data$link,pattern = "pmabc") ~ "period",
+                             grepl(.data$link,pattern = "cft") ~ "cohort",
+                             grepl(.data$link,pattern = paste0(CNTRY,"mi")) ~ "period",
+                             grepl(.data$link,pattern =  paste0(CNTRY,"mic")) ~ "period",
+                             grepl(.data$link,pattern =  paste0(CNTRY,"births")) ~ "mixed",
+                             grepl(.data$link,pattern =  paste0(CNTRY,"monthly")) ~ "period",
+                             grepl(.data$link,pattern =  paste0(CNTRY,"parity")) ~ "mixed"), 
+    subtype = gsub('[0-9]+', '', .data$subtype),
+           subtype = sub("_$", "", .data$subtype),
+           subtype = if_else(.data$subtype == "years", "Input data", .data$subtype)) |> 
+  select(-.data$years2) |>
+  mutate(item = .data$link |>
            str_split(pattern = "\\\\") |>
            lapply(rev) |>
            lapply('[',1) |>
            unlist() |>
            gsub(pattern = ".txt", replacement = "") |>
            gsub(pattern = CNTRY, replacement = ""),
-         link =gsub(link, pattern = "\\\\", replacement = "/"),
-         link = paste0("https://www.humanfertility.org",link))
+         link = gsub(.data$link, pattern = "\\\\", replacement = "/"),
+         link = paste0("https://www.humanfertility.org", .data$link))
 
   item_table
 }

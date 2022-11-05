@@ -8,7 +8,7 @@ document()
 # increment version number
 # install_github("timriffe/TimUtils", subdir = "TimUtils")
 
-load_all()
+load_all(reset=TRUE)
 
 build(path="/home/tim/workspace/TR1/TR1/Builds")
 # install.packages(here::here("TR1","Builds","HMDHFDplus_1.9.11.9000.tar.gz"), type = "source", repos = NULL)
@@ -20,7 +20,7 @@ build(path="/home/tim/workspace/TR1/TR1/Builds")
 #  head(A)
 #  A <- readCHMDweb("alb","mltper_5x5")
 #  head(A)
-#  A <- readHFDweb("USA","birthsRR",username=us,password=pw)
+ A <- readHFDweb("USA","birthsRR",username=us,password=pw)
 #  head(A)
 #  A <- readHFCweb("USA","ASFRstand_BO")
 #  head(A)
@@ -34,7 +34,7 @@ sessionInfo()
 
 
 # windows checks on different versions:
-#  2, June 2022
+#  5, Nov 2022
 check_win_release()    # sent OK
 check_win_devel()      # sent
 check_win_oldrelease() # sent OK
