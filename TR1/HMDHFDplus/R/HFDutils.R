@@ -238,14 +238,17 @@ getHFDitemavail <- function(CNTRY){
            subtype = sub("_$","",subtype),
            subtype = if_else(subtype == "years", "Input data", subtype)) |> 
   select(-years2) |>
-  mutate(item = link %>% 
-           str_split(pattern = "\\\\") %>% 
-           lapply(rev) %>% 
-           lapply('[',1) %>% 
-           unlist() %>% 
-           gsub(pattern = ".txt", replacement = ""))
+  mutate(item = link |>
+           str_split(pattern = "\\\\") |>
+           lapply(rev) |>
+           lapply('[',1) |>
+           unlist() |>
+           gsub(pattern = ".txt", replacement = "") |>
+           gsub(pattern = CNTRY, replacement = ""),
+         link =gsub(link, pattern = "\\\\", replacement = "/"),
+         link = paste0("https://www.humanfertility.org",link))
 
-  item_table 
+  item_table
 }
 
 
