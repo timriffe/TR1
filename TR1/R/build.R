@@ -20,7 +20,7 @@ build(path="/home/tim/workspace/TR1/TR1/Builds")
 #  head(A)
 #  A <- readCHMDweb("alb","mltper_5x5")
 #  head(A)
- A <- readHFDweb("USA","birthsRR",username=us,password=pw)
+# A <- readHFDweb("USA","birthsRR",username=us,password=pw)
 #  head(A)
 #  A <- readHFCweb("USA","ASFRstand_BO")
 #  head(A)
@@ -43,7 +43,7 @@ check_win_oldrelease() # sent OK
 #devtools::install_github("r-hub/rhub")
 library(rhub)
 validate_email()
-check_on_linux()
+check_on_linux() # takes a long time, just twiddle thumbs
 rhub::check()
 # need to re-validate email?
 validate_email()
