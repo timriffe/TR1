@@ -140,8 +140,9 @@ readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 
 	Continue <- status_code(html2) == 200
 	if (!Continue) {
-	  stop(paste0("login didn't work. \nMaybe your username or password are off?",
-	              " \nYour request is contracepted!"))
+	  stop(paste0("login didn't work. \nMaybe your username or password are off?
+If your username and password are from before 4 November 2022
+then you'll need to re-register for HFD due to the new website"))
   }
 	# let user choose, or filter items as necessary: 
 
