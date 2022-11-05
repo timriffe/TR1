@@ -142,7 +142,8 @@ readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
 	if (!Continue) {
 	  stop(paste0("login didn't work. \nMaybe your username or password are off?
 If your username and password are from before 4 November 2022
-then you'll need to re-register for HFD due to the new website"))
+then you'll need to re-register for HFD, starting here:\n
+https://www.humanfertility.org/Account/UserAgreement"))
   }
 	# let user choose, or filter items as necessary: 
 
