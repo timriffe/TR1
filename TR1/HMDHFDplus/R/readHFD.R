@@ -57,9 +57,11 @@ readHFD <- function(filepath, fixup = TRUE,...){
 #'
 #' @details You need to register for HFD to use this function: \url{https://www.humanfertility.org}. It is advised to pass in your credentials as named vectors rather than directly as character strings, so that they are not saved directly in your code. See examples. One option is to just save them in your Rprofile file.
 #' 
-#' @importFrom httr GET content
+#' @importFrom httr content status_code
+#' @importFrom rvest html_session html_form html_form_set session_submit session_jump_to  
 #' @importFrom utils select.list
-#' @importFrom utils read.table
+#' @importFrom dplyr filter pull
+
 #' 
 #' @export
 #' 
@@ -119,73 +121,57 @@ readHFDweb <- function(CNTRY = NULL, item = NULL, username = NULL, password = NU
   # testing starts here
   loginURL <- paste0("https://www.humanfertility.org/Account/Login")
 	# concatenate the login string
-	# loginURL <- paste0("https://www.humanfertility.org/cgi-bin/logon.plx",
-	#                    "?page=main.php&f=na&tab=na&LogonEMail=",
-	# 		username, "&LogonPassword=", password, "&Logon=%20%20Login%20%20%20"
-	# )
 
-	# logged_in_page <- httr::GET(loginURL,
-	#                             authenticate(username, password))
-	# 
-	pgsession <- session(loginURL)
+	html <- html_session(loginURL)
 	
 	# olny one form on login page:
-	pgform    <- html_form(pgsession)[[1]]  
+	pgform    <- html_form(html)[[1]]  
 	
-	# hack because how else are we supposed to set a value for button??
-	pgform$fields[[4]]$name <- "button"
-	names(pgform$fields)[4] <- "button"
-	
-	# hack because rvest doesn't record where we were??
+	# # hack because rvest doesn't record where we were??
 	pgform$action <- loginURL
+	pgform$url    <- loginURL
+	
+	filled_form   <- html_form_set(pgform, 
+	                               Email = username, 
+	                               Password = password)
 
-	filled_form <- html_form_set(pgform, 
-	                           Email = username, 
-	                           Password = password, 
-	                           # TR: this is a guess
-	                           button = "submit")
+	# TR: yay this now works!
+	html2 <- session_submit(html, filled_form)
 
-	# TR: this doesn't seem to work
-	logged_in_page <- session_submit(pgsession, filled_form)
-
-	#TR it gives a valid status code though...
-	Continue <- status_code(logged_in_page) == 200
+	Continue <- status_code(html2) == 200
 	if (!Continue) {
 	  stop(paste0("login didn't work. \nMaybe your username or password are off?",
 	              " \nYour request is contracepted!"))
   }
 	# let user choose, or filter items as necessary: 
-	# download.file("https://www.humanfertility.org/File/GetDocument/Files/USA\\20220628\\USApft.txt", destfile = "test.txt")
-	items <- getHFDitemavail(CNTRY)
-	if(is.null(item) || !(item %in% items)){
+
+	itemavail <- getHFDitemavail(CNTRY)
+	items     <- itemavail$item
+	if(is.null(item) || !(item %in% items) | length(item) > 1){
 		if (interactive()){
-			item <- select.list(choices = items, multiple = FALSE, title = "Select item")
+		  cat(paste0("select an item nr\nIf you're not sure which one you want, select 0 and try running\ngetHFDitemavail('",eval(CNTRY),"') |> View()"))
+			.item <- select.list(choices = items, multiple = FALSE, title = "Select item")
 		} else {
 			stop("item should be one of these:\n",paste(item, collapse = ",\n"))
 		}
+	} else {
+	  .item = item
 	}
 	
-	# everything is in a folder, the name of which is the 8-digit version of the update date,
-  # user could specify a different number. Don't know how to query what dates are available, 
-  # though. by default we just get the most recent date.
-  if (is.null(Update)){
-		Update <- getHFDdate(CNTRY)
-	}	
+	data_url <- itemavail |> filter(item == .item) |> pull(link)
+	
+	data_grab <- session_jump_to(html2, url="https://www.humanfertility.org/File/GetDocument/Files/USA/20220628/USAasfrRR.txt")
+	tmp <- tempfile()
+	
+	data_grab$response |> 
+	  content(encoding = "UTF-8") |> 
+	  cat(file=tmp, encoding = "UTF-8")
+	dat <- readHFD(tmp)
+	
+	unlink(tmp)
+	closeAllConnections()
 
-	# url used to ask for data file. try to ignore 'tabs'
-	HFDurl <- paste0(
-			"https://www.humanfertility.org/cgi-bin/getfile.plx?f=",
-			CNTRY, "\\", Update, "\\", CNTRY, item, ".txt&c=", CNTRY)
-	
-	Text <- httr::GET("https://www.humanfertility.org/File/GetDocument/Files/USA\\20220628\\USApft.txt")
-	Text <- httr::GET(HFDurl)
-	# parse raw data file to data.frame
-	DF <- try(read.table(text = httr::content(Text,encoding = "UTF-8"), header = TRUE, skip = 2, 
-	                     na.strings = ".", as.is = TRUE), silent = TRUE)
-	
-	if (fixup){
-		DF      <- HFDparse(DF)
-	}
+
 	return(invisible(DF))
 	
 }
