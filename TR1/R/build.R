@@ -42,14 +42,15 @@ check_win_oldrelease() # sent OK
 
 #devtools::install_github("r-hub/rhub")
 library(rhub)
+list_validated_emails()
 validate_email()
-check_on_linux() # takes a long time, just twiddle thumbs
+check_on_linux(email = "tim.riffe@gmail.com",show_status=FALSE) # takes a long time, just twiddle thumbs
 rhub::check()
 # need to re-validate email?
 validate_email()
-check_on_windows()
-check_on_macos()
-check_with_rdevel()
+check_on_windows(email = "tim.riffe@gmail.com",show_status=FALSE)
+check_on_macos(show_status=FALSE)
+check_with_rdevel(email = "tim.riffe@gmail.com",show_status=FALSE)
 #install.packages("spelling")
 library(spelling)
 spell_check()

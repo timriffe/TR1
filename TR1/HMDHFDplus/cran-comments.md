@@ -5,8 +5,10 @@ Ubuntu 20.04.3 LTS
   * R version 4.2.1 (2022-06-23)
   
 * rhub:
+  * Windows Server 2022, R-release, 32/64 bit
+  * macOS 10.13.6 High Sierra, R-release, brew
+  * Debian Linux, R-release, GCC
 
-  
 * win-builder
   * R version 4.2.2 (2022-10-31 ucrt)
   * R version 4.1.3 (2022-03-10)
