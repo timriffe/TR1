@@ -1,5 +1,12 @@
 # Changes in this update
 
+# HMDHFDplus 2.0.***
+
+* `getHMDcountries()` adapted to the new HMD website
+* `getJMDprefectures()` refectored, now returns `tibble` object instead of named vector
+* 
+
+
 # HMDHFDplus 1.9.19
 5 November 2022
 

@@ -79,14 +79,32 @@ HMDparse <- function(DF, filepath){
 #' 
 #' @return a vector of HMD country short codes.
 #' 
-#' @importFrom utils read.csv
+#' @importFrom rvest read_html html_element html_elements html_attr html_text2
+#' @importFrom dplyr tibble mutate
+#' @importFrom rlang .data
 #' 
 #' @export
 
 getHMDcountries <- function(){
-	HMDXXX  <- read.csv("https://former.mortality.org/countries.csv",stringsAsFactors = FALSE)
-	HMDXXX  <- HMDXXX[!is.na(HMDXXX[,"ST_Per_LE_FY"]), ]
-	HMDXXX$Subpop.Code
+  
+  xpath <- "/html/body/div[1]/div/div[3]"
+  html <- read_html("https://www.mortality.org")
+  
+  links <-
+    html |>
+    html_element(xpath=xpath) |>
+    html_elements("a") |>
+    html_attr("href")
+  cntry_names <-
+    html |> 
+    html_element(xpath=xpath) |> 
+    html_elements("a") |> 
+    html_text2()
+  
+  # compose table and extract country code from links:
+  tibble(Country= cntry_names, 
+         link = links) |> 
+    mutate(CNTRY =  sub(".*=", "", .data$link))
 }
 
 ############################################################################
@@ -99,28 +117,35 @@ getHMDcountries <- function(){
 #' 
 #' @return a character vector of 2-digit prefecture codes. Names correspond to the proper names given in the English version of the HMD webpage.
 #' 
-#' @importFrom rvest html_table
-#' @importFrom rvest read_html
-#' @importFrom rvest html_element
+#' @importFrom rvest html_table read_html html_element
+#' @importFrom dplyr tibble arrange
 #' 
 #' @export
 #' 
 #' @examples \dontrun{ (prefectures <- getJMDprefectures()) }
 #' 
 getJMDprefectures <- function(){
-  Prefs <- as.matrix( 
-    html_table(
-     html_element(
-      read_html("https://www.ipss.go.jp/p-toukei/JMD/index-en.html"), 
-      "table")
-    )[-c(1:4),1:4])
+  jmd_url <- "https://www.ipss.go.jp/p-toukei/JMD/index-en.html"
+  
+  tab <-
+    read_html(jmd_url) |>
+    html_element("table") |>
+    html_table() |>
+    as.matrix() 
+  
+  Prefs <- tab[-c(1:4),1:4]
 	# Prefs <- as.matrix(XML::readHTMLTable("https://www.ipss.go.jp/p-toukei/JMD/index-en.html",
 	# 				which = 1, stringsAsFactors = FALSE, skip.rows = c(1:4)))
 	# get codes. rows read from left to right
-  Prefectures <- c(matrix(sprintf("%.2d", 0:47), byrow = TRUE, ncol = 4))
+  Codes <- c(matrix(
+    sprintf("%.2d", 0:47), 
+    byrow = TRUE, 
+    ncol = 4))
 
-	names(Prefectures) <- c(Prefs)
-	Prefectures[order(Prefectures)]
+	# names(Prefectures) <- c(Prefs)
+	# Prefectures[order(Prefectures)]
+	tibble(Prefecture = c(Prefs), Code = c(Codes)) |>
+	  arrange(Code)
 }
 
 ############################################################################
@@ -158,6 +183,31 @@ getCHMDprovinces <- function(){
 #' @export
 #' 
 getHMDitemavail <- function(CNTRY, username, password){
+  
+  CountryURL <- paste0("https://www.mortality.org/Country/Country?cntr=", CNTRY)
+  
+  tidy_chunk <- function(X){
+    X |>
+      clean_names() |>
+      rename("measure" = "x") |> 
+      pivot_longer(-"measure",names_to = "subtype",values_to = "years") |> 
+      filter("measure" != "")
+  }
+  
+  html <- read_html(CountryURL)
+  X <-
+  cntry_tables<-
+    html |>
+    html_table() %>% 
+    '[['(1)
+  
+  
+
+    lapply(FUN = tidy_chunk) |>
+    bind_rows() |>
+    filter(years != "-")
+  
+  
 	# It seems this function will only worked if you are logged in
 	# CountryURL      <- paste0("https://www.humanfertility.org/cgi-bin/",
 	# 		"country.php?country=",CNTRY)
