@@ -178,7 +178,7 @@ getHFDdate <- function(CNTRY){
 #' @export
 #' 
 getHFDitemavail <- function(CNTRY){
- 
+
   CountryURL <- paste0("https://www.humanfertility.org/Country/Country?cntr=", CNTRY)
   
   tidy_chunk <- function(X){

@@ -134,16 +134,13 @@ getJMDprefectures <- function(){
     as.matrix() 
   
   Prefs <- tab[-c(1:4),1:4]
-	# Prefs <- as.matrix(XML::readHTMLTable("https://www.ipss.go.jp/p-toukei/JMD/index-en.html",
-	# 				which = 1, stringsAsFactors = FALSE, skip.rows = c(1:4)))
-	# get codes. rows read from left to right
+
+	# form codes. rows read from left to right
   Codes <- c(matrix(
     sprintf("%.2d", 0:47), 
     byrow = TRUE, 
     ncol = 4))
 
-	# names(Prefectures) <- c(Prefs)
-	# Prefectures[order(Prefectures)]
 	tibble(Prefecture = c(Prefs), Code = c(Codes)) |>
 	  arrange(Code)
 }
@@ -163,7 +160,7 @@ getJMDprefectures <- function(){
 #' @examples \dontrun{ (provs <- getCHMDprovinces()) }
 #' 
 getCHMDprovinces <- function(){
-	# it's a small list, so why both scraping?-- include "can" for posterity.
+	# it's a small list, so why bother scraping?-- include "can" for posterity.
 	sort(c("can","nfl","pei","nsc","nbr","que","ont","man","sas","alb","bco","nwt","yuk"))
 }
 
@@ -186,31 +183,59 @@ getHMDitemavail <- function(CNTRY, username, password){
   
   CountryURL <- paste0("https://www.mortality.org/Country/Country?cntr=", CNTRY)
   
+  # I believe only one instance of the .data$measure
+  # is foreseen for future deprecation, but I don't
+  # yet see the pattern, so now they all have the
+  # non-intuitive "char" == "char" form, where one
+  # is a variable and the other an object, wtf.
   tidy_chunk <- function(X){
     X |>
       clean_names() |>
+      # replaces .data$measure
       rename("measure" = "x") |> 
-      pivot_longer(-"measure",names_to = "subtype",values_to = "years") |> 
-      filter("measure" != "")
+      # replaces .data$measure
+      pivot_longer(-"measure",
+                   names_to = "subtype",
+                   values_to = "years") |> 
+      # replaces .data$measure
+      filter("measure" != "") 
   }
   
   html <- read_html(CountryURL)
-  X <-
-  cntry_tables<-
+  
+  # works
+  cntry_tables <-
     html |>
     html_table() %>% 
     '[['(1)
   
+  # untested!
+  years <-
+    html |>
+    html_elements("table") |>
+    html_elements("tr")|>
+    html_elements("a") |>
+    html_text2()
   
-
+  # untested!
+  links <-
+    html |>
+    html_elements("table") |>
+    html_elements("tr")|>
+    html_elements("a") |>
+    html_attr("href")
+  
+  # years2 is a check to ensure join was row-matched properly
+  # be sure to manually check.
+  linksyears <- tibble(link = links, years2 = years)
+  
+  # for everything below here, refer to code strategies in 
+  # HFDutils.R lines 220-253
     lapply(FUN = tidy_chunk) |>
     bind_rows() |>
     filter(years != "-")
   
   
-	# It seems this function will only worked if you are logged in
-	# CountryURL      <- paste0("https://www.humanfertility.org/cgi-bin/",
-	# 		"country.php?country=",CNTRY)
 	CountryURL      <- paste0("https://former.mortality.org/hmd/", CNTRY, "/STATS/")
 	# vector of names of tabs on each HFD page
 	tab_html    <- httr::content(
