@@ -32,17 +32,20 @@ HFDparse <- function(DF){
 
 		if ("Age" %in% colnames(DF)){
 			DF <- DF |> 
-			  mutate(Age = parse_number(.data$Age),
+			  mutate(Age = as.character(Age),
+			         Age = parse_number(.data$Age),
 			         OpenInterval = .data$Age %in% range(.data$Age))
 		}
 		if ("ARDY" %in% colnames(DF)){
 		  DF <- DF |> 
-		    mutate(ARDY = parse_number(.data$ARDY),
+		    mutate(ARDY = as.character(ARDY),
+		           ARDY = parse_number(.data$ARDY),
 		           OpenInterval = .data$ARDY %in% range(.data$ARDY))
 		}
 		if ("Cohort" %in% colnames(DF)){
 			DF <- DF |>
 			  mutate(OpenInterval = grepl(pattern = "\\+", .data$Cohort) |  grepl(pattern = "\\-", .data$Cohort) ,
+			         Cohort = as.character(Cohort),
 			         Cohort = parse_number(.data$Cohort)) |>
 			  relocate(.data$OpenInterval, .after = last_col())
 		}
