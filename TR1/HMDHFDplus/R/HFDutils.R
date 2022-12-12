@@ -169,7 +169,7 @@ getHFDdate <- function(CNTRY){
 #' 
 #' @param CNTRY HFD country short code.
 #' 
-#' @return a tibble of all available data files for the selected country. There are several useful indentifiers that can help determine the appropriate file, including the `measure` and `subtype` as detected from the html table properties, and `lexis` and `parity` as detected either from the file names or the table properties.
+#' @return a tibble of all available data files for the selected country. There are several useful identifiers that can help determine the appropriate file, including the `measure` and `subtype` as detected from the html table properties, and `lexis` and `parity` as detected either from the file names or the table properties.
 #' 
 #' @importFrom janitor clean_names
 #' @importFrom tidyr pivot_longer

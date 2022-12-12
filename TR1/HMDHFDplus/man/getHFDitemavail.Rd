@@ -10,7 +10,7 @@ getHFDitemavail(CNTRY)
 \item{CNTRY}{HFD country short code.}
 }
 \value{
-a tibble of all available data files for the selected country. There are several useful indentifiers that can help determine the appropriate file, including the `measure` and `subtype` as detected from the html table properties, and `lexis` and `parity` as detected either from the file names or the table properties.
+a tibble of all available data files for the selected country. There are several useful identifiers that can help determine the appropriate file, including the `measure` and `subtype` as detected from the html table properties, and `lexis` and `parity` as detected either from the file names or the table properties.
 }
 \description{
 called by \code{readHFDweb()}. This assumes that \code{CNTRY} is actually available in the HFD.

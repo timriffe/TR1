@@ -166,48 +166,22 @@ getCHMDprovinces <- function(){
 
 #' @title internal function for grabbing the available data item names for a given country.
 #' 
-#' @description called by \code{readHMDweb()}. This assumes that \code{CNTRY} is actually available in the HFD. 
+#' @description called by \code{readHMDweb()} to find file urls. This assumes that \code{CNTRY} is actually available in the HFD. 
 #' 
 #' @param CNTRY character. HMD country short code.
-#' @param username character. Your HMD user id usually the email address you registered with the HMD under.
-#' @param password character. Your HMD password.
 
 #' 
-#' @return character vector of item names. These are the file base names, and only need the extension \code{.txt} added in order to get the file name.
+#' @return a tibble of all available data items for the selected country. There are several useful identifiers that can help determine the appropriate file, including the `measure`, `lexis`, `sex` and interval information, as detected from the item names.
 #' 
-#' @importFrom httr GET content authenticate config
-#' @importFrom XML getHTMLLinks htmlParse
+#' @importFrom rvest read_html html_elements html_text2 html_attr
+#' @importFrom dplyr case_when mutate tibble filter select
 #' @export
 #' 
-getHMDitemavail <- function(CNTRY, username, password){
+getHMDitemavail <- function(CNTRY){
   
   CountryURL <- paste0("https://www.mortality.org/Country/Country?cntr=", CNTRY)
   
-  # I believe only one instance of the .data$measure
-  # is foreseen for future deprecation, but I don't
-  # yet see the pattern, so now they all have the
-  # non-intuitive "char" == "char" form, where one
-  # is a variable and the other an object, wtf.
-  tidy_chunk <- function(X){
-    X |>
-      clean_names() |>
-      # replaces .data$measure
-      rename("measure" = "x") |> 
-      # replaces .data$measure
-      pivot_longer(-"measure",
-                   names_to = "subtype",
-                   values_to = "years") |> 
-      # replaces .data$measure
-      filter("measure" != "") 
-  }
-  
   html <- read_html(CountryURL)
-  
-  # works
-  cntry_tables <-
-    html |>
-    html_table() %>% 
-    '[['(1)
   
   # untested!
   years <-
@@ -225,27 +199,62 @@ getHMDitemavail <- function(CNTRY, username, password){
     html_elements("a") |>
     html_attr("href")
   
-  # years2 is a check to ensure join was row-matched properly
-  # be sure to manually check.
-  linksyears <- tibble(link = links, years2 = years)
-  
-  # for everything below here, refer to code strategies in 
-  # HFDutils.R lines 220-253
-    lapply(FUN = tidy_chunk) |>
-    bind_rows() |>
-    filter(years != "-")
-  
-  
-	CountryURL      <- paste0("https://former.mortality.org/hmd/", CNTRY, "/STATS/")
-	# vector of names of tabs on each HFD page
-	tab_html    <- httr::content(
-			        httr::GET(CountryURL,
-					httr::authenticate(username, password),
-					httr::config(ssl_verifypeer = 0L)))
-
-	parsed_html <- XML::htmlParse(tab_html)
-	all_links   <- XML::getHTMLLinks(parsed_html)
-	item_txt    <- all_links[grepl(all_links,pattern=".txt")]
-    item_lookup <- gsub(item_txt, pattern = ".txt", replacement = "")
-	return(item_lookup)
+  item_table <- 
+    tibble(link = links, years2 = years) |>
+    filter(! years2 %in% c("\r txt\r","\r pdf\r","html")) |>
+    mutate(base = basename(link),
+           item = gsub(base, pattern = ".txt", replacement = ""),
+           measure = case_when(grepl(item, pattern = "E0") ~ "Life Expectancy",
+                               grepl(item, pattern = "lt") ~ "Lifetables",
+                               grepl(item, pattern = "Births") ~ "Births",
+                               grepl(item, pattern = "Deaths") ~ "Deaths",
+                               grepl(item, pattern = "Population") ~ "Population",
+                               grepl(item, pattern = "Exposures") ~ "Exposures",
+                               grepl(item, pattern = "Mx")~ "Rates"),
+           lexis = case_when(grepl(item, pattern = "lexis") ~ "triangle",
+                             grepl(item, pattern = "E0coh") ~ "cohort",
+                             grepl(item, pattern = "c") ~ "age-cohort",
+                             grepl(item, pattern = "E0per") ~ "period",
+                             grepl(item, pattern = "per") ~ "age-period",
+                             measure %in% c("Deaths","Population","Exposures","Rates") ~ "age-period",
+                             measure == "Births" ~ "period"),
+           age_interval = case_when(lexis == "cohort" ~ NA_integer_,
+                                    lexis == "period"  ~ NA_integer_,
+                                    years2 %in% c("1x1","1x5","1x10") ~ 1L,
+                                    years2 %in% c("5x1","5x5","5x10") ~ 5L,
+                                    years2 == "Lexis" ~ 1L,
+                                    years2 == "1-year" ~ 1L,
+                                    years2 == "5-year" ~ 5L),
+           period_interval = case_when(grepl(lexis,pattern = "period") & 
+                                         years2 %in% c("1x1","5x1") ~ 1L,
+                                       grepl(lexis,pattern = "period") & 
+                                         years2 %in% c("1x5","5x5") ~ 5L,
+                                       grepl(lexis,pattern = "period") & 
+                                         years2 %in% c("1x10","5x10") ~ 10L,
+                                       measure == "Births" ~ 1L,
+                                       years2 == "Lexis" ~ 1L,
+                                       measure == "Population" ~0L,
+                                       item == "E0per" ~ 1L,
+                                       item == "E0per_1x5" ~ 5L,
+                                       item == "E0per_1x10" ~ 10L,
+                                       TRUE ~ NA_integer_),
+           cohort_interval = case_when(grepl(lexis,pattern = "cohort") & 
+                                         years2 %in% c("1x1","5x1") ~ 1L,
+                                       grepl(lexis,pattern = "cohort") & 
+                                         years2 %in% c("1x5","5x5") ~ 5L,
+                                       grepl(lexis,pattern = "cohort") & 
+                                         years2 %in% c("1x10","5x10") ~ 10L,
+                                       item == "E0coh" ~ 1L,
+                                       item == "E0coh_1x5" ~ 5L,
+                                       item == "E0coh_1x10" ~ 10L,
+                                       lexis == "triangle" ~ 1L,
+                                       measure == "Births" ~ 1L),
+           sex = case_when(substr(item,1,1) == "m" ~ "male",
+                           substr(item,1,1) == "f" ~ "female",
+                           substr(item,1,1) == "b" ~ "total",
+                           measure %in% c("Births","Deaths","Exposures","Rates","Life Expectancy","Population") ~ "all")) |>
+  select(item, measure, sex, lexis, age_interval, period_interval, cohort_interval, link)
+    
+    
+	return(item_table)
 }

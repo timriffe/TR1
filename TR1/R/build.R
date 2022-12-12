@@ -55,6 +55,7 @@ check_with_rdevel(email = "tim.riffe@gmail.com",show_status=FALSE)
 library(spelling)
 spell_check()
 
+# install.packages("revdepcheck")
 library(revdepcheck)
 revdep_check()
 
@@ -70,4 +71,6 @@ devtools::release()
 #badger:::check_github("timriffe/TR1/TR1/HMDHFDplus")
 #rvcheck:::check_github_gitlab("timriffe/TR1/TR1/HMDHFDplus")
 #badger:::badge_github_version("timriffe/DemoTools","yellow")
+
+release()
 

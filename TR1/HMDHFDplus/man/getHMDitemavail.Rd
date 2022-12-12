@@ -4,18 +4,14 @@
 \alias{getHMDitemavail}
 \title{internal function for grabbing the available data item names for a given country.}
 \usage{
-getHMDitemavail(CNTRY, username, password)
+getHMDitemavail(CNTRY)
 }
 \arguments{
 \item{CNTRY}{character. HMD country short code.}
-
-\item{username}{character. Your HMD user id usually the email address you registered with the HMD under.}
-
-\item{password}{character. Your HMD password.}
 }
 \value{
-character vector of item names. These are the file base names, and only need the extension \code{.txt} added in order to get the file name.
+a tibble of all available data items for the selected country. There are several useful identifiers that can help determine the appropriate file, including the `measure`, `lexis`, `sex` and interval information, as detected from the item names.
 }
 \description{
-called by \code{readHMDweb()}. This assumes that \code{CNTRY} is actually available in the HFD.
+called by \code{readHMDweb()} to find file urls. This assumes that \code{CNTRY} is actually available in the HFD.
 }
