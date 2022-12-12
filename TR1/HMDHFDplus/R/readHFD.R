@@ -189,7 +189,7 @@ https://www.humanfertility.org/Account/UserAgreement"))
 	
 	data_grab$response |> 
 	  content(encoding = "UTF-8") |> 
-	  cat(file=tmp, encoding = "UTF-8")
+	  cat(file=tmp)
 	
 	DF <- readHFD(tmp, fixup = fixup)
 	
