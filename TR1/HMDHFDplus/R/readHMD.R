@@ -89,7 +89,7 @@ readHMDweb <- function(CNTRY, item, username, password, fixup = TRUE){
 	}
 	
   # Get logged in, starting here
-  loginURL <- paste0("https://www.mortality.org/Account/Login")
+  loginURL <- "https://www.mortality.org/Account/Login"
   # concatenate the login string
   
   html <- session(loginURL)
@@ -104,9 +104,10 @@ readHMDweb <- function(CNTRY, item, username, password, fixup = TRUE){
   filled_form   <- html_form_set(pgform, 
                                  Email = username, 
                                  Password = password)
-  
+
   # test once credentials validated
   html2 <- session_submit(html, filled_form)
+
   Continue <- status_code(html2) == 200
   if (!Continue) {
     stop(paste0("login didn't work. \nMaybe your username or password are off?
