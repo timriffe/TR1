@@ -258,3 +258,9 @@ getHMDitemavail <- function(CNTRY){
     
 	return(item_table)
 }
+
+
+## load globals to avoid "no visible binding" NOTEs in package checks:
+utils::globalVariables(c("years2", "link", "base","item","measure",
+                         "sex","lexis","age_interval","Age","ARDY","Cohort",
+                         "period_interval","cohort_interval","Code"))
