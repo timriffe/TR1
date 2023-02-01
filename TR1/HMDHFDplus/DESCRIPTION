@@ -1,8 +1,8 @@
 Package: HMDHFDplus
 Type: Package
 Title: Read Human Mortality Database and Human Fertility Database Data from the Web
-Version: 1.9.19
-Date: 2022-11-5
+Version: 2.0.0
+Date: 2021-2-1
 Authors@R: c(
    person("Tim", "Riffe", role = c("aut", "cre"), 
           email = "tim.riffe@gmail.com"),
@@ -38,4 +38,4 @@ Imports:
 	rlang
 Suggests:
     RCurl
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3

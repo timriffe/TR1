@@ -61,10 +61,9 @@ readHMD <- function(filepath, fixup = TRUE, ...){
 #' not saved directly in your code. See examples. One option is to just save 
 #' them in your Rprofile file.
 #' 
-#' @importFrom utils read.csv
-#' @importFrom utils read.table
-#' @importFrom httr GET content authenticate config
-#' @export
+#' @importFrom rvest html_form_set session html_form session_submit session_jump_to
+#' @importFrom httr content status_code
+#' @importFrom dplyr pull
 #' 
 readHMDweb <- function(CNTRY, item, username, password, fixup = TRUE){
 	## based on Carl Boe's RCurl tips
@@ -100,11 +99,12 @@ readHMDweb <- function(CNTRY, item, username, password, fixup = TRUE){
   # # hack because rvest doesn't record where we were??
   pgform$action <- loginURL
   pgform$url    <- loginURL
-  
-  filled_form   <- html_form_set(pgform, 
-                                 Email = username, 
-                                 Password = password)
-
+  the_token     <- pgform$fields["__RequestVerificationToken"]
+  filled_form   <- suppressWarnings(html_form_set(pgform,
+                                 Email = username,
+                                 Password = password,
+                                 '__RequestVerificationToken' =
+                                   unlist(the_token)["__RequestVerificationToken.value" ]))
   # test once credentials validated
   html2 <- session_submit(html, filled_form)
 
@@ -174,7 +174,7 @@ Those shenanigans were just a temporary patch to buy time to recode for the new 
 	  filter(item == .item) |>
 	  pull("link")
 	
-	grab_url <- paste0("https://mortality.org", stub_url)
+	grab_url <- paste0("https://www.mortality.org", stub_url)
 	
 	# TR: This session jump doesn't seem to be working
 	# as expected; grab url brings me to text file
@@ -183,25 +183,28 @@ Those shenanigans were just a temporary patch to buy time to recode for the new 
 	# the login page, so I'm not seeing the 
 	data_grab <- session_jump_to(html2, 
 	                             url = grab_url)
-	
-	# TR: this is all test code, not expected to run yet
-	data_grab$response
-	  session_jump_to( url = grab_url)
-	# Continue <- status_code(data_grab) == 200
-	tmp <- tempfile()
 
-	data_grab$response |> 
-	content(encoding = "UTF-8") |> 
-	  cat(file=tmp)
-	
-	DF <- readHFD(tmp, fixup = fixup)
-	
-	unlink(tmp)
+
+	# TR: this is all test code, not expected to run yet
+	con <- 
+	  content(data_grab$response, 
+	          as = "text", 
+	          encoding = "UTF-8") |>
+	  textConnection()
+
+	DF <-
+	  read.table(con,
+	             header = TRUE, 
+	             skip = 2, 
+	             na.strings = ".", 
+	             as.is = TRUE) |>
+	  HMDparse(filepath = grab_url)
+	close(con)
+	# Continue <- status_code(data_grab) == 200
 	closeAllConnections()
 	
   invisible(DF)
 } # end readHMDweb()
-
 ############################################################################
 # readJMDweb()
 ############################################################################
