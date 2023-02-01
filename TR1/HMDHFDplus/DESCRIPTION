@@ -26,7 +26,6 @@ Collate:
     'readHMD.R'  
     'userInput.R'
 Imports: 
-	XML,
 	httr,
 	rvest,
 	dplyr,
