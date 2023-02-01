@@ -9,7 +9,8 @@ document()
 # install_github("timriffe/TimUtils", subdir = "TimUtils")
 
 load_all(reset=TRUE)
-
+us = Sys.getenv("us")
+pw = Sys.getenv("pw")
 build(path="/home/tim/workspace/TR1/TR1/Builds")
 # install.packages(here::here("TR1","Builds","HMDHFDplus_1.9.11.9000.tar.gz"), type = "source", repos = NULL)
 # library(HMDHFDplus)
@@ -47,15 +48,15 @@ validate_email()
 check_on_linux(email = "tim.riffe@gmail.com",show_status=FALSE) # takes a long time, just twiddle thumbs
 rhub::check()
 # need to re-validate email?
-validate_email()
+
 check_on_windows(email = "tim.riffe@gmail.com",show_status=FALSE)
-check_on_macos(show_status=FALSE)
+check_on_macos(email = "tim.riffe@gmail.com",show_status=FALSE)
 check_with_rdevel(email = "tim.riffe@gmail.com",show_status=FALSE)
 #install.packages("spelling")
 library(spelling)
 spell_check()
 
-# install.packages("revdepcheck")
+#devtools::install_github('r-lib/revdepcheck')
 library(revdepcheck)
 revdep_check()
 
