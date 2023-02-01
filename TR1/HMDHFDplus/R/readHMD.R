@@ -53,13 +53,7 @@ readHMD <- function(filepath, fixup = TRUE, ...){
 #' 
 #' @return data.frame of the HMD product, read as as \code{readHMD()} would read it.
 #'
-#' @details This function currently points to a mirror of the former site. 
-#' This is a temporary patch until an API is released. To read data live from 
-#' the web, you need to register at the `former` HMD website: 
-#' \url{https://former.mortality.org}. It is advised to pass in your credentials 
-#' as named vectors rather than directly as character strings, so that they are 
-#' not saved directly in your code. See examples. One option is to just save 
-#' them in your Rprofile file.
+#' @details This function points to the new HMD website (from June 2022) rather than the mirror of the old site that it temporarily pointed to; If your credentials fail then a likely reason is that you need to re-register at the new HMD website \href{https://www.mortality.org/Account/UserAgreement}{https://www.mortality.org/Account/UserAgreement}. As soon as you register, your new credentials should work.
 #' 
 #' @importFrom rvest html_form_set session html_form session_submit session_jump_to
 #' @importFrom httr content status_code
