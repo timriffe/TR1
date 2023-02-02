@@ -58,6 +58,7 @@ readHMD <- function(filepath, fixup = TRUE, ...){
 #' @importFrom rvest html_form_set session html_form session_submit session_jump_to
 #' @importFrom httr content status_code
 #' @importFrom dplyr pull
+#' @export
 #' 
 readHMDweb <- function(CNTRY, item, username, password, fixup = TRUE){
 	## based on Carl Boe's RCurl tips
