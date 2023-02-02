@@ -1,4 +1,4 @@
-This is a minor package update to change adapt code for the new Human Fertility Database website, which has a different authentication method. This only affects HFD-related functions.
+This is a minor package update to change adapt code for the new Human Mortality Database website, which has a different authentication method. This only affects HMD-related functions; minor fixes also to some HFD-related functions.
 
 ## Test environments
 Ubuntu 20.04.3 LTS
