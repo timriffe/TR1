@@ -10,10 +10,12 @@ Ubuntu 20.04.3 LTS
   * Debian Linux, R-release, GCC
 
 * win-builder
-  * R Under development (unstable) (2023-01-31 r83741 ucrt)
+  * R Under development (unstable) (2023-02-01 r83747 ucrt)
   * R version 4.2.2 (2022-10-31 ucrt)
   * R version 4.1.3 (2022-03-10)
 
 ## R CMD check results
 All of the above returned:
 0 errors | 0 warnings | 0 notes 
+
+Except occasional NOTEs to give reminders of who the maintainer is
