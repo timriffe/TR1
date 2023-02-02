@@ -1,4 +1,4 @@
-This is a minor package update to change adapt code for the new Human Mortality Database website, which has a different authentication method. This only affects HMD-related functions; minor fixes also to some HFD-related functions.
+This is a minor package update to change adapt code for the new Human Mortality Database website, which has a different authentication method. This only affects HMD-related functions; minor fixes also to some HFD-related functions. I did a reverse dependency check and found a problem in how HMDHFDplus is used in the VirtualPop package. I have made a pull-request to the VirtualPop maintainer that addresses the issue and makes the package pass checks.
 
 ## Test environments
 Ubuntu 20.04.3 LTS
