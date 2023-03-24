@@ -12,6 +12,8 @@ load_all(reset=TRUE)
 us = Sys.getenv("us")
 pw = Sys.getenv("pw")
 build(path="/home/tim/workspace/TR1/TR1/Builds")
+
+sp <- readHMDweb("ESP", "mltper_1x1", us, pw)
 # install.packages(here::here("TR1","Builds","HMDHFDplus_1.9.11.9000.tar.gz"), type = "source", repos = NULL)
 # library(HMDHFDplus)
 # 

@@ -1,4 +1,7 @@
 # Changes in this update
+# HMDHFDplus 2.0.2
+24 March 2023
+* `getHMDcountries()` adds in HMD subpopulations that weren't scraped from the main page
 
 # HMDHFDplus 2.0.0
 1 Feb 2023

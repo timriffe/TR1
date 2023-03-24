@@ -102,9 +102,38 @@ getHMDcountries <- function(){
     html_text2()
   
   # compose table and extract country code from links:
-  tibble(Country= cntry_names, 
+  tab_main <- tibble(Country= cntry_names, 
          link = links) |> 
     mutate(CNTRY =  sub(".*=", "", .data$link))
+  
+  # subpopulations are more of a pain to scrape; doable, but this is easier
+  tab_extra <- tibble(Country = c("England and Wales (Total Population)",
+                                  "England and Wales (Civilian Population)",
+                                  "Scotland",
+                                  "Northern Ireland",
+                                  "New Zealand Maori",
+                                  "New Zealand Non-Maori",
+                                  "East Germany",
+                                  "West Germany"),
+                      link = c("/Country/Country?cntr=GBRTENW",
+                               "/Country/Country?cntr=GBRCENW",
+                               "/Country?cntr=GBR_SCO",
+                               "/Country?cntr=GBR_NIR",
+                               "/Country?cntr=NZL_MA",
+                               "/Country?cntr=NZL_NM",
+                               "/Country?cntr=DEUTE",
+                               "/Country?cntr=DEUTW"),
+                      CNTRY = c("GBRTENW",
+                                "GBRCENW",
+                                "GBR_SCO",
+                                "GBR_NIR",
+                                "NZL_MA",
+                                "NZL_NM",
+                                "DEUTE",
+                                "DEUTW"))
+  
+  rbind(tab_main,
+        tab_extra) 
 }
 
 ############################################################################
