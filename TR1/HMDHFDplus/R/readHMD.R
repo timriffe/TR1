@@ -181,11 +181,12 @@ Those shenanigans were just a temporary patch to buy time to recode for the new 
 
 
 	# TR: this is all test code, not expected to run yet
-	con <- 
+	the_table <- 
 	  content(data_grab$response, 
 	          as = "text", 
-	          encoding = "UTF-8") |>
-	  textConnection()
+	          encoding = "UTF-8") 
+	con <- 
+	  textConnection(the_table)
 
 	DF <-
 	  read.table(con,
@@ -195,9 +196,7 @@ Those shenanigans were just a temporary patch to buy time to recode for the new 
 	             as.is = TRUE) |>
 	  HMDparse(filepath = grab_url)
 	close(con)
-	# Continue <- status_code(data_grab) == 200
-	closeAllConnections()
-	
+
   invisible(DF)
 } # end readHMDweb()
 ############################################################################
@@ -243,7 +242,7 @@ readJMDweb <- function(prefID = "01", item = "Deaths_5x5", fixup = TRUE, ...){
 	if (httr::HEAD(JMDurl)$all_headers[[1]]$status == 200){
 		con         <- url(JMDurl)
 		Dat         <- readHMD(con, fixup = fixup, ...)
-		#close(con)
+		# close(con)
 		return(invisible(Dat))
 	} else {
 		cat("Either the prefecture code or data item are not available\nCheck names.\nNULL returned\n")
@@ -295,7 +294,7 @@ readCHMDweb <- function(provID = "can", item = "Deaths_1x1", fixup = TRUE, ...){
 	if (httr::HEAD(CHMDurl)$all_headers[[1]]$status == 200){
 		con         <- url(CHMDurl)
 		Dat         <- readHMD(con, fixup = fixup, ...)
-		#close(con)
+		# close(con)
 		return(invisible(Dat))
 	} else {
 		cat("Either the prefecture code or data item are not available\nCheck names.\nNULL returned\n")

@@ -1,4 +1,9 @@
 # Changes in this update
+# HMDHFDplus 2.0.3
+20 June 2023
+* removes `closeAllConnections()` from all functions
+* `readHFCweb()` temporarily deprecated due to source website upgrade. This function will be reintroduced in the future.
+
 # HMDHFDplus 2.0.2
 24 March 2023
 * `getHMDcountries()` adds in HMD subpopulations that weren't scraped from the main page
