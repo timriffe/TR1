@@ -1,7 +1,7 @@
 # Changes in this update
 # HMDHFDplus 2.0.3
 20 June 2023
-* removes `closeAllConnections()` from all functions
+* removes `closeAllConnections()` from all functions. HT mbs2016
 * `readHFCweb()` temporarily deprecated due to source website upgrade. This function will be reintroduced in the future.
 
 # HMDHFDplus 2.0.2
