@@ -1,4 +1,4 @@
-This is a minor package update to open and close connections more neatly and eliminating artifacts that were messing up Rmd builds. Also some little fixes to capture subpopulations that were missed in the previous update.
+This is a minor package update to open and close connections more neatly and eliminating artifacts that were messing up Rmd builds. Also some little fixes to capture subpopulations that were missed in the previous update. I've informed the maintainers of two reverse dependencies to import this forthcoming version.
 
 ## Test environments
 Ubuntu 20.04.6 LTS

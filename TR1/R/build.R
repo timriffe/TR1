@@ -60,9 +60,9 @@ check_with_rdevel(email = "tim.riffe@gmail.com",show_status=FALSE)
 library(spelling)
 spell_check()
 
-#devtools::install_github('r-lib/revdepcheck')
+#devtools::install_github('r-lib/revdepcheck',force=TRUE)
 library(revdepcheck)
-revdep_check()
+revdepcheck::revdep_check()
 
 devtools::release()
 
