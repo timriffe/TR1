@@ -25,6 +25,8 @@ sp <- readHMDweb("ESP", "mltper_1x1", us, pw)
 #  head(A)
 # A <- readHFDweb("USA","birthsRR",username=us,password=pw)
 #  head(A)
+
+# this one needs fixing
 #  A <- readHFCweb("USA","ASFRstand_BO")
 #  head(A)
 #  USpop <- readHMDweb("USA","Population",username = us, password = pw)
@@ -52,7 +54,7 @@ rhub::check()
 # need to re-validate email?
 
 check_on_windows(email = "tim.riffe@gmail.com",show_status=FALSE)
-check_on_macos(email = "tim.riffe@gmail.com",show_status=FALSE)
+check_mac_release(quiet=TRUE)
 check_with_rdevel(email = "tim.riffe@gmail.com",show_status=FALSE)
 #install.packages("spelling")
 library(spelling)

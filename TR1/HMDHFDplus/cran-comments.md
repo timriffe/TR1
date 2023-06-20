@@ -1,21 +1,21 @@
-This is a minor package update to change adapt code for the new Human Mortality Database website, which has a different authentication method. This only affects HMD-related functions; minor fixes also to some HFD-related functions. I did a reverse dependency check and found a problem in how HMDHFDplus is used in the VirtualPop package. I have made a pull-request to the VirtualPop maintainer that addresses the issue and makes the package pass checks.
+This is a minor package update to open and close connections more neatly and eliminating artifacts that were messing up Rmd builds. Also some little fixes to capture subpopulations that were missed in the previous update.
 
 ## Test environments
-Ubuntu 20.04.3 LTS
-  * R version 4.2.2 (2022-11-10 r83330)
+Ubuntu 20.04.6 LTS
+  * R version 4.3.0 (2023-04-21)
   
 * rhub:
   * Windows Server 2022, R-release, 32/64 bit
-  * macOS 10.13.6 High Sierra, R-release, brew
   * Debian Linux, R-release, GCC
 
+* macbuilder:
+  * r-release-macosx-arm64|4.3.0|macosx|macOS 13.3.1
+
 * win-builder
-  * R Under development (unstable) (2023-02-01 r83747 ucrt)
-  * R version 4.2.2 (2022-10-31 ucrt)
-  * R version 4.1.3 (2022-03-10)
+  * R version 4.2.3 (2023-03-15 ucrt)
+  * R Under development (unstable) (2023-06-19 r84573 ucrt)
+  * R version 4.3.1 (2023-06-16 ucrt)
 
 ## R CMD check results
 All of the above returned:
 0 errors | 0 warnings | 0 notes 
-
-Except occasional NOTEs to give reminders of who the maintainer is
