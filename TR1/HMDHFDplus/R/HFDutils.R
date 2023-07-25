@@ -188,6 +188,12 @@ getHFDitemavail <- function(CNTRY){
     X |>
       clean_names() |>
       rename("measure" = .data$x) |> 
+
+      # "Converting Numeric Columns to Character Columns"
+      # e.g., on HFD, item = "tfrRR", 
+      # `census_or_register_based_parity_estimates` is numeric 
+      mutate_if(is.numeric, as.character) |>       
+            
       pivot_longer(-.data$measure,names_to = "subtype",values_to = "years") |> 
       filter(.data$measure != "")
   }
