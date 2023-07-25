@@ -1,4 +1,9 @@
 # Changes in this update
+
+# HMDHFDplus 2.0.4
+25 July 2024
+* `getHMDitemAvail()` now fixed HT @samhyunyoo
+
 # HMDHFDplus 2.0.3
 20 June 2023
 * removes `closeAllConnections()` from all functions. HT mbs2016

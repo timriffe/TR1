@@ -177,6 +177,8 @@ getHFDdate <- function(CNTRY){
 #' @importFrom rvest read_html html_table html_elements html_text2 html_attr
 #' @importFrom stringr str_split
 #' @importFrom rlang .data
+#' @importFrom dplyr across
+#' @importFrom tidyselect where
 #' 
 #' @export
 #' 
@@ -192,7 +194,7 @@ getHFDitemavail <- function(CNTRY){
       # "Converting Numeric Columns to Character Columns"
       # e.g., on HFD, item = "tfrRR", 
       # `census_or_register_based_parity_estimates` is numeric 
-      mutate_if(is.numeric, as.character) |>       
+      mutate(across(where(is.numeric),as.character))  |>     
             
       pivot_longer(-.data$measure,names_to = "subtype",values_to = "years") |> 
       filter(.data$measure != "")

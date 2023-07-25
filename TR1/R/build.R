@@ -23,7 +23,8 @@ sp <- readHMDweb("ESP", "mltper_1x1", us, pw)
 #  head(A)
 #  A <- readCHMDweb("alb","mltper_5x5")
 #  head(A)
-# A <- readHFDweb("USA","birthsRR",username=us,password=pw)
+A <- readHFDweb("KOR","birthsRR",username=us,password=pw)
+A
 #  head(A)
 
 # this one needs fixing
