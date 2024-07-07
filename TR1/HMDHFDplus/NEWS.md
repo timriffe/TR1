@@ -1,7 +1,11 @@
 # Changes in this update
 
+# HMDHFDplus 2.0.5
+07 July 2024
+* `getHFDdate()` modified to pull date from country page footer rather than from table dates. The HFD website sometimes has inconsistent labeling of last update dates, leading to url failures unless we get the date right. Page footer was consistent with file urls so far.
+
 # HMDHFDplus 2.0.4
-25 July 2024
+25 July 2023
 * `getHMDitemAvail()` now fixed HT @samhyunyoo
 
 # HMDHFDplus 2.0.3
