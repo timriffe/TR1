@@ -129,32 +129,25 @@ getHFDcountries <- function(){
 getHFDdate <- function(CNTRY){
   CountryURL <- paste0("https://www.humanfertility.org/Country/Country?cntr=", CNTRY)
   html       <- read_html(CountryURL)
-  xpath      <- "/html/body/div[1]/div/div[3]/div[1]/div[1]/div[2]/span"
-
+  # xpath      <- "/html/body/div[1]/div/div[3]/div[1]/div[1]/div[2]/span"
+xpath <- "/html/body/div[1]/div/div[4]/div/span[2]"
   LastUpdate <- 
     html |>  
     html_elements(xpath = xpath) |> 
-    html_text2() |>
-    sub(pattern = ".*: ", replacement = "", ) |>
-    dmy()
+    html_text2() |> 
+      str_split("=") |> 
+      unlist() |> 
+      rev() 
+  LastUpdate <- LastUpdate[1]
+   
   
   if(length(LastUpdate)==0){
     stop("I can't find the date of the latest update to the data for this
           country. The Human Fertility Database website may have changed")
   }
-  date_out <- paste0(year(LastUpdate),
-                     str_pad(month(LastUpdate),
-                             width = 2,
-                             side="left",
-                             pad="0"),
-                     str_pad(day(LastUpdate),
-                             width = 2,
-                             side="left",
-                             pad="0"))
-  
-  
+
   # this isn't a date string, just 8 digits squashed together yyyymmdd
-  date_out
+  LastUpdate
 }
 
 
