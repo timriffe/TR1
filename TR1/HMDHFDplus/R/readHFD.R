@@ -16,6 +16,7 @@
 #' 
 #' @param filepath path or connection to the HFD text file, including .txt suffix.
 #' @param fixup logical. Should columns be made more user-friendly, e.g., forcing Age to be integer?
+#' @param item character string of the data product code, which is the base file name, but excluding the country code and file extension \code{.txt}. For instance, \code{"mabRR"} or \code{"tfrVHbo"}. This will be passed in, potentially, by the reader.
 #' @param ... other arguments passed to \code{read.table}, not likely needed.
 #' 
 #' @return data.frame of standard HFD output, except the Age column has been cleaned, and a new open age indicator column has been added. 
