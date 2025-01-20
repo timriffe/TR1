@@ -49,8 +49,7 @@ check_win_oldrelease() # sent OK
 #devtools::install_github("r-hub/rhub")
 library(rhub)
 list_validated_emails()
-validate_email()
-check_on_linux(email = "tim.riffe@gmail.com",show_status=FALSE) # takes a long time, just twiddle thumbs
+just twiddle thumbs
 rhub::check()
 # need to re-validate email?
 
