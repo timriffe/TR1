@@ -17,7 +17,7 @@
 #' @description called by \code{readHFD()} and \code{readHFDweb()}. We assume there are no factors in the given data.frame and that it has been read in from the raw text files using something like: \code{ read.table(file = filepath, header = TRUE, skip = 2, na.strings = ".", as.is = TRUE)}. This function is visible to users, but is not likely needed directly.
 #' 
 #' @param DF a data.frame of HFD data, freshly read in.
-#' 
+#' @param item character string of the data product code, which is the base file name, but excluding the country code and file extension \code{.txt}. For instance, \code{"mabRR"} or \code{"tfrVHbo"}. This will be passed in, potentially, by the reader.
 #' @return DF same data.frame, modified so that columns are of a useful class. If there were open age categories, such as \code{"-"} or \code{"+"}, this information is stored in a new dummy column called \code{OpenInterval}.
 #' 
 #' @details This parse routine is based on the subjective opinions of the author...
@@ -26,7 +26,7 @@
 #' @importFrom rlang .data
 #' @export
 #' 
-HFDparse <- function(DF){
+HFDparse <- function(DF, item = NULL){
 	if (any(c("Age","Cohort","ARDY") %in% colnames(DF))){
 		# assuming that if there are two such columns that the open age, etc, rows will always agree.    
 
@@ -49,6 +49,14 @@ HFDparse <- function(DF){
 			         Cohort = parse_number(.data$Cohort)) |>
 			  relocate(.data$OpenInterval, .after = last_col())
 		}
+	  # HT AvR via student comment. For open intervals in HFD,
+	  # the numerator, but not the denominator, is Open...
+	  if (is.null(item)){
+	    item <- "bla"
+	  }
+	  if (grepl(pattern = "expos", x = item)){
+	    DF$OpenInterval <- FALSE
+	  }
 	}
 	DF
 }

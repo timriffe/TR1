@@ -29,10 +29,10 @@
 #' @note original function submitted by Josh Goldstein, modified by Tim Riffe.
 #' 
 
-readHFD <- function(filepath, fixup = TRUE, ...){
+readHFD <- function(filepath, fixup = TRUE, item = NULL, ...){
     DF      <- suppressWarnings(read.table(file = filepath, header = TRUE, skip = 2, na.strings = ".", as.is = TRUE, ...))
     if (fixup){
-      DF      <- HFDparse(DF)
+      DF      <- HFDparse(DF, item = item)
     }
     invisible(DF)
 }
@@ -191,7 +191,7 @@ https://www.humanfertility.org/Account/UserAgreement"))
 	  content(encoding = "UTF-8") |> 
 	  cat(file=tmp)
 	
-	DF <- readHFD(tmp, fixup = fixup)
+	DF <- readHFD(tmp, fixup = fixup, item = .item)
 	
 	unlink(tmp)
 	#closeAllConnections()

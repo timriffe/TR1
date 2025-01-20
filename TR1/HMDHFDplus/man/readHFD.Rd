@@ -4,7 +4,7 @@
 \alias{readHFD}
 \title{\code{readHFD()} reads a standard HFD .txt table as a \code{data.frame}}
 \usage{
-readHFD(filepath, fixup = TRUE, ...)
+readHFD(filepath, fixup = TRUE, item = NULL, ...)
 }
 \arguments{
 \item{filepath}{path or connection to the HFD text file, including .txt suffix.}

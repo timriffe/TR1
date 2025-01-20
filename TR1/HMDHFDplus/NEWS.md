@@ -1,5 +1,10 @@
 # Changes in this update
 
+# HMDHFDplus 2.0.52
+20 January 2025
+* minor change to DESCRIPTION to comply w CRAN.
+* Fixes minor OpenInterval coding error for HFD denominators. HT @alysonvanraalte
+
 # HMDHFDplus 2.0.5
 07 July 2024
 * `getHFDdate()` modified to pull date from country page footer rather than from table dates. The HFD website sometimes has inconsistent labeling of last update dates, leading to url failures unless we get the date right. Page footer was consistent with file urls so far.

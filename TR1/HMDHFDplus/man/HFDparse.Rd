@@ -4,10 +4,12 @@
 \alias{HFDparse}
 \title{internal function for modifying freshly read HFD data in its standard form}
 \usage{
-HFDparse(DF)
+HFDparse(DF, item = NULL)
 }
 \arguments{
 \item{DF}{a data.frame of HFD data, freshly read in.}
+
+\item{item}{character string of the data product code, which is the base file name, but excluding the country code and file extension \code{.txt}. For instance, \code{"mabRR"} or \code{"tfrVHbo"}. This will be passed in, potentially, by the reader.}
 }
 \value{
 DF same data.frame, modified so that columns are of a useful class. If there were open age categories, such as \code{"-"} or \code{"+"}, this information is stored in a new dummy column called \code{OpenInterval}.
