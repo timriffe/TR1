@@ -12,7 +12,7 @@ Ubuntu 20.04.6 LTS
   * r-release-macosx-arm64|4.3.0|macosx|macOS 13.3.1
 
 * win-builder
-  * R version 4.2.3 (2023-03-15 ucrt)
+  * R version 4.3.3 (2024-02-29 ucrt)
   * R Under development (unstable) (2023-06-19 r84573 ucrt)
   * R version 4.3.1 (2023-06-16 ucrt)
 
