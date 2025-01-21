@@ -21,18 +21,18 @@ This means you can install it using:
 ```r
 install.packages("HMDHFDplus")
 ```
-The version hosted in this repository is often more up-to-date; it pushes to CRAN whenever major features or fixes come up.
+The github version is more up-to-date, but note, the maintained version is now hosted in a bespoke github repository:
+<https://github.com/timriffe/HMDHFDplus>, and you can install it directly like so
 
 ```r
 # install.packages("remotes", dependencies = TRUE)
 library(remotes)
-install_github("timriffe/TR1/TR1/HMDHFDplus")
+install_github("timriffe/HMDHFDplus")
 ```
 
 To report a bug
 ===============
-Just go to the [main repository page](https://github.com/timriffe/TR1) and click on the ```Issues``` 
+Just go to the [main repository page](https://github.com/timriffe/HMDHFDplus) and click on the ```Issues``` 
 button on the right side. Otherwise, just email me.
 
-* I know about the current HMD issue and ask for patience until I figure out how to deal with Cookies and so on. There is currently a patch in place that relies on a mirror to the old HMD website (which nonetheless has up to date data), and which requires the old website credentials to use.
 
